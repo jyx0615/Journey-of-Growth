@@ -15,10 +15,25 @@ int ROLE_HEIGHT = 80;
 int ROLE_WIDTH = 20;
 int MAX_LEVEL = 20;
 int CANVA_SPEED = 10;
+int CANVA_UP_SPEED = 5;
+
+int iconSize = 40;
 
 // game properties
 int base = MAX_LEVEL - 5;  // since we render 5 levels at a time
-boolean is_moving = false;
+boolean canva_moving_down = false;
+boolean canva_moving_up = true;
 int canva_offset = 200;
-int [][] blocks;
 int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829};
+
+class Block {
+  int left, level, blockWidth, type;
+  Block(int blockLeft, int blockLevel, int blockWidthIn, int blockType) {
+    left = blockLeft;
+    level = blockLevel;
+    blockWidth = blockWidthIn;
+    type = blockType;
+  }
+}
+
+Block[] blocks;
