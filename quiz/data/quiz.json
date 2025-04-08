@@ -1,0 +1,20 @@
+[
+    {
+      "type": 1,
+      "question": "What is the capital of France?",
+      "answer": 2,
+      "choices": ["Berlin", "Paris", "Madrid", "Rome"]
+    },
+    {
+      "type": 2,
+      "question": "Name a programming language that starts with 'P'.",
+      "answer": "Python"
+    },
+    {
+      "type": 1,
+      "question": "Which planet is known as the Red Planet?",
+      "answer": 3,
+      "choices": ["Earth", "Venus", "Mars", "Jupiter"]
+    }
+  ]
+  
