@@ -2,9 +2,9 @@ void setup() {
   size(600, 800);
   surface.setLocation(500, 100);
   readQuiz();
-  //if (mode == 1)
+  //if (type == 1)
   //  generateMultipleChoice();
-  //else if(mode == 2)
+  //else if(type == 2)
   //  generateInputQuiz();
 }
 
@@ -24,7 +24,7 @@ void readQuiz() {
 
 void displayQuiz(Quiz q) {
   question = q.question;
-  mode = q.type;
+  type = q.type;
   if (q.type == 1){
     answerChoice = q.answerNum;
     choices = q.choices;
@@ -116,11 +116,11 @@ void draw() {
   background(230);
   displayQuiz(quizzes[0]);
   drawQuestion();
-  if (mode == 1){    // mulitple choice
+  if (type == 1){    // mulitple choice
     drawChoices();
     drawButtons();
   }
-  else if (mode == 2) {  // input question
+  else if (type == 2) {  // input question
     drawInputTitle();
     drawInput();
   }
@@ -130,7 +130,7 @@ void draw() {
 
 void mousePressed() {
    // check if a choice button is clicked
-   if (mode == 1) {
+   if (type == 1) {
      for (int i = 0; i < choices.length; i ++) {
        int startX = buttonX + buttonOffsetX * i;
        println(mouseX, startX, startX + buttonWidth);
@@ -144,7 +144,7 @@ void mousePressed() {
      }
    } 
    // Check if the input box is activated
-   else if (mode == 2) {
+   else if (type == 2) {
      if (mouseX > inputX && mouseX < inputX + inputWidth && mouseY > inputY && mouseY < inputY + inputHeight) {
        isActive = true;
      } else {
@@ -159,9 +159,9 @@ void mousePressed() {
 void handleSubmit() {
   println("Submitted: " + activateBtn);
   correct = 1;
-  if (mode == 1 && activateBtn == answerChoice - 1)
+  if (type == 1 && activateBtn == answerChoice - 1)
     correct = 2;
-  else if (mode == 2 && inputText.equals(answer))
+  else if (type == 2 && inputText.equals(answer))
     correct = 2;
   inputText = "";
   activateBtn = -1;
@@ -180,7 +180,7 @@ void keyPressed() {
         inputText += key;
     }
   }
-  if(mode == 1 && activateBtn != -1)
+  if(type == 1 && activateBtn != -1)
     if (key == ENTER || key == RETURN)
       handleSubmit();
 }

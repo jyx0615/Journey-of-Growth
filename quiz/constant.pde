@@ -36,7 +36,7 @@ int inputHeight = 40;
 boolean isActive = false;
 int inputMaxLength = 20;
 
-int mode = 2; // 1 => multiple choice, 2 => input question
+int type = 2; // 1 => multiple choice, 2 => input question
 int questionIndex = 0;
 
 JSONArray quizList;
