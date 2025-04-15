@@ -1,27 +1,23 @@
 void setup() {
-  size(600, 800);
-  blocks = randomGenBlocks(MAX_LEVEL);
+  size(460, 800);
+  blocks = randomGenBlocks();
   loadInImage();
 }
 
 
-Block[] randomGenBlocks(int maxLevel) {
-  Block[] Blocks = new Block[maxLevel * 2 + 1];
-  for (int level = 0; level < maxLevel; level ++) {
+Block[] randomGenBlocks() {
+  Block[] Blocks = new Block[MAX_LEVEL * 2 + 1];
+  for (int level = 0; level < MAX_LEVEL; level ++) {
     int blockLeft = int(random(0, 100));
-    int blockWidth = int(random(100, 250));
-    int iconX = blockLeft + (blockWidth % 10 * 10);
-    iconX = constrain(iconX, 0, width - iconSize);
-    Blocks[2 * level] = new Block(blockLeft, level, blockWidth, iconX);
+    int blockWidth = int(random(100, 200));
+    Blocks[2 * level] = new Block(blockLeft, level, blockWidth);
     
-    int blockLeft2 = blockLeft + blockWidth + int(random(50, 200));
-    int blockWidth2 = int(random(50, 250));
-    int iconX2 = blockLeft2 + (blockWidth2 % 10 * 10);
-    Blocks[2 * level + 1] = new Block(blockLeft2, level, blockWidth2, iconX2);
-    
+    int blockLeft2 = blockLeft + blockWidth + int(random(40, 100));
+    int blockWidth2 = int(random(50, 200));
+    Blocks[2 * level + 1] = new Block(blockLeft2, level, blockWidth2);
   }
   
-  Blocks[2 * maxLevel] = new Block(0, maxLevel, width, 0);
+  Blocks[2 * MAX_LEVEL] = new Block(0, MAX_LEVEL, width);
   return Blocks;
 }
 
@@ -65,6 +61,8 @@ boolean stayTopCheck() {
 
 boolean hitIconCheck() {
   for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
+    if(blocks[i].type == 0 || !blocks[i].showIcon)
+      continue;
     int iconY = canva_offset + (blocks[i].level - base - 1) * LAYER_HEIGHT - iconSize;
     if(curX + ROLE_WIDTH/2 > blocks[i].iconX && curX + ROLE_WIDTH/2 < blocks[i].iconX + iconSize) {
       if(curY + ROLE_HEIGHT >= iconY && curY + ROLE_HEIGHT <= iconY + iconSize)
@@ -93,7 +91,7 @@ void draw() {
     curV = 0;
     cur_jump_count = 0;
     // move the canva
-    if(!canva_moving_down && curY < 500 && base > 0){
+    if(!canva_moving_down && curY < 300 && base > 0){
       base -= 1;
       canva_offset -= LAYER_HEIGHT;
       canva_moving_down = true;
@@ -116,6 +114,10 @@ void draw() {
   // draw the role
   fill(#09951A);
   rect(curX, curY, ROLE_WIDTH, ROLE_HEIGHT, 10);
+
+  // bottom section
+  // fill(0);
+  // rect(0, 600, width, height - 600);
 }
 
 void keyPressed() {

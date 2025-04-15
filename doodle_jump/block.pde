@@ -7,9 +7,9 @@ class Block {
     int type = 0;
     if(tmp > 0.9){  // incident
     
-    } else if (tmp > 0.6){  // subject
-      tmp = random(1);
-      type = int(tmp / 0.2) + 1;
+    } else if (tmp > 0.4){  // subject
+      type = int(random(1, 5.1));
+      println(type, random(1, 5.1));
     } else {
       type = 0;
     }
@@ -22,11 +22,14 @@ class Block {
     return iconX;
   }
 
-  Block(int blockLeft, int blockLevel, int blockWidthIn, int iconXIn) {
+  Block(int blockLeft, int blockLevel, int blockWidthIn) {
     left = blockLeft;
     level = blockLevel;
     blockWidth = blockWidthIn;
-    type = getRandomType();
+    if (blockLevel == MAX_LEVEL)
+        type = 0;
+    else
+        type = getRandomType();
     iconX = getRandomIconX();
     showIcon = true;
   }
