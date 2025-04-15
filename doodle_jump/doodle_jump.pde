@@ -4,44 +4,21 @@ void setup() {
   loadInImage();
 }
 
-int getRandomType() {
-  float tmp = random(1);
-  int type = 0;
-  if(tmp > 0.9){  // incident
-   
-  } else if (tmp > 0.6){  // subject
-    tmp = random(1);
-    type = int(tmp / 0.2) + 1;
-  } else {
-    type = 0;
-  }
-   return type;
-}
 
 Block[] randomGenBlocks(int maxLevel) {
   Block[] Blocks = new Block[maxLevel * 2 + 1];
   for (int level = 0; level < maxLevel; level ++) {
     int blockLeft = int(random(0, 100));
     int blockWidth = int(random(100, 250));
-    int type = getRandomType();
-    Blocks[2 * level] = new Block(blockLeft, level, blockWidth, type);
+    int iconX = blockLeft + (blockWidth % 10 * 10);
+    iconX = constrain(iconX, 0, width - iconSize);
+    Blocks[2 * level] = new Block(blockLeft, level, blockWidth, iconX);
     
-    if (type != 0) {
-      int iconX = blockLeft + (blockWidth % 10 * 10);
-      int iconY = (level) * LAYER_HEIGHT - (iconSize * 7)/2;
-      icons.add(new Icon(iconX, iconY, type));
-    }
-
     int blockLeft2 = blockLeft + blockWidth + int(random(50, 200));
     int blockWidth2 = int(random(50, 250));
-    int type2 = getRandomType();
-    Blocks[2 * level + 1] = new Block(blockLeft2, level, blockWidth2, type2);
+    int iconX2 = blockLeft2 + (blockWidth2 % 10 * 10);
+    Blocks[2 * level + 1] = new Block(blockLeft2, level, blockWidth2, iconX2);
     
-    if (type2 != 0) {
-      int iconX2 = blockLeft2 + (blockWidth2 % 10 * 10);
-      int iconY2 = (level) * LAYER_HEIGHT - (iconSize * 7)/2;
-      icons.add(new Icon(iconX2, iconY2, type2));
-    }
   }
   
   Blocks[2 * maxLevel] = new Block(0, maxLevel, width, 0);
@@ -52,17 +29,14 @@ void drawBlock(Block block, int y){
   noStroke();
   fill(COLORS[block.type]);
   rect(block.left, y, block.blockWidth, BLOCK_HEIGHT, 40);
-  // add the icon if the type is not 0
-  /*
-  if(block.type != 0){
-    int iconX = block.left + block.blockWidth % 10 * 10;
-    rect(iconX, y-iconSize, iconSize, iconSize, 3);
+  // draw the icon if the type is not 0
+  if(block.type != 0 && block.showIcon) {
+    drawIcon(block.type, block.iconX, y - iconSize, iconSize);
   }
-  */
 }
 
 boolean hitBottomCheck() {
-  for (int i = 2 * base; i < blocks.length; i++) {
+  for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
     int blockBottom = canva_offset + (blocks[i].level - base - 1) * LAYER_HEIGHT + BLOCK_HEIGHT;
     int blockLeft = blocks[i].left;
     int blockRight = blocks[i].left + blocks[i].blockWidth;
@@ -75,7 +49,7 @@ boolean hitBottomCheck() {
 }
 
 boolean stayTopCheck() {
-  for (int i = 2 * base; i < blocks.length; i++) {
+  for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT) + 1; i++) {
     int blockTop = canva_offset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
     int blockLeft = blocks[i].left;
     int blockRight = blocks[i].left + blocks[i].blockWidth;
@@ -89,6 +63,17 @@ boolean stayTopCheck() {
   return false;
 }
 
+boolean hitIconCheck() {
+  for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
+    int iconY = canva_offset + (blocks[i].level - base - 1) * LAYER_HEIGHT - iconSize;
+    if(curX + ROLE_WIDTH/2 > blocks[i].iconX && curX + ROLE_WIDTH/2 < blocks[i].iconX + iconSize) {
+      if(curY + ROLE_HEIGHT >= iconY && curY + ROLE_HEIGHT <= iconY + iconSize)
+        blocks[i].showIcon = false;
+        println("撿到了 icon，type 為：" + blocks[i].type);
+    }
+  }
+  return false;
+}
 
 void draw() {
   background(#4C0995);
@@ -119,32 +104,13 @@ void draw() {
     curY += curV;
     curV += ACCELERATE;
   }
+
+  hitIconCheck();
   
   // draw the blocks
-  for (int i = 2 * base; i < blocks.length; i++) {
+  for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
     int blockY = canva_offset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
     drawBlock(blocks[i], blockY);
-  }
-  // draw icons
-  for (Icon icon : icons) {
-    if (icon.active){
-    int iconY = icon.worldY + canva_offset - base * LAYER_HEIGHT;
-    drawIcon(icon.type, icon.imgX, iconY, iconSize);
-    }
-  }
-
-// check collision
-  for (Icon icon : icons) {
-    if (!icon.active) continue;
-    int iconY = icon.worldY + canva_offset - base * LAYER_HEIGHT;
-    boolean xOverlap = curX + ROLE_WIDTH > icon.imgX && curX < icon.imgX + iconSize;
-    boolean yOverlap = curY + ROLE_HEIGHT > iconY && curY < iconY + iconSize;
-
-    if (xOverlap && yOverlap) {
-      icon.active = false; 
-      println("撿到了 icon，type 為：" + icon.type);
-      // 可以在這裡加特效
-    }
   }
   
   // draw the role
