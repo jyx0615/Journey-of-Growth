@@ -17,7 +17,7 @@ int MAX_LEVEL = 20;
 int CANVA_SPEED = 10;
 int CANVA_UP_SPEED = 5;
 
-int iconSize = 40;
+int iconSize = 60;
 
 // game properties
 int base = MAX_LEVEL - 5;  // since we render 5 levels at a time
@@ -37,3 +37,19 @@ class Block {
 }
 
 Block[] blocks;
+
+// for image
+PImage img1, img2, img3, img4, img5;
+
+//for icon
+ArrayList<Icon> icons = new ArrayList<Icon>();
+class Icon {
+  int imgX, worldY, type;
+  boolean active;
+  Icon(int x, int y, int t) {
+    imgX = x;
+    worldY = y;
+    type = t;
+    active = true;
+  }
+}
