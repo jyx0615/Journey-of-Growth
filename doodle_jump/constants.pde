@@ -1,22 +1,23 @@
 // role properties
 int curX = 300;
-int curY = 720;
+int curY = 540;
 float curV = 0;
 int cur_jump_count = 0;
 boolean jump = false;
 
 // opperating settings
 int MAX_JUMP_COUNT = 2;
-float JUMP_V0 = -10;
+float JUMP_V0 = -8;
 float ACCELERATE = 0.3;
-int LAYER_HEIGHT = 150;
-int BLOCK_HEIGHT = 30;
-int ROLE_HEIGHT = 80;
+int LAYER_HEIGHT = 100;
+int BLOCK_HEIGHT = 20;
+int ROLE_HEIGHT = 60;
 int ROLE_WIDTH = 20;
 int MAX_LEVEL = 20;
 int CANVA_SPEED = 10;
 int CANVA_UP_SPEED = 5;
 int SHOW_LEVEL_COUNT = 5;
+int MOVE_CANVA_THRESHOLD = 300;
 
 // game properties
 int base = MAX_LEVEL - SHOW_LEVEL_COUNT;  // since we render 5 levels at a time

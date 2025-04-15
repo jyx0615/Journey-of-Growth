@@ -8,7 +8,7 @@ void setup() {
 Block[] randomGenBlocks() {
   Block[] Blocks = new Block[MAX_LEVEL * 2 + 1];
   for (int level = 0; level < MAX_LEVEL; level ++) {
-    int blockLeft = int(random(0, 100));
+    int blockLeft = int(random(0, 80));
     int blockWidth = int(random(100, 200));
     Blocks[2 * level] = new Block(blockLeft, level, blockWidth);
     
@@ -65,9 +65,10 @@ boolean hitIconCheck() {
       continue;
     int iconY = canva_offset + (blocks[i].level - base - 1) * LAYER_HEIGHT - iconSize;
     if(curX + ROLE_WIDTH/2 > blocks[i].iconX && curX + ROLE_WIDTH/2 < blocks[i].iconX + iconSize) {
-      if(curY + ROLE_HEIGHT >= iconY && curY + ROLE_HEIGHT <= iconY + iconSize)
+      if(curY + ROLE_HEIGHT >= iconY && curY + ROLE_HEIGHT <= iconY + iconSize){
         blocks[i].showIcon = false;
         println("撿到了 icon，type 為：" + blocks[i].type);
+      }
     }
   }
   return false;
@@ -91,7 +92,7 @@ void draw() {
     curV = 0;
     cur_jump_count = 0;
     // move the canva
-    if(!canva_moving_down && curY < 300 && base > 0){
+    if(!canva_moving_down && curY < MOVE_CANVA_THRESHOLD && base > 0){
       base -= 1;
       canva_offset -= LAYER_HEIGHT;
       canva_moving_down = true;
@@ -116,8 +117,8 @@ void draw() {
   rect(curX, curY, ROLE_WIDTH, ROLE_HEIGHT, 10);
 
   // bottom section
-  // fill(0);
-  // rect(0, 600, width, height - 600);
+  fill(0);
+  rect(0, 600, width, height - 600);
 }
 
 void keyPressed() {
