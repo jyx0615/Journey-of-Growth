@@ -86,7 +86,7 @@ boolean hitIconCheck() {
 }
 
 void draw() {
-  background(#4C0995);
+  background(#6CE378);
   // move the canva
   //if(canva_moving_up) {
   //  canva_offset -= CANVA_UP_SPEED;

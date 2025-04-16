@@ -6,6 +6,8 @@ int cur_jump_count = 0;
 boolean jump = false;
 int BLOCK_IMG_WIDTH = 50;
 
+int iconSize = 40;
+
 // opperating settings
 int MAX_JUMP_COUNT = 2;
 float JUMP_V0 = -8;
@@ -30,5 +32,5 @@ int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829};
 Block[] blocks;
 
 PImage[] icons = new PImage[5];
-int iconSize = 40;
+
 PImage[] blockImgs = new PImage[5];
