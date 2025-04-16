@@ -1,30 +1,41 @@
 void setup() {
   size(460, 800);
+  surface.setLocation(500, 100);
   blocks = randomGenBlocks();
   loadInImage();
+  loadBlocks();
 }
 
 
 Block[] randomGenBlocks() {
   Block[] Blocks = new Block[MAX_LEVEL * 2 + 1];
   for (int level = 0; level < MAX_LEVEL; level ++) {
-    int blockLeft = int(random(0, 80));
-    int blockWidth = int(random(100, 200));
-    Blocks[2 * level] = new Block(blockLeft, level, blockWidth);
+    int blockLeft = int(random(40, 120));
+    int blockCount = int(random(2, 4));
+    Blocks[2 * level] = new Block(blockLeft, level, blockCount);
     
-    int blockLeft2 = blockLeft + blockWidth + int(random(40, 100));
-    int blockWidth2 = int(random(50, 200));
-    Blocks[2 * level + 1] = new Block(blockLeft2, level, blockWidth2);
+    int blockLeft2 = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(40, 120));
+    int blockCount2 = int(random(1, 4));
+    Blocks[2 * level + 1] = new Block(blockLeft2, level, blockCount2);
   }
   
-  Blocks[2 * MAX_LEVEL] = new Block(0, MAX_LEVEL, width);
+  Blocks[2 * MAX_LEVEL] = new Block(0, MAX_LEVEL, int(width/BLOCK_IMG_WIDTH) + 1);
   return Blocks;
 }
 
 void drawBlock(Block block, int y){
   noStroke();
-  fill(COLORS[block.type]);
-  rect(block.left, y, block.blockWidth, BLOCK_HEIGHT, 40);
+  if(block.type == 0 || blockImgs[block.type - 1] == null) {
+    fill(COLORS[block.type]);
+    rect(block.left, y, block.blockCount * BLOCK_IMG_WIDTH, BLOCK_HEIGHT, 40);
+  } else {
+    for (int i = 0; i < block.blockCount; i++) {
+      int blockLeft = block.left + BLOCK_IMG_WIDTH * i;
+      image(blockImgs[block.type - 1], blockLeft, y, BLOCK_IMG_WIDTH, BLOCK_HEIGHT);
+    }
+    
+  }
+
   // draw the icon if the type is not 0
   if(block.type != 0 && block.showIcon) {
     drawIcon(block.type, block.iconX, y - iconSize, iconSize);
@@ -35,7 +46,7 @@ boolean hitBottomCheck() {
   for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
     int blockBottom = canva_offset + (blocks[i].level - base - 1) * LAYER_HEIGHT + BLOCK_HEIGHT;
     int blockLeft = blocks[i].left;
-    int blockRight = blocks[i].left + blocks[i].blockWidth;
+    int blockRight = blocks[i].left + blocks[i].blockCount * BLOCK_IMG_WIDTH;
     if(curX < blockRight && curX + ROLE_WIDTH > blockLeft) {
       if(curY >= blockBottom && curY + curV <= blockBottom)
         return true;
@@ -48,7 +59,7 @@ boolean stayTopCheck() {
   for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT) + 1; i++) {
     int blockTop = canva_offset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
     int blockLeft = blocks[i].left;
-    int blockRight = blocks[i].left + blocks[i].blockWidth;
+    int blockRight = blocks[i].left + blocks[i].blockCount * BLOCK_IMG_WIDTH;
     if(curX < blockRight && curX + ROLE_WIDTH > blockLeft) {
       if(curY + ROLE_HEIGHT <= blockTop && curY + ROLE_HEIGHT + curV >= blockTop){
         curY = blockTop - ROLE_HEIGHT;

@@ -4,6 +4,7 @@ int curY = 540;
 float curV = 0;
 int cur_jump_count = 0;
 boolean jump = false;
+int BLOCK_IMG_WIDTH = 50;
 
 // opperating settings
 int MAX_JUMP_COUNT = 2;
@@ -30,3 +31,4 @@ Block[] blocks;
 
 PImage[] icons = new PImage[5];
 int iconSize = 40;
+PImage[] blockImgs = new PImage[5];

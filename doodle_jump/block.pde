@@ -1,5 +1,5 @@
 class Block {
-  int left, level, blockWidth, type, iconX;
+  int left, level, type, iconX, blockCount;
   boolean showIcon;
 
   int getRandomType() {
@@ -17,15 +17,15 @@ class Block {
   }
 
   int getRandomIconX() {
-    int iconX = left + (blockWidth % 10 * 10);
-    iconX = min(iconX, left + blockWidth - iconSize);
+    int iconX = left + (blockCount * BLOCK_IMG_WIDTH % 10 * 10);
+    iconX = min(iconX, left + blockCount * BLOCK_IMG_WIDTH - iconSize);
     return iconX;
   }
 
-  Block(int blockLeft, int blockLevel, int blockWidthIn) {
+  Block(int blockLeft, int blockLevel, int blockCountIn) {
     left = blockLeft;
     level = blockLevel;
-    blockWidth = blockWidthIn;
+    blockCount = blockCountIn;
     if (blockLevel == MAX_LEVEL)
         type = 0;
     else
@@ -33,4 +33,12 @@ class Block {
     iconX = getRandomIconX();
     showIcon = true;
   }
+}
+
+void loadBlocks() {
+  blockImgs[0] = loadImage("blocks/white.png");
+  blockImgs[1] = loadImage("blocks/red.png");
+  blockImgs[2] = loadImage("blocks/yellow.png");
+  blockImgs[3] = loadImage("blocks/purple.png");
+  blockImgs[4] = loadImage("blocks/white.png");
 }
