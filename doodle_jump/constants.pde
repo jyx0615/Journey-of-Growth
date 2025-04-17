@@ -31,13 +31,13 @@ boolean canva_moving_down = false;
 boolean canva_moving_up = true;
 int canva_offset = 200;
 int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829};
+int []scores = {0, 0, 0, 0, 0};
+String []subjects = {"literacture", "Math", "Music", "Art", "Sports"};
 
 Block[] blocks;
 
 PImage[] icons = new PImage[5];
-
 PImage[] blockImgs = new PImage[5];
-
 PImage[] roleImgs = new PImage[4];
 PImage[] roleImgsLeft = new PImage[4];
 PImage[] roleFireImgs = new PImage[4];

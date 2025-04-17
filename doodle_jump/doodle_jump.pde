@@ -78,6 +78,7 @@ boolean hitIconCheck() {
     if(curX + ROLE_WIDTH/2 > blocks[i].iconX && curX + ROLE_WIDTH/2 < blocks[i].iconX + iconSize) {
       if(curY + ROLE_HEIGHT >= iconY && curY + ROLE_HEIGHT <= iconY + iconSize){
         blocks[i].showIcon = false;
+        scores[blocks[i].type - 1] += 1;
         println("撿到了 icon，type 為：" + blocks[i].type);
       }
     }
@@ -129,6 +130,13 @@ void draw() {
   // bottom section
   fill(0);
   rect(0, 600, width, height - 600);
+
+  fill(255);
+  textMode(CORNER);
+  textSize(20);
+  for(int i = 0; i < scores.length; i ++){
+    text(subjects[i] + ": " + scores[i], 20, 620 + i * 30);
+  }
 }
 
 void keyPressed() {

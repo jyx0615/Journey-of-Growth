@@ -9,7 +9,6 @@ class Block {
     
     } else if (tmp > 0.4){  // subject
       type = int(random(1, 5.1));
-      println(type, random(1, 5.1));
     } else {
       type = 0;
     }
