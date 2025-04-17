@@ -1,10 +1,13 @@
 // role properties
 int curX = 300;
-int curY = 540;
+int curY = 539;
 float curV = 0;
 int cur_jump_count = 0;
 boolean jump = false;
 int BLOCK_IMG_WIDTH = 50;
+boolean faceRight = true;
+int actionIndex = 0;
+boolean onFire = true;
 
 int iconSize = 40;
 
@@ -14,8 +17,8 @@ float JUMP_V0 = -8;
 float ACCELERATE = 0.3;
 int LAYER_HEIGHT = 100;
 int BLOCK_HEIGHT = 20;
-int ROLE_HEIGHT = 60;
-int ROLE_WIDTH = 20;
+int ROLE_HEIGHT = 61;
+int ROLE_WIDTH = 33;
 int MAX_LEVEL = 20;
 int CANVA_SPEED = 10;
 int CANVA_UP_SPEED = 5;
@@ -34,3 +37,9 @@ Block[] blocks;
 PImage[] icons = new PImage[5];
 
 PImage[] blockImgs = new PImage[5];
+
+PImage[] roleImgs = new PImage[4];
+PImage[] roleImgsLeft = new PImage[4];
+PImage[] roleFireImgs = new PImage[4];
+PImage[] roleFireImgsLeft = new PImage[4];
+int ROLE_ACTION_COUNT = 4;

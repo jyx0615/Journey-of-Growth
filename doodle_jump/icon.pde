@@ -1,10 +1,10 @@
 // 載入圖片
-void loadInImage(){
-  icons[0] = loadImage("icons/sports.png");
-  icons[1] = loadImage("icons/art.png");
-  icons[2] = loadImage("icons/math.png");
-  icons[3] = loadImage("icons/music.png");
-  icons[4] = loadImage("icons/sports.png");
+void loadSubjectImages(){
+  icons[0] = loadImage("subjects/literacture.png");
+  icons[1] = loadImage("subjects/math.png");
+  icons[2] = loadImage("subjects/music.png");
+  icons[3] = loadImage("subjects/art.png");
+  icons[4] = loadImage("subjects/sports.png");
 }
 
 // 如果圖片未加載，則繪製簡單的圖形

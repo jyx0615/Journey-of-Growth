@@ -37,8 +37,8 @@ class Block {
 
 void loadBlocks() {
   blockImgs[0] = loadImage("blocks/white.png");
-  blockImgs[1] = loadImage("blocks/red.png");
-  blockImgs[2] = loadImage("blocks/yellow.png");
-  blockImgs[3] = loadImage("blocks/purple.png");
+  blockImgs[1] = loadImage("blocks/yellow.png");
+  blockImgs[2] = loadImage("blocks/purple.png");
+  blockImgs[3] = loadImage("blocks/red.png");
   blockImgs[4] = loadImage("blocks/white.png");
 }

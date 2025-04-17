@@ -2,10 +2,10 @@ void setup() {
   size(460, 800);
   surface.setLocation(500, 100);
   blocks = randomGenBlocks();
-  loadInImage();
+  loadSubjectImages();
   loadBlocks();
+  loadRoleImages();
 }
-
 
 Block[] randomGenBlocks() {
   Block[] Blocks = new Block[MAX_LEVEL * 2 + 1];
@@ -124,8 +124,7 @@ void draw() {
   }
   
   // draw the role
-  fill(#09951A);
-  rect(curX, curY, ROLE_WIDTH, ROLE_HEIGHT, 10);
+  drawRole();
 
   // bottom section
   fill(0);
@@ -140,9 +139,13 @@ void keyPressed() {
   }
   if(key == CODED) {
     if(keyCode == LEFT){
+      faceRight = false;
+      actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
       if(curX >= 20)
         curX -= 20;
     } else if(keyCode == RIGHT){
+      faceRight = true;
+      actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
       if(curX <= width - 20 - ROLE_WIDTH)
         curX += 20;
     }
