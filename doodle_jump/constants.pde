@@ -9,7 +9,7 @@ boolean faceRight = true;
 int actionIndex = 0;
 boolean onFire = true;
 
-int iconSize = 40;
+int iconSize = 80;
 
 // opperating settings
 int MAX_JUMP_COUNT = 2;
