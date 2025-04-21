@@ -33,7 +33,12 @@ int canva_offset = 200;
 int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829};
 int []scores = {0, 0, 0, 0, 0};
 String []subjects = {"literacture", "Math", "Music", "Art", "Sports"};
-// boolean quiz_mode = false;
+boolean gameOver = false;
+
+int restartX = 400;
+int restartY = 500;
+int restartWidth = 100;
+int restartHeight = 40;
 
 Block[] blocks;
 
@@ -97,6 +102,7 @@ AudioPlayer correctSound;
 AudioPlayer wrongSound;
 AudioPlayer jumpSound;
 AudioPlayer pickSound;
+AudioPlayer gameOverSound;
 
 void loadSounds() {
   minim = new Minim(this);
@@ -104,4 +110,5 @@ void loadSounds() {
   wrongSound = minim.loadFile("sounds/wrong.mp3");
   jumpSound = minim.loadFile("sounds/jump.mp3");
   pickSound = minim.loadFile("sounds/pick.mp3");
+  gameOverSound = minim.loadFile("sounds/gameover.mp3");
 }

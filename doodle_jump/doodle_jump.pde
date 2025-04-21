@@ -7,14 +7,30 @@ void setup() {
   submitX = width/2;
   questionX = width/2;
   answerX = width/2;
+  restartX = width/2;
 
-  blocks = randomGenBlocks();
   loadSounds();
   loadSubjectImages();
   loadBlocks();
   loadRoleImages();
   loadBackgroundImage();
   readQuiz();
+
+  startGame();
+}
+
+void startGame() {
+  blocks = randomGenBlocks();
+  curX = 300;
+  curY = 539;
+  curV = 0;
+  base = MAX_LEVEL - SHOW_LEVEL_COUNT;
+  gameOver = false;
+  quiz_mode = false;
+  // clear the scores
+  for(int i = 0; i < scores.length; i ++){
+    scores[i] = 0;
+  }
 }
 
 Block[] randomGenBlocks() {
@@ -104,13 +120,37 @@ boolean hitIconCheck() {
   return false;
 }
 
+void drawGameOver() {
+  fill(255, 0, 0);
+  textAlign(CENTER, CENTER);
+  textSize(50);
+  text("Game Over", width/2, height/2);
+
+  // restart button
+  rectMode(CENTER);
+  fill(0, 255, 0);
+  rect(restartX, restartY, restartWidth, restartHeight, 20);
+  fill(0);
+  textSize(20);
+  text("Restart", restartX, restartY);
+}
+
 void draw() {
   background(#6CE378);
-  // move the canva
-  //if(canva_moving_up) {
-  //  canva_offset -= CANVA_UP_SPEED;
-  //  curY = 700;
-  //}
+
+  if(gameOver) {
+    drawGameOver();
+    return;
+  }
+
+  // game over
+  if (!gameOver && base < MAX_LEVEL - SHOW_LEVEL_COUNT && curY > 600) {
+    gameOverSound.rewind();
+    gameOverSound.play();
+    gameOver = true;
+    return;
+  }
+
   if(canva_offset < 200){
     canva_offset += CANVA_SPEED;
     curY += CANVA_SPEED;
@@ -195,8 +235,8 @@ void keyPressed() {
       jump = true;
       curV = JUMP_V0;
       cur_jump_count += 1;
-      // jumpSound.rewind();
-      // jumpSound.play();
+      jumpSound.rewind();
+      jumpSound.play();
     }
     if(key == CODED) {
       if(keyCode == LEFT){
@@ -232,5 +272,9 @@ void mousePressed() {
      // check if the submit button is clicked
      if(mouseX > submitX - submitWidth/2 && mouseX < submitX + submitWidth/2 && mouseY > submitY - submitHeight/2 && mouseY < submitY + submitHeight/2)
        handleSubmit();
+  } else if(gameOver) {
+    if(mouseX > restartX - restartWidth/2 && mouseX < restartX + restartWidth/2 && mouseY > restartY - restartHeight/2 && mouseY < restartY + restartHeight/2) {
+      startGame();
+    }
   }
 }
