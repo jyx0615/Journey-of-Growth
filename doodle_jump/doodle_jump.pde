@@ -1,10 +1,20 @@
+import ddf.minim.*;
+
 void setup() {
   size(460, 800);
   surface.setLocation(500, 100);
+  // set some constants
+  submitX = width/2;
+  questionX = width/2;
+  answerX = width/2;
+
   blocks = randomGenBlocks();
+  loadSounds();
   loadSubjectImages();
   loadBlocks();
   loadRoleImages();
+  loadBackgroundImage();
+  readQuiz();
 }
 
 Block[] randomGenBlocks() {
@@ -14,7 +24,7 @@ Block[] randomGenBlocks() {
     int blockCount = int(random(2, 4));
     Blocks[2 * level] = new Block(blockLeft, level, blockCount);
     
-    int blockLeft2 = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(40, 120));
+    int blockLeft2 = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(50, 120));
     int blockCount2 = int(random(1, 4));
     Blocks[2 * level + 1] = new Block(blockLeft2, level, blockCount2);
   }
@@ -80,6 +90,14 @@ boolean hitIconCheck() {
         blocks[i].showIcon = false;
         scores[blocks[i].type - 1] += 1;
         println("撿到了 icon，type 為：" + blocks[i].type);
+        pickSound.rewind();
+        pickSound.play();
+
+        // randomly select a quiz and show it
+        questionIndex = int(random(quizzes.length));
+        setQuiz(quizzes[questionIndex]);
+        show_quiz_content = false;
+        quiz_mode = true;
       }
     }
   }
@@ -128,34 +146,91 @@ void draw() {
   drawRole();
 
   // bottom section
+  rectMode(CORNER);
   fill(0);
   rect(0, 600, width, height - 600);
 
   fill(255);
-  textMode(CORNER);
+  textAlign(LEFT, CENTER);
   textSize(20);
   for(int i = 0; i < scores.length; i ++){
     text(subjects[i] + ": " + scores[i], 20, 620 + i * 30);
   }
+  
+  if(quiz_mode) {
+    drawQuizSection();
+  }
 }
 
 void keyPressed() {
-  if(key == ' ' && cur_jump_count < MAX_JUMP_COUNT) {
-    jump = true;
-    curV = JUMP_V0;
-    cur_jump_count += 1;
-  }
-  if(key == CODED) {
-    if(keyCode == LEFT){
-      faceRight = false;
-      actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
-      if(curX >= 20)
-        curX -= 20;
-    } else if(keyCode == RIGHT){
-      faceRight = true;
-      actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
-      if(curX <= width - 20 - ROLE_WIDTH)
-        curX += 20;
+  if(quiz_mode) {
+    // input question
+    if (type == 2) {
+     if (key == BACKSPACE) {
+       if (inputText.length() > 0) {
+         inputText = inputText.substring(0, inputText.length() - 1);
+       }
+     } else if (key == ENTER || key == RETURN) {
+       handleSubmit();
+     } else if (key != CODED) {
+       if (inputText.length() < inputMaxLength)
+         inputText += key;
+     }
     }
+    // multiple choice question
+    if(type == 1){
+      if(key == '1' || key == '2' || key == '3' || key == '4') {
+        int choice = int(key) - 49;
+        if(choice == activateBtn) {
+          activateBtn = -1;
+        } else {
+          activateBtn = choice;
+        }
+      }
+      if (activateBtn != -1 && key == ENTER || key == RETURN)
+       handleSubmit();
+    } 
+  } else {
+    if(key == ' ' && cur_jump_count < MAX_JUMP_COUNT) {
+      jump = true;
+      curV = JUMP_V0;
+      cur_jump_count += 1;
+      // jumpSound.rewind();
+      // jumpSound.play();
+    }
+    if(key == CODED) {
+      if(keyCode == LEFT){
+        faceRight = false;
+        actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
+        if(curX >= 20)
+          curX -= 20;
+      } else if(keyCode == RIGHT){
+        faceRight = true;
+        actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
+        if(curX <= width - 20 - ROLE_WIDTH)
+          curX += 20;
+      }
+    }
+  }
+}
+
+void mousePressed() {
+  if(quiz_mode){
+     // check if a choice button is clicked
+     if (type == 1) {
+       for (int i = 0; i < choices.length; i ++) {
+         int startX = buttonX + buttonOffsetX * i;
+         if(mouseX > startX && mouseX < startX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight){
+           if(activateBtn == i)
+             activateBtn = -1;
+           else
+             activateBtn = i;
+         }
+       }
+     } 
+
+     // check if the submit button is clicked
+     if(mouseX > submitX - submitWidth/2 && mouseX < submitX + submitWidth/2 && mouseY > submitY - submitHeight/2 && mouseY < submitY + submitHeight/2)
+       handleSubmit();
   }
 }

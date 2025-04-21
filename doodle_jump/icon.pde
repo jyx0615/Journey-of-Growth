@@ -20,6 +20,7 @@ void drawIcon(int type, int x, int y, int size) {
   } else if (type >= 6 || icons[type - 1] == null) {
     drawDefaultIcon(x, y, size);
   } else {
+    imageMode(CORNER);
     image(icons[type - 1], x, y, size, size);
   }
 }

@@ -33,6 +33,7 @@ int canva_offset = 200;
 int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829};
 int []scores = {0, 0, 0, 0, 0};
 String []subjects = {"literacture", "Math", "Music", "Art", "Sports"};
+// boolean quiz_mode = false;
 
 Block[] blocks;
 
@@ -43,3 +44,64 @@ PImage[] roleImgsLeft = new PImage[4];
 PImage[] roleFireImgs = new PImage[4];
 PImage[] roleFireImgsLeft = new PImage[4];
 int ROLE_ACTION_COUNT = 4;
+
+PImage quizBackground;
+PImage quizStartBackground;
+
+
+// quiz related constants
+String question = "";
+int questionX = width/2;
+int questionY = 100;
+int correct = 0;   // 0 => not answer, 1 => wrong, 2 => right
+
+int answerChoice = 2;
+String answer = "";
+int answerX = 300;
+int answerY = 700;
+
+int submitX = width/2;
+int submitY = 600;
+int submitWidth = 100;
+int submitHeight = 40;
+
+// multiple choice question text
+int choicesX = 50;
+int choicesY = 200;
+int choicesOffsetY = 60;
+String []choices;
+int activateBtn = -1;    // -1 => no choice is selected
+
+// multiple choice buttons
+int buttonX = 50;
+int buttonY = 500;
+int buttonWidth = 70;
+int buttonHeight = 40;
+int buttonOffsetX = 90;
+
+// input question
+String inputText = "";
+int inputX = 80;
+int inputY = 400;
+int inputWidth = 300;
+int inputHeight = 40;
+int inputMaxLength = 20;
+
+int type = 2; // 1 => multiple choice, 2 => input question
+int questionIndex = 0;  // the index of the current question
+
+JSONArray quizList;
+
+Minim minim;
+AudioPlayer correctSound;
+AudioPlayer wrongSound;
+AudioPlayer jumpSound;
+AudioPlayer pickSound;
+
+void loadSounds() {
+  minim = new Minim(this);
+  correctSound = minim.loadFile("sounds/correct.mp3");
+  wrongSound = minim.loadFile("sounds/wrong.mp3");
+  jumpSound = minim.loadFile("sounds/jump.mp3");
+  pickSound = minim.loadFile("sounds/pick.mp3");
+}
