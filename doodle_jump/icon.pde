@@ -5,6 +5,7 @@ void loadSubjectImages(){
   icons[2] = loadImage("subjects/music.png");
   icons[3] = loadImage("subjects/art.png");
   icons[4] = loadImage("subjects/sports.png");
+  TCFont = createFont("Iansui-Regular", 15);
 }
 
 // 如果圖片未加載，則繪製簡單的圖形

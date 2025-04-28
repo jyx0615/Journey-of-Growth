@@ -137,7 +137,8 @@ void drawGameOver() {
 
 void draw() {
   background(#6CE378);
-
+  textFont(TCFont);
+  
   if(gameOver) {
     drawGameOver();
     return;

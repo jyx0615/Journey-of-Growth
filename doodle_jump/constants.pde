@@ -53,7 +53,6 @@ int ROLE_ACTION_COUNT = 4;
 PImage quizBackground;
 PImage quizStartBackground;
 
-
 // quiz related constants
 String question = "";
 int questionX = width/2;
@@ -96,6 +95,7 @@ int type = 2; // 1 => multiple choice, 2 => input question
 int questionIndex = 0;  // the index of the current question
 
 JSONArray quizList;
+PFont TCFont;
 
 Minim minim;
 AudioPlayer correctSound;

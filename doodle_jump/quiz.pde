@@ -165,7 +165,7 @@ void setQuiz(Quiz q) {
 
 void drawQuestion() {
   textAlign(CENTER, CENTER);
-  textSize(32);
+  textSize(18);
   fill(20);
   text(question, questionX, questionY);
 }
