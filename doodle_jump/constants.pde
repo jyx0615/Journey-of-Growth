@@ -44,11 +44,12 @@ Block[] blocks;
 
 PImage[] icons = new PImage[5];
 PImage[] blockImgs = new PImage[5];
-PImage[] roleImgs = new PImage[4];
-PImage[] roleImgsLeft = new PImage[4];
-PImage[] roleFireImgs = new PImage[4];
-PImage[] roleFireImgsLeft = new PImage[4];
-int ROLE_ACTION_COUNT = 4;
+PImage[] roleImgs = new PImage[3];
+PImage[] roleImgsLeft = new PImage[3];
+PImage[] roleFireImgs = new PImage[3];
+PImage[] roleFireImgsLeft = new PImage[3];
+int ROLE_ACTION_COUNT = 2;
+
 
 PImage quizBackground;
 PImage quizStartBackground;
