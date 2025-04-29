@@ -17,15 +17,19 @@ void loadRoleImages() {
 }
 
 void drawRole() {
+  int indexToShow = actionIndex;
+  if (jump){
+    indexToShow = 2;
+  }
   if(faceRight){
     if (onFire)
-      image(roleFireImgs[actionIndex], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
+      image(roleFireImgs[indexToShow], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
     else
-      image(roleImgs[actionIndex], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
+      image(roleImgs[indexToShow], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
   } else {
     if (onFire)
-      image(roleFireImgsLeft[actionIndex], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
+      image(roleFireImgsLeft[indexToShow], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
     else
-      image(roleImgsLeft[actionIndex], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
+      image(roleImgsLeft[indexToShow], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
   }
 }
