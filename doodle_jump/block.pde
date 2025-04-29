@@ -39,5 +39,5 @@ void loadBlocks() {
   blockImgs[1] = loadImage("blocks/yellow.png");
   blockImgs[2] = loadImage("blocks/purple.png");
   blockImgs[3] = loadImage("blocks/red.png");
-  blockImgs[4] = loadImage("blocks/white.png");
+  blockImgs[4] = loadImage("blocks/green.png");
 }
