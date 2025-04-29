@@ -5,9 +5,9 @@ class Block {
   int getRandomType() {
     float tmp = random(1);
     int type = 0;
-    if(tmp > 0.9){  // incident
-    
-    } else if (tmp > 0.4){  // subject
+    if(tmp > 0.7){  // incident
+      type = int(random(6, 8.1));
+    } else if (tmp > 0){  // subject
       type = int(random(1, 5.1));
     } else {
       type = 0;
@@ -40,4 +40,7 @@ void loadBlocks() {
   blockImgs[2] = loadImage("blocks/purple.png");
   blockImgs[3] = loadImage("blocks/red.png");
   blockImgs[4] = loadImage("blocks/green.png");
+  blockImgs[5] = loadImage("blocks/black.png");
+  blockImgs[6] = loadImage("blocks/black.png");
+  blockImgs[7] = loadImage("blocks/black.png");
 }

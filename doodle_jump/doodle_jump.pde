@@ -52,7 +52,7 @@ Block[] randomGenBlocks() {
 void drawBlock(Block block, int y){
   noStroke();
   if(block.type == 0 || blockImgs[block.type - 1] == null) {
-    fill(COLORS[block.type]);
+    //fill(COLORS[block.type]);
     rect(block.left, y, block.blockCount * BLOCK_IMG_WIDTH, BLOCK_HEIGHT, 40);
   } else {
     for (int i = 0; i < block.blockCount; i++) {
@@ -104,16 +104,26 @@ boolean hitIconCheck() {
     if(curX + ROLE_WIDTH/2 > blocks[i].iconX && curX + ROLE_WIDTH/2 < blocks[i].iconX + iconSize) {
       if(curY + ROLE_HEIGHT >= iconY && curY + ROLE_HEIGHT <= iconY + iconSize){
         blocks[i].showIcon = false;
-        scores[blocks[i].type - 1] += 1;
-        println("撿到了 icon，type 為：" + blocks[i].type);
-        pickSound.rewind();
-        pickSound.play();
-
-        // randomly select a quiz and show it
-        questionIndex = int(random(quizzes.length));
-        setQuiz(quizzes[questionIndex]);
-        show_quiz_content = false;
-        quiz_mode = true;
+        if(blocks[i].type<6){
+          scores[blocks[i].type - 1] += 1;
+          println("撿到了 icon，type 為：" + blocks[i].type);
+          pickSound.rewind();
+          pickSound.play();
+        }else if(blocks[i].type == 6){
+          //certificate
+          println("撿到了 icon，type 為：" + blocks[i].type);
+        }else if(blocks[i].type == 7){
+          // clock
+          println("撿到了 icon，type 為：" + blocks[i].type);
+        }else if(blocks[i].type == 8){
+          //quiz
+          // randomly select a quiz and show it
+          println("撿到了 icon，type 為：" + blocks[i].type);
+          questionIndex = int(random(quizzes.length));
+          setQuiz(quizzes[questionIndex]);
+          show_quiz_content = false;
+          quiz_mode = true;
+        }
       }
     }
   }

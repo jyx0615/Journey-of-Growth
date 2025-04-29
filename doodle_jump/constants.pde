@@ -9,7 +9,7 @@ boolean faceRight = true;
 int actionIndex = 0;
 boolean onFire = true;
 
-int iconSize = 80;
+int iconSize = 70;
 
 // opperating settings
 int MAX_JUMP_COUNT = 2;
@@ -30,7 +30,7 @@ int base = MAX_LEVEL - SHOW_LEVEL_COUNT;  // since we render 5 levels at a time
 boolean canva_moving_down = false;
 boolean canva_moving_up = true;
 int canva_offset = 200;
-int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829};
+int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829, #000000};
 int []scores = {0, 0, 0, 0, 0};
 String []subjects = {"literacture", "Math", "Music", "Art", "Sports"};
 boolean gameOver = false;
@@ -42,8 +42,8 @@ int restartHeight = 40;
 
 Block[] blocks;
 
-PImage[] icons = new PImage[5];
-PImage[] blockImgs = new PImage[5];
+PImage[] icons = new PImage[8];
+PImage[] blockImgs = new PImage[8];
 PImage[] roleImgs = new PImage[3];
 PImage[] roleImgsLeft = new PImage[3];
 PImage[] roleFireImgs = new PImage[3];

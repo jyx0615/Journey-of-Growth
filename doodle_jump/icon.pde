@@ -5,6 +5,9 @@ void loadSubjectImages(){
   icons[2] = loadImage("subjects/music.png");
   icons[3] = loadImage("subjects/art.png");
   icons[4] = loadImage("subjects/sports.png");
+  icons[5] = loadImage("subjects/certificate.png");
+  icons[6] = loadImage("subjects/clock.png");
+  icons[7] = loadImage("subjects/quiz.png");
   TCFont = createFont("Iansui-Regular", 15);
 }
 
@@ -19,7 +22,9 @@ void drawIcon(int type, int x, int y, int size) {
   if (type == 0) {
     return;
   } else if (type >= 6 || icons[type - 1] == null) {
-    drawDefaultIcon(x, y, size);
+    imageMode(CORNER);
+    image(icons[type - 1], x, y, size, size);
+    //drawDefaultIcon(x, y, size);
   } else {
     imageMode(CORNER);
     image(icons[type - 1], x, y, size, size);

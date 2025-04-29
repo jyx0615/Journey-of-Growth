@@ -1,23 +1,6 @@
 [
     {
       "type": 1,
-      "question": "What is the capital of France?",
-      "answer": 2,
-      "choices": ["Berlin", "Paris", "Madrid", "Rome"]
-    },
-    {
-      "type": 2,
-      "question": "Name a programming language that starts with 'P'.",
-      "answer": "Python"
-    },
-    {
-      "type": 1,
-      "question": "Which planet is known as the Red Planet?",
-      "answer": 3,
-      "choices": ["Earth", "Venus", "Mars", "Jupiter"]
-    },
-    {
-      "type": 1,
       "question": "下列「」內文字，讀音前後相異的是?",
       "answer": 1,
       "choices": ["蘆「葦」/「韋」編三絕", "潔「癖」/「仳」離", "長江天「塹」/「縴」繩", "「汲」水/負「笈」從師"],
