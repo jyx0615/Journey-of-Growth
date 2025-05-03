@@ -120,11 +120,23 @@ boolean hitIconCheck() {
           }
           pickSound.rewind();
           pickSound.play();
-          //quiz
-          questionIndex = int(random(quizzes.length));
-          setQuiz(quizzes[questionIndex]);
-          show_quiz_content = false;
-          quiz_mode = true;
+          
+          // get quiz by subject type
+          ArrayList<Integer> matchingQuizzes = new ArrayList<Integer>();
+          for (int q = 0; q < quizzes.length; q++) {
+            if (quizzes[q].subject == blocks[i].type) {
+              matchingQuizzes.add(q);
+            }
+          }
+          
+          // get random quiz
+          if (matchingQuizzes.size() > 0) {
+            questionIndex = matchingQuizzes.get(int(random(matchingQuizzes.size())));
+            setQuiz(quizzes[questionIndex]);
+            show_quiz_content = false;
+            quiz_mode = true;
+          } 
+          
         }else if(blocks[i].type == 6){
           //certificate
           println("撿到了 certificate，啟動火焰模式");

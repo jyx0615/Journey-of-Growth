@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 class Quiz {
   int type;
   String question;
   String answerStr;
   int answerNum;
   String[] choices;
+  int subject;
 
   Quiz(JSONObject obj) {
     type = obj.getInt("type");
@@ -18,6 +20,13 @@ class Quiz {
       }
     } else if (type == 2) {
       answerStr = obj.getString("answer");
+    }
+    
+    // get subject
+    if (obj.hasKey("subjects")) {
+      subject = obj.getInt("subjects");
+    } else {
+      subject = 0; // 如果沒有指定，預設為0
     }
   }
 }
