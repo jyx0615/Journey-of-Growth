@@ -38,7 +38,7 @@ boolean canva_moving_up = true;
 int canva_offset = 200;
 int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829, #000000};
 int []scores = {0, 0, 0, 0, 0};
-String []subjects = {"literacture", "Math", "Music", "Art", "Sports"};
+String []subjects = {"文科", "理科", "音樂", "藝術", "體育"};
 boolean gameOver = false;
 
 int restartX = 400;
@@ -56,6 +56,7 @@ PImage[] roleFireImgs = new PImage[3];
 PImage[] roleFireImgsLeft = new PImage[3];
 int ROLE_ACTION_COUNT = 2;
 PImage rockImg;
+PImage door;
 
 
 PImage quizBackground;
@@ -104,6 +105,10 @@ int questionIndex = 0;  // the index of the current question
 
 JSONArray quizList;
 PFont TCFont;
+
+int endThisPart = 0;
+String resultAcademy = "";
+String resultSubject = "";
 
 Minim minim;
 AudioPlayer correctSound;

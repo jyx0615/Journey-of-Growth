@@ -27,6 +27,7 @@ void startGame() {
   base = MAX_LEVEL - SHOW_LEVEL_COUNT;
   gameOver = false;
   quiz_mode = false;
+  endThisPart = 0;
   
   onFire = false;
   fireTimer = 0;
@@ -187,6 +188,12 @@ void draw() {
     drawGameOver();
     return;
   }
+  
+  if(endThisPart == 1) {
+    drawResultPage();
+    return;
+  }
+  
   //  onfire timer
   if(onFire) {
     fireTimer++;
@@ -248,6 +255,18 @@ void draw() {
     drawBlock(blocks[i], blockY);
   }
   
+  // draw the door
+  if (base == 0) {
+    Block topRightBlock = blocks[1];
+    int doorX = topRightBlock.left + topRightBlock.blockCount * BLOCK_IMG_WIDTH - 50;  // 門放在右邊平台的右側
+    int doorY = canva_offset - LAYER_HEIGHT - 60;
+    image(door, doorX, doorY, 50, 60);
+    // touch door or not
+    if (curX + ROLE_WIDTH > doorX && curX < doorX + 50 && curY + ROLE_HEIGHT > doorY && curY < doorY + 60) {
+      endThisPart = 1;
+    }
+  }
+  
   // draw the role
   drawRole();
 
@@ -257,7 +276,8 @@ void draw() {
   rect(0, 600, width, height - 600);
 
   fill(255);
-  textAlign(LEFT, CENTER);
+  //textAlign(LEFT, CENTER);
+  textAlign(CORNER, CORNER);
   textSize(20);
   for(int i = 0; i < scores.length; i ++){
     text(subjects[i] + ": " + scores[i], 20, 620 + i * 30);

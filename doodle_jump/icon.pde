@@ -9,6 +9,7 @@ void loadSubjectImages(){
   icons[6] = loadImage("subjects/clock.png");
   icons[7] = loadImage("subjects/quiz.png");
   TCFont = createFont("Iansui-Regular", 15);
+  door = loadImage("icons/door.png");
 }
 
 // 如果圖片未加載，則繪製簡單的圖形
