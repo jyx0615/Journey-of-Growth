@@ -15,7 +15,7 @@ boolean frozen = false;
 int freezeTimer = 0;
 int FREEZE_DURATION = 300; // 5秒 × 60幀 = 300
 
-int iconSize = 70;
+int iconSize = 50;
 
 // opperating settings
 int MAX_JUMP_COUNT = 2;
