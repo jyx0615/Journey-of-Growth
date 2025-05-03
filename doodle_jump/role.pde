@@ -14,9 +14,17 @@ void loadRoleImages() {
   roleImgsLeft[0] = loadImage("roles/normal1L.png");
   roleImgsLeft[1] = loadImage("roles/normal2L.png");
   roleImgsLeft[2] = loadImage("roles/normal3L.png");
+  
+  rockImg = loadImage("roles/rock.png");
 }
 
 void drawRole() {
+  // if frozen use rock.png
+  if(frozen) {
+    image(rockImg, curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
+    return;
+  }
+  
   int indexToShow = actionIndex;
   if (jump){
     indexToShow = 2;

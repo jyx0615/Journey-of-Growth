@@ -7,7 +7,13 @@ boolean jump = false;
 int BLOCK_IMG_WIDTH = 50;
 boolean faceRight = true;
 int actionIndex = 0;
-boolean onFire = true;
+boolean onFire = false;
+
+int fireTimer = 0;
+int FIRE_DURATION = 1200; // 20秒 × 60幀 = 1200
+boolean frozen = false;
+int freezeTimer = 0;
+int FREEZE_DURATION = 300; // 5秒 × 60幀 = 300
 
 int iconSize = 70;
 
@@ -49,6 +55,7 @@ PImage[] roleImgsLeft = new PImage[3];
 PImage[] roleFireImgs = new PImage[3];
 PImage[] roleFireImgsLeft = new PImage[3];
 int ROLE_ACTION_COUNT = 2;
+PImage rockImg;
 
 
 PImage quizBackground;

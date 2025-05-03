@@ -27,6 +27,12 @@ void startGame() {
   base = MAX_LEVEL - SHOW_LEVEL_COUNT;
   gameOver = false;
   quiz_mode = false;
+  
+  onFire = false;
+  fireTimer = 0;
+  frozen = false;
+  freezeTimer = 0;
+  
   // clear the scores
   for(int i = 0; i < scores.length; i ++){
     scores[i] = 0;
@@ -104,17 +110,33 @@ boolean hitIconCheck() {
     if(curX + ROLE_WIDTH/2 > blocks[i].iconX && curX + ROLE_WIDTH/2 < blocks[i].iconX + iconSize) {
       if(curY + ROLE_HEIGHT >= iconY && curY + ROLE_HEIGHT <= iconY + iconSize){
         blocks[i].showIcon = false;
+        //(type 1-5)
         if(blocks[i].type<6){
-          scores[blocks[i].type - 1] += 1;
-          println("撿到了 icon，type 為：" + blocks[i].type);
+          //when onfire, score add 10, else add 1
+          if(onFire) {
+            scores[blocks[i].type - 1] += 10;
+          } else {
+            scores[blocks[i].type - 1] += 1;
+          }
           pickSound.rewind();
           pickSound.play();
+          //quiz
+          questionIndex = int(random(quizzes.length));
+          setQuiz(quizzes[questionIndex]);
+          show_quiz_content = false;
+          quiz_mode = true;
         }else if(blocks[i].type == 6){
           //certificate
-          println("撿到了 icon，type 為：" + blocks[i].type);
+          println("撿到了 certificate，啟動火焰模式");
+          onFire = true;
+          fireTimer = 0;
+          pickSound.rewind();
+          pickSound.play();
         }else if(blocks[i].type == 7){
           // clock
-          println("撿到了 icon，type 為：" + blocks[i].type);
+          println("撿到了 clock，角色凍結");
+          frozen = true;
+          freezeTimer = 0;
         }else if(blocks[i].type == 8){
           //quiz
           // randomly select a quiz and show it
@@ -153,6 +175,22 @@ void draw() {
     drawGameOver();
     return;
   }
+  //  onfire timer
+  if(onFire) {
+    fireTimer++;
+    if(fireTimer >= FIRE_DURATION) {
+      onFire = false;
+      fireTimer = 0;
+    }
+  }
+  //  frozen timer
+  if(frozen) {
+    freezeTimer++;
+    if(freezeTimer >= FREEZE_DURATION) {
+      frozen = false;
+      freezeTimer = 0;
+    }
+  }
 
   // game over
   if (!gameOver && base < MAX_LEVEL - SHOW_LEVEL_COUNT && curY > 600) {
@@ -168,24 +206,29 @@ void draw() {
   } else {
     canva_moving_down = false;
   }
-  if(stayTopCheck()) {
-    jump = false;
-    curV = 0;
-    cur_jump_count = 0;
-    // move the canva
-    if(!canva_moving_down && curY < MOVE_CANVA_THRESHOLD && base > 0){
-      base -= 1;
-      canva_offset -= LAYER_HEIGHT;
-      canva_moving_down = true;
+  
+  // roles can only move when not frozen
+  if (!frozen){
+    if(stayTopCheck()) {
+      jump = false;
+      curV = 0;
+      cur_jump_count = 0;
+      // move the canva
+      if(!canva_moving_down && curY < MOVE_CANVA_THRESHOLD && base > 0){
+        base -= 1;
+        canva_offset -= LAYER_HEIGHT;
+        canva_moving_down = true;
+      }
+    } else {
+      if(hitBottomCheck())
+        curV = -curV;
+      curY += curV;
+      curV += ACCELERATE;
     }
-  } else {
-    if(hitBottomCheck())
-      curV = -curV;
-    curY += curV;
-    curV += ACCELERATE;
+  
+    hitIconCheck();
   }
-
-  hitIconCheck();
+  
   
   // draw the blocks
   for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
@@ -206,6 +249,18 @@ void draw() {
   textSize(20);
   for(int i = 0; i < scores.length; i ++){
     text(subjects[i] + ": " + scores[i], 20, 620 + i * 30);
+  }
+  
+  // show fire mode time
+  if(onFire) {
+    fill(#FF5733);
+    text("火焰模式: " + (FIRE_DURATION - fireTimer) / 60 + "秒", 250, 620);
+  }
+  
+  // show frozen mode time
+  if(frozen) {
+    fill(#3357FF);
+    text("凍結: " + (FREEZE_DURATION - freezeTimer) / 60 + "秒", 250, 650);
   }
   
   if(quiz_mode) {
@@ -242,24 +297,27 @@ void keyPressed() {
        handleSubmit();
     } 
   } else {
-    if(key == ' ' && cur_jump_count < MAX_JUMP_COUNT) {
-      jump = true;
-      curV = JUMP_V0;
-      cur_jump_count += 1;
-      jumpSound.rewind();
-      jumpSound.play();
-    }
-    if(key == CODED) {
-      if(keyCode == LEFT){
-        faceRight = false;
-        actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
-        if(curX >= 20)
-          curX -= 20;
-      } else if(keyCode == RIGHT){
-        faceRight = true;
-        actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
-        if(curX <= width - 20 - ROLE_WIDTH)
-          curX += 20;
+    // move when not frozen
+    if(!frozen) {
+      if(key == ' ' && cur_jump_count < MAX_JUMP_COUNT) {
+        jump = true;
+        curV = JUMP_V0;
+        cur_jump_count += 1;
+        jumpSound.rewind();
+        jumpSound.play();
+      }
+      if(key == CODED) {
+        if(keyCode == LEFT){
+          faceRight = false;
+          actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
+          if(curX >= 20)
+            curX -= 20;
+        } else if(keyCode == RIGHT){
+          faceRight = true;
+          actionIndex = (actionIndex + 1) % ROLE_ACTION_COUNT;
+          if(curX <= width - 20 - ROLE_WIDTH)
+            curX += 20;
+        }
       }
     }
   }
