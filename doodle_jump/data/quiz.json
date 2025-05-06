@@ -1,122 +1,122 @@
 [
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "下列「」內文字，讀音前後相異的是?",
       "answer": 1,
       "choices": ["蘆「葦」/「韋」編三絕", "潔「癖」/「仳」離", "長江天「塹」/「縴」繩", "「汲」水/負「笈」從師"],
-      "subjects":1
+      "subject":"literature"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "下列何者不是賓語提前的倒裝句?",
       "answer": 3,
       "choices": ["句讀之不知", "惟奕秋之為聽", "心之所向", "馬首是瞻"],
-      "subjects":1
+      "subject":"literature"
     },
     {
-      "type": 2,
+      "type": "input_question",
       "question": "現存最早的編年體史書是?",
       "answer": "春秋",
-      "subjects":1
+      "subject":"literature"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "Dan lost _____ after the car accident.",
       "answer": 2,
       "choices": ["consciously", "consciousness", "conscience", "unconscious"],
-      "subjects":1
+      "subject":"literature"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "When dose your credit card _____ ?",
       "answer": 4,
       "choices": ["reaspire", "inspire", "perspire", "expire"],
-      "subjects":1
+      "subject":"literature"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "當政府對汽油課稅時:",
       "answer": 2,
       "choices": ["汽油的需求量減少", "汽油的供給量減少", "汽油的供給量與需求量都減少", "以上皆非"],
-      "subjects":1
+      "subject":"literature"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "十字軍東征的起因不包含下列何者:",
       "answer": 4,
       "choices": ["塞爾柱土耳其的崛起", "義大利新興諸城為了擴大貿易", "飢荒", "文藝復興"],
-      "subjects":1
+      "subject":"literature"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "下列何者為全球導航系統:",
       "answer": 4,
       "choices": ["GPS", "北斗衛星系統", "Galileo", "以上皆是"],
-      "subjects":1
+      "subject":"literature"
     },
     {
-      "type": 2,
+      "type": "input_question",
       "question": "打點計時器於4秒內在紙帶上打了240個點，\n此頻率為____Hz",
       "answer": "60",
-      "subjects":2
+      "subject":"science"
     },
     {
-      "type": 2,
+      "type": "input_question",
       "question": "若速度方向與加速度方向相反，速度會越來越___",
       "answer": "慢",
-      "subjects":2
+      "subject":"science"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "小明走路，踢石頭，感覺腳很痛，屬於____",
       "answer": 3,
       "choices": ["慣性定律", "運動定律", "反作用定律", "以上皆非"],
-      "subjects":2
+      "subject":"science"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "搖樹掉果，屬於____",
       "answer": 1,
       "choices": ["慣性定律", "運動定律", "反作用定律", "以上皆非"],
-      "subjects":2
+      "subject":"science"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "電解水時，通常加入甚麼進行導電?",
       "answer": 3,
       "choices": ["鹽酸", "食鹽", "氫氧化鈉", "醋酸"],
-      "subjects":2
+      "subject":"science"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "將化學能轉換成電能的是?",
       "answer": 1,
       "choices": ["電池", "電解", "電鍍", "電煉"],
-      "subjects":2
+      "subject":"science"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "為了減少運送過程之電力耗損，通常會採取?",
       "answer": 3,
       "choices": ["高電壓、高電流", "低電壓、低電流", "高電壓、低電流", "低電壓、高電流"],
-      "subjects":2
+      "subject":"science"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "「千瓦小時」是什麼單位?",
       "answer": 4,
       "choices": ["電壓", "電流", "功率", "電能"],
-      "subjects":2
+      "subject":"science"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "葛利果聖歌屬於哪種主要的音樂風格？",
       "answer": 1,
       "choices": ["宗教聖歌", "世俗歌曲", "宮廷音樂", "戲劇音樂"],
-      "subjects": 3
+      "subject":"music"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "浪漫時期的作曲家常以何種方式\n強化音樂的情感表達？",
       "answer": 2,
       "choices": [
@@ -125,17 +125,17 @@
         "僅限於簡單、對稱的旋律",
         "避免使用複雜和聲"
       ],
-      "subjects": 3
+      "subject":"music"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "在傳統歌仔戲中，哪一種行當多半\n演繹悲劇性的女性角色？",
       "answer": 4,
       "choices": ["花旦", "武旦", "青衣", "苦旦"],
-      "subjects": 3
+      "subject":"music"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "下列哪位音樂家是以鋼琴詩人之名著稱\n，並屬於浪漫時期？",
       "answer": 3,
       "choices": [
@@ -144,17 +144,17 @@
         "蕭邦（F. Chopin）",
         "德布西（C. Debussy）"
       ],
-      "subjects": 3
+      "subject":"music"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "芙烈達‧卡蘿是哪一個領域最知名的藝術家?",
       "answer": 3,
       "choices": ["建築設計", "抽象雕塑", "超現實主義繪畫", "攝影藝術"],
-      "subjects":4
+      "subject":"art"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "下列台灣史前文化與其主要出土物搭配\n，何者正確？",
       "answer": 2,
       "choices": [
@@ -163,10 +163,10 @@
         "十三行文化－玉石飾品",
         "牛罵頭文化－人面陶罐"
       ],
-      "subjects": 4
+      "subject":"art"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "有『書聖』之稱的王羲之，最為人熟知\n的書法風格為何？",
       "answer": 1,
       "choices": [
@@ -175,10 +175,10 @@
         "隸書",
         "草書"
       ],
-      "subjects": 4
+      "subject":"art"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "下列關於《米羅的維納斯》的描述，哪一項是正確的？",
       "answer": 3,
       "choices": [
@@ -187,10 +187,10 @@
         "屬於古希臘時期的雕塑",
         "現存於倫敦大英博物館"
       ],
-      "subjects": 4
+      "subject":"art"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "泰姬瑪哈陵被視為哪一種建築類型的代表？",
       "answer": 2,
       "choices": [
@@ -199,10 +199,10 @@
         "巴洛克宮廷建築",
         "印度教寺廟建築"
       ],
-      "subjects": 4
+      "subject":"art"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "運動員在比賽前常會出現緊張、焦慮等情緒，\n下列哪種放鬆技巧最適合在賽前短時間內使用？",
       "answer": 2,
       "choices": [
@@ -211,10 +211,10 @@
         "漸進式肌肉放鬆",
         "正念冥想"
       ],
-      "subjects": 5
+      "subject":"sports"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "一個人生理活動與心理活動的綜合狀態，它與\n個人在某特定時刻下動機的「強度」有關\n。請問這個定義是指下列哪一個名詞？",
       "answer": 2,
       "choices": [
@@ -223,10 +223,10 @@
         "壓力",
         "身體焦慮"
       ],
-      "subjects": 5
+      "subject":"sports"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "當選手失去訓練動機時，哪一種運動心理技巧\n無法協助選手改善訓練動機？",
       "answer": 4,
       "choices": [
@@ -235,10 +235,10 @@
         "正念訓練",
         "認知行為治療"
       ],
-      "subjects": 5
+      "subject":"sports"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "下列哪一塊肌肉在收縮時最無法協助肩胛骨\n向下壓動作？",
       "answer": 3,
       "choices": [
@@ -247,10 +247,10 @@
         "菱形肌 (Rhomboid)",
         "斜方肌下束 (Lower Trapezius)"
       ],
-      "subjects": 5
+      "subject":"sports"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "臨床判別高足弓、正常足弓或扁平足時，通常\n以哪一塊骨頭作為觀察指標？",
       "answer": 2,
       "choices": [
@@ -259,10 +259,10 @@
         "楔狀骨 (Cuneiforms)",
         "第一蹠骨 (First Metatarsal)"
       ],
-      "subjects": 5
+      "subject":"sports"
     },
     {
-      "type": 1,
+      "type": "multiple_choice",
       "question": "根據支架模型理論，站立時主要維持足部結構\n穩定的組織為何？",
       "answer": 1,
       "choices": [
@@ -271,7 +271,7 @@
         "阿基里斯腱 (Achilles Tendon)",
         "腓骨肌腱 (Peroneus Tendon)"
       ],
-      "subjects": 5
+      "subject":"sports"
     }
   ]
   

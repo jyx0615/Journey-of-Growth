@@ -1,46 +1,93 @@
-class Block {
-  int left, level, type, iconX, blockCount;
-  boolean showIcon;
+enum Subject {
+  LITERATURE,
+  SCIENCE,
+  MUSIC,
+  ART,
+  SPORTS,
+  NONE
+}
 
-  int getRandomType() {
-    float tmp = random(1);
-    int type = 0;
-    if(tmp > 0.7){  // incident
-      type = int(random(6, 8.1));
-    } else if (tmp > 0){  // subject
-      type = int(random(1, 5.1));
-    } else {
-      type = 0;
+enum IconType {
+  LITERATURE,
+  SCIENCE,
+  MUSIC,
+  ART,
+  SPORTS,
+  CERTIFICATE,
+  CLOCK,
+  QUIZ,
+  NONE;
+
+  Subject toSubject() {
+    switch (this) {
+      case LITERATURE: return Subject.LITERATURE;
+      case SCIENCE: return Subject.SCIENCE;
+      case MUSIC: return Subject.MUSIC;
+      case ART: return Subject.ART;
+      case SPORTS: return Subject.SPORTS;
+      default: return Subject.NONE;
     }
-    return type;
   }
+}
 
-  int getRandomIconX() {
-    int iconX = left + (blockCount * BLOCK_IMG_WIDTH % 10 * 10);
-    iconX = min(iconX, left + blockCount * BLOCK_IMG_WIDTH - iconSize);
-    return iconX;
-  }
+IconType[] iconTypes = IconType.values();
+
+class Block {
+  int left, level, iconX, blockCount;
+  boolean showIcon;
+  IconType iconType;
+  Subject subject;
 
   Block(int blockLeft, int blockLevel, int blockCountIn) {
     left = blockLeft;
     level = blockLevel;
     blockCount = blockCountIn;
     if (blockLevel == MAX_LEVEL)
-        type = 0;
+      iconType = IconType.NONE;
     else
-        type = getRandomType();
+      iconType = getRandomIconType();
     iconX = getRandomIconX();
     showIcon = true;
   }
-}
 
-void loadBlocks() {
-  blockImgs[0] = loadImage("blocks/white.png");
-  blockImgs[1] = loadImage("blocks/yellow.png");
-  blockImgs[2] = loadImage("blocks/purple.png");
-  blockImgs[3] = loadImage("blocks/red.png");
-  blockImgs[4] = loadImage("blocks/green.png");
-  blockImgs[5] = loadImage("blocks/black.png");
-  blockImgs[6] = loadImage("blocks/black.png");
-  blockImgs[7] = loadImage("blocks/black.png");
+  IconType getRandomIconType() {
+    int index = 0;
+    if(random(1) > 0.7) {
+      index = int(random(6, 8));
+    } else {
+      index = int(random(1, 6));
+      subject = iconTypes[index].toSubject();
+    }
+    return iconTypes[index];
+  }
+
+  int getRandomIconX() {
+    int iconX = left + (blockCount * BLOCK_IMG_WIDTH % 10 * 10);
+    iconX = min(iconX, left + blockCount * BLOCK_IMG_WIDTH - ICONSIZE);
+    return iconX;
+  }
+
+  void draw(int y) {
+    for (int i = 0; i < blockCount; i++) {
+      int blockLeft = left + BLOCK_IMG_WIDTH * i;
+      int index = iconType.ordinal();
+      image(doodleJump.blockImgs[index], blockLeft, y, BLOCK_IMG_WIDTH, BLOCK_HEIGHT);
+    }
+
+    if(iconType != IconType.NONE && showIcon)
+      drawIcon(y - ICONSIZE);
+  }
+
+  void drawIcon(int y) {
+    int index = iconType.ordinal();
+    if (iconType == IconType.NONE) {
+      return;
+    } else if (index >= 5) {
+      imageMode(CORNER);
+      image(doodleJump.icons[index], iconX, y, ICONSIZE, ICONSIZE);
+    } else {
+      imageMode(CORNER);
+      image(doodleJump.icons[index], iconX, y, ICONSIZE, ICONSIZE);
+    }
+  }
 }
