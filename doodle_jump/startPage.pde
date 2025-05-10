@@ -1,9 +1,10 @@
 int buttonW = 112, buttonH = 80;
-PImage startBackground, startButtonImg, aboutUsButtonImg, helpButtonImg, playerImg;
+PImage startBackground, startButtonImg, aboutUsButtonImg, helpButtonImg, playerImg, game1background, gameoverbackground, restartButtonImg;
 String aboutUsContent = "組員分工：";
 String helpContent = "遊戲規則：";
 boolean showAboutUs = false;
 boolean showHelp = false;
+
 
 void drawStartPage() {
   background(#88379B);

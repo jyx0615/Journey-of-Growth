@@ -60,6 +60,9 @@ class DoodleJump {
       aboutUsButtonImg = loadImage("icons/aboutUs.png");
       helpButtonImg = loadImage("icons/help.png");
       playerImg = loadImage("icons/player.png");
+      game1background = loadImage("background/game1background.png");
+      gameoverbackground = loadImage("background/gameOver.png");
+      restartButtonImg = loadImage("icons/restart.png");
     }
 
     void loadQuestions() {
@@ -237,18 +240,25 @@ class DoodleJump {
     }
 
     void drawGameOver() {
+        background(#071527);
+        imageMode(CENTER);
+        image(gameoverbackground,width/2, height/2,600,600);
+        /*
         fill(255, 0, 0);
         textAlign(CENTER, CENTER);
         textSize(50);
         text("Game Over", width/2, height/2);
-
+        */
         // restart button
+        image(restartButtonImg, restartX, restartY ,buttonW, buttonH);
+        /*
         rectMode(CENTER);
         fill(0, 255, 0);
         rect(restartX, restartY, restartWidth, restartHeight, 20);
         fill(0);
         textSize(20);
         text("Restart", restartX, restartY);
+        */
     }
 
     void drawResultPage() {
@@ -313,7 +323,9 @@ class DoodleJump {
         if (status == Status.START) {
             drawStartPage();
         }else{
-            background(#6CE378);
+            imageMode(CENTER);
+            image(game1background,width/2,height/2,600,800);
+            //background(#6CE378);
             textFont(TCFont);
         
             if(gameOver) {
