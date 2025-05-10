@@ -30,8 +30,10 @@ void keyPressed() {
 }
 
 void mousePressed() {
-  if(doodleJump.status == Status.QUIZ) {
-     doodleJump.quiz.updateByMousePress();
+  if(doodleJump.status == Status.START) {
+    doodleJump.checkStartPageButtons();
+  } else if(doodleJump.status == Status.QUIZ) {
+    doodleJump.quiz.updateByMousePress();
   } else if(doodleJump.gameOver) {
     if(mouseX > restartX - restartWidth/2 && mouseX < restartX + restartWidth/2 && mouseY > restartY - restartHeight/2 && mouseY < restartY + restartHeight/2) {
       doodleJump.reset();

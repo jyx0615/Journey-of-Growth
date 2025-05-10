@@ -3,6 +3,8 @@ enum Status {
   PLAYING,
   GAMEOVER,
   QUIZ,
+  ABOUT_US,
+  HELP
 }
 
 class DoodleJump {
@@ -28,6 +30,7 @@ class DoodleJump {
         loadSounds();
         loadBlocks();
         loadSubjectImages();
+        loadStartPageImages();
         loadQuestions();
         reset();
     }
@@ -49,6 +52,14 @@ class DoodleJump {
         icons[5] = loadImage("subjects/certificate.png");
         icons[6] = loadImage("subjects/clock.png");
         icons[7] = loadImage("subjects/quiz.png");
+    }
+    
+    void loadStartPageImages() {
+      startBackground = loadImage("background/startBackground.png");
+      startButtonImg = loadImage("icons/start.png");
+      aboutUsButtonImg = loadImage("icons/aboutUs.png");
+      helpButtonImg = loadImage("icons/help.png");
+      playerImg = loadImage("icons/player.png");
     }
 
     void loadQuestions() {
@@ -76,7 +87,7 @@ class DoodleJump {
         quiz.reset();
         base = MAX_LEVEL - SHOW_LEVEL_COUNT;
         gameOver = false;
-        status = Status.PLAYING;
+        status = Status.START;
         end = false;
         fireTimer = 0;
         freezeTimer = 0;
@@ -84,6 +95,41 @@ class DoodleJump {
         canvaOffset = 200;
         for(int i = 0; i < scores.length; i ++)
             scores[i] = 0;
+    }
+    
+    void checkStartPageButtons() {
+      if (showAboutUs || showHelp) {
+        showAboutUs = false;
+        showHelp = false;
+        return;
+      }
+      
+      // check start button
+      int startX = width/3;
+      int startY = height/6*5;
+      if (mouseX > startX - buttonW/2 && mouseX < startX + buttonW/2 && 
+          mouseY > startY - buttonH/2 && mouseY < startY + buttonH/2) {
+        doodleJump.status = Status.PLAYING;
+        return;
+      }
+      
+      // check help button
+      int helpX = width/11*7;
+      int helpY = height/2;
+      if (mouseX > helpX - buttonW/2 && mouseX < helpX + buttonW/2 && 
+          mouseY > helpY - buttonH/2 && mouseY < helpY + buttonH/2) {
+        showHelp = true;
+        return;
+      }
+      
+      // check aboutUs button
+      int aboutX = width/11*9;
+      int aboutY = height/6*4;
+      if (mouseX > aboutX - (buttonW+10)/2 && mouseX < aboutX + (buttonW+10)/2 && 
+          mouseY > aboutY - buttonH/2 && mouseY < aboutY + buttonH/2) {
+        showAboutUs = true;
+        return;
+      }
     }
 
     Block[] randomGenBlocks() {
@@ -264,81 +310,85 @@ class DoodleJump {
     }
  
     void draw() {
-        background(#6CE378);
-        textFont(TCFont);
+        if (status == Status.START) {
+            drawStartPage();
+        }else{
+            background(#6CE378);
+            textFont(TCFont);
         
-        if(gameOver) {
-            drawGameOver();
-            return;
-        }
+            if(gameOver) {
+                drawGameOver();
+                return;
+            }
         
-        if(end) {
-            drawResultPage();
-            return;
-        }
+            if(end) {
+                drawResultPage();
+                return;
+            }
 
-        // game over
-        if (!gameOver && base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 600) {
-            gameOverSound.rewind();
-            gameOverSound.play();
-            gameOver = true;
-            return;
-        }
+            // game over
+            if (!gameOver && base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 600) {
+                gameOverSound.rewind();
+                gameOverSound.play();
+                gameOver = true;
+                return;
+            }
 
-        if(canvaOffset < 200){
-            canvaOffset += CANVA_SPEED;
-            role.curY += CANVA_SPEED;
-        } else {
-            canvaMoving = false;
-        }
-        
-        // roles can only move when not frozen
-        if (freezeTimer == 0) {
-            if(stayTopCheck()) {
-                role.jump = false;
-                role.curV = 0;
-                role.curJumpCount = 0;
-                // move the canva
-                if(!canvaMoving && role.curY < MOVE_CANVA_THRESHOLD && base > 0){
-                    base -= 1;
-                    canvaOffset -= LAYER_HEIGHT;
-                    canvaMoving = true;
-                }
+            if(canvaOffset < 200){
+                canvaOffset += CANVA_SPEED;
+                role.curY += CANVA_SPEED;
             } else {
-                if(hitBottomCheck())
-                    role.curV = -role.curV;
-                role.curY += role.curV;
-                role.curV += ACCELERATE;
+                canvaMoving = false;
             }
-            hitIconCheck();
-        }
-    
-        // draw the blocks
-        for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
-            int blockY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
-            blocks[i].draw(blockY);
-        }
-    
-        // draw the door
-        if (base == 0) {
-            Block topRightBlock = blocks[1];
-            int doorX = topRightBlock.left + topRightBlock.blockCount * BLOCK_IMG_WIDTH - 50;  // 門放在右邊平台的右側
-            int doorY = canvaOffset - LAYER_HEIGHT - 60;
-            image(door, doorX, doorY, 50, 60);
-            // touch door or not
-            if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {
-                end = true;
+            
+            // roles can only move when not frozen
+            if (freezeTimer == 0) {
+                if(stayTopCheck()) {
+                    role.jump = false;
+                    role.curV = 0;
+                    role.curJumpCount = 0;
+                    // move the canva
+                    if(!canvaMoving && role.curY < MOVE_CANVA_THRESHOLD && base > 0){
+                        base -= 1;
+                        canvaOffset -= LAYER_HEIGHT;
+                        canvaMoving = true;
+                    }
+                } else {
+                    if(hitBottomCheck())
+                        role.curV = -role.curV;
+                    role.curY += role.curV;
+                    role.curV += ACCELERATE;
+                }
+                hitIconCheck();
             }
-        }
     
-        // draw the role
-        role.draw();
-
-        // bottom section
-        drawBottomSection();
+            // draw the blocks
+            for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
+                int blockY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
+                blocks[i].draw(blockY);
+            }
         
-        if(status == Status.QUIZ) {
-            quiz.draw();
+            // draw the door
+            if (base == 0) {
+                Block topRightBlock = blocks[1];
+                int doorX = topRightBlock.left + topRightBlock.blockCount * BLOCK_IMG_WIDTH - 50;  // 門放在右邊平台的右側
+                int doorY = canvaOffset - LAYER_HEIGHT - 60;
+                image(door, doorX, doorY, 50, 60);
+                // touch door or not
+                if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {
+                    end = true;
+                }
+            }
+    
+            // draw the role
+            role.draw();
+    
+            // bottom section
+            drawBottomSection();
+            
+            if(status == Status.QUIZ) {
+                quiz.draw();
+                }
         }
     }
 }
