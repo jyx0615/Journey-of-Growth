@@ -1,5 +1,8 @@
 int buttonW = 112, buttonH = 80;
 PImage startBackground, startButtonImg, aboutUsButtonImg, helpButtonImg, playerImg, game1background, gameoverbackground, restartButtonImg;
+PImage[] symbols = new PImage[8];
+PImage[] resultBackgrounds = new PImage[8];
+
 String aboutUsContent = "組員分工：";
 String helpContent = "遊戲規則：";
 boolean showAboutUs = false;

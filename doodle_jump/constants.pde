@@ -19,9 +19,11 @@ int BLOCK_IMG_WIDTH = 50;
 int ICONSIZE = 60;
 
 // game properties
-int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829, #000000};
+//int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829, #000000};
+int []COLORS = {#D9D9D9, #DCBC40, #D0BAE5, #D6AAAA, #A1D1C9, #FF3829, #000000};
 String []subjects = {"文科", "理科", "音樂", "藝術", "體育"};
 String []academics = {"文學院", "理學院", "音樂學院", "藝術學院", "體育學院"};
+
 
 int restartX = 400;
 int restartY = 500;
@@ -62,5 +64,5 @@ int INPUT_MAX_LENGTH = 20;
 
 
 Minim minim = new Minim(this);
-PFont TCFont;
+PFont TCFont, TCFontBold;
 DoodleJump doodleJump;

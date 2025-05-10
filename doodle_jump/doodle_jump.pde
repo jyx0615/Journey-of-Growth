@@ -10,7 +10,8 @@ void setup() {
   restartX = width/2;
 
   doodleJump = new DoodleJump();
-  TCFont = createFont("Iansui-Regular", 15);
+  TCFont = createFont("Iansui-Regular.ttf", 15);
+  TCFontBold = createFont("NotoSansTC-Bold.ttf", 15);
 }
 
 void draw() {

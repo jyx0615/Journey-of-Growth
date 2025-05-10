@@ -32,6 +32,7 @@ class DoodleJump {
         loadSubjectImages();
         loadStartPageImages();
         loadQuestions();
+        loadResultPage();
         reset();
     }
 
@@ -56,13 +57,26 @@ class DoodleJump {
     
     void loadStartPageImages() {
       startBackground = loadImage("background/startBackground.png");
-      startButtonImg = loadImage("icons/start.png");
-      aboutUsButtonImg = loadImage("icons/aboutUs.png");
-      helpButtonImg = loadImage("icons/help.png");
+      startButtonImg = loadImage("icons/button_start.png");
+      aboutUsButtonImg = loadImage("icons/button_aboutUs.png");
+      helpButtonImg = loadImage("icons/button_help.png");
       playerImg = loadImage("icons/player.png");
       game1background = loadImage("background/game1background.png");
       gameoverbackground = loadImage("background/gameOver.png");
-      restartButtonImg = loadImage("icons/restart.png");
+      restartButtonImg = loadImage("icons/button_restart.png");
+      
+    }
+    void loadResultPage(){
+      symbols[0] = loadImage("icons/literactureSymbol.png");
+      symbols[1] = loadImage("icons/mathSymbol.png");
+      symbols[2] = loadImage("icons/musicSymbol.png");
+      symbols[3] = loadImage("icons/artSymbol.png");
+      symbols[4] = loadImage("icons/sportsSymbol.png");
+      resultBackgrounds[0] = loadImage("icons/literacture_studyroom.png");
+      resultBackgrounds[1] = loadImage("icons/math_lab.png");
+      resultBackgrounds[2] = loadImage("icons/music_recordingStudio.png");
+      resultBackgrounds[3] = loadImage("icons/art_studio.png");
+      resultBackgrounds[4] = loadImage("icons/sports_sportfield.png");
     }
 
     void loadQuestions() {
@@ -263,7 +277,7 @@ class DoodleJump {
 
     void drawResultPage() {
         background(#AACCFF);
-        textFont(TCFont);
+        textFont(TCFontBold);
         
         // 計算最高分的科目
         int maxScore = -1;
@@ -276,6 +290,25 @@ class DoodleJump {
         }
   
         // 繪製結果頁面
+        imageMode(CENTER);
+        textAlign(CENTER, CENTER);
+        textFont(TCFontBold);
+        image(resultBackgrounds[maxIndex], width/2, height/2, width, height);
+        image(symbols[maxIndex], width*0.3, height*0.24, 228, 228);
+        
+        float textX = width * 0.7;
+        fill(255);
+        textSize(32);
+        text("恭喜你被分配到", textX, height * 0.15);
+        text("你的最高分科目", textX, height * 0.45);
+        text("得分", textX, height * 0.75);
+      
+        textSize(56);
+        fill(COLORS[maxIndex]);
+        text(academics[maxIndex], textX, height * 0.25);
+        text(subjects[maxIndex], textX, height * 0.53);
+        text(str(maxScore), textX, height * 0.83);
+        /*   
         fill(0);
         textSize(40);
         textAlign(CENTER, CENTER);
@@ -289,6 +322,7 @@ class DoodleJump {
         textSize(50);
         fill(#FF5733);
         text(academics[maxIndex], width/2, height/2 + 120);
+        */
     }
 
     void drawBottomSection() {
