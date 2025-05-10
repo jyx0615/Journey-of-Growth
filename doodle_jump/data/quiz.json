@@ -61,12 +61,6 @@
       "subject":"science"
     },
     {
-      "type": "input_question",
-      "question": "若速度方向與加速度方向相反，速度會越來越___",
-      "answer": "慢",
-      "subject":"science"
-    },
-    {
       "type": "multiple_choice",
       "question": "小明走路，踢石頭，感覺腳很痛，屬於____",
       "answer": 3,

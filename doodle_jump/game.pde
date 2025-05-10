@@ -294,16 +294,16 @@ class DoodleJump {
         textAlign(CENTER, CENTER);
         textFont(TCFontBold);
         image(resultBackgrounds[maxIndex], width/2, height/2, width, height);
-        image(symbols[maxIndex], width*0.3, height*0.24, 228, 228);
+        image(symbols[maxIndex], width*0.3, height*0.24, 228*0.8, 228*0.8);
         
         float textX = width * 0.7;
         fill(255);
-        textSize(32);
+        textSize(30);
         text("恭喜你被分配到", textX, height * 0.15);
         text("你的最高分科目", textX, height * 0.45);
         text("得分", textX, height * 0.75);
       
-        textSize(56);
+        textSize(50);
         fill(COLORS[maxIndex]);
         text(academics[maxIndex], textX, height * 0.25);
         text(subjects[maxIndex], textX, height * 0.53);
