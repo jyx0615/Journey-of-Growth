@@ -3,8 +3,7 @@ PImage startBackground, startButtonImg, aboutUsButtonImg, helpButtonImg, playerI
 PImage[] symbols = new PImage[8];
 PImage[] resultBackgrounds = new PImage[8];
 
-String aboutUsContent = "組員分工：";
-String helpContent = "遊戲規則：";
+String aboutUsContent, helpContent;
 boolean showAboutUs = false;
 boolean showHelp = false;
 

@@ -9,9 +9,14 @@ void setup() {
   answerX = width/2;
   restartX = width/2;
 
+  // Load content from JSON
+  JSONObject content = loadJSONObject("content.json");
+  aboutUsContent = content.getString("aboutUsContent");
+  helpContent = content.getString("helpContent");
+
   doodleJump = new DoodleJump();
-  TCFont = createFont("Iansui-Regular.ttf", 15);
-  TCFontBold = createFont("NotoSansTC-Bold.ttf", 15);
+  TCFont = createFont("fonts/Iansui-Regular.ttf", 15);
+  TCFontBold = createFont("fonts/NotoSansTC-Bold.ttf", 15);
 }
 
 void draw() {
