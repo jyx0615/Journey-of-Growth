@@ -47,6 +47,9 @@ class Quiz {
   Question question;
   PImage quizBackground;
   PImage quizStartBackground;
+  boolean pendingAddScore = false;
+  int pendingScoreIndex = -1;
+  int pendingScoreAmount = 0;
 
   Quiz() {
     loadBackgroundImage();
@@ -228,11 +231,18 @@ class Quiz {
     if(correct == 2) {
       doodleJump.correctSound.rewind();
       doodleJump.correctSound.play();
+      //add point only when correct
+      if (pendingAddScore && pendingScoreIndex >= 0) {
+        doodleJump.scores[pendingScoreIndex] += pendingScoreAmount;
+      }
     } else {
       doodleJump.wrongSound.rewind();
       doodleJump.wrongSound.play();
     }
     exit_counter = 1;
+    pendingAddScore = false;
+    pendingScoreIndex = -1;
+    pendingScoreAmount = 0;
   }
 
   void drawChoices() {

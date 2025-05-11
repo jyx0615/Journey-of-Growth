@@ -217,9 +217,19 @@ class DoodleJump {
 
                         case QUIZ:
                             println("撿到了 icon，type 為：" + blocks[i].iconType);
+                            //get random quiz
                             quiz.set(questions[int(random(questions.length))]);
                             quiz.show_quiz_content = false;
                             status = Status.QUIZ;
+                            
+                            int scoreToAdd = (fireTimer > 0) ? 10 : 1;
+                            
+                            Subject qSubject = quiz.question.subject;
+                            int qIndex = qSubject.ordinal();
+                            
+                            quiz.pendingAddScore = true;
+                            quiz.pendingScoreIndex = qIndex;
+                            quiz.pendingScoreAmount = scoreToAdd;
                             break;
                         
                         default:
@@ -231,7 +241,7 @@ class DoodleJump {
                                 scores[index] += 1;
                             pickSound.rewind();
                             pickSound.play();
-                            
+                            /*
                             // get quiz by subject type
                             ArrayList<Integer> matchingQuizzes = new ArrayList<Integer>();
                             for (int q = 0; q < questions.length; q++)
@@ -244,7 +254,7 @@ class DoodleJump {
                                 quiz.set(questions[questionIndex]);
                                 quiz.show_quiz_content = false;
                                 status = Status.QUIZ;
-                            }
+                            }*/
                             break;
                     }
                 }

@@ -52,10 +52,10 @@ class Block {
 
   IconType getRandomIconType() {
     int index = 0;
-    if(random(1) > 0.7) {
-      index = int(random(6, 8));
+    if(random(1) > 0.8) {
+      index = int(random(5, 8));
     } else {
-      index = int(random(1, 6));
+      index = int(random(0, 5));
       subject = iconTypes[index].toSubject();
     }
     return iconTypes[index];
