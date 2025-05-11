@@ -14,9 +14,7 @@ class Weapon {
   }
   
   void draw() {
-    fill(#E20FF2);
-    noStroke();
-    circle(x, y, 30);
+    image(weaponImgs[0], x, y, weaponR, weaponR);
   }
   
   boolean out() {

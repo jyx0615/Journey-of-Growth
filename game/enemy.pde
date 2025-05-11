@@ -30,7 +30,7 @@ class Enemy {
     for (int i = 0; i < weapons.size(); i++) {
       Weapon w = weapons.get(i);
       int d = (w.x - x) * (w.x - x) + (w.y - y) * (w.y - y);
-      if(d < 400)
+      if(d < weaponR * weaponR)
         return true;
     }
     return false;
