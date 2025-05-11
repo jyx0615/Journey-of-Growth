@@ -308,21 +308,6 @@ class DoodleJump {
         text(academics[maxIndex], textX, height * 0.25);
         text(subjects[maxIndex], textX, height * 0.53);
         text(str(maxScore), textX, height * 0.83);
-        /*   
-        fill(0);
-        textSize(40);
-        textAlign(CENTER, CENTER);
-        text("遊戲結束", width/2, height/4);
-        
-        textSize(30);
-        text("你的最高分科目：" + subjects[maxIndex], width/2, height/2 - 50);
-        text("得分：" + maxScore, width/2, height/2);
-        text("恭喜你分配到", width/2, height/2 + 50);
-        
-        textSize(50);
-        fill(#FF5733);
-        text(academics[maxIndex], width/2, height/2 + 120);
-        */
     }
 
     void drawBottomSection() {
@@ -400,8 +385,8 @@ class DoodleJump {
                         canvaMoving = true;
                     }
                 } else {
-                    if(hitBottomCheck())
-                        role.curV = -role.curV;
+                    // if(hitBottomCheck())
+                    //     role.curV = -role.curV;
                     role.curY += role.curV;
                     role.curV += ACCELERATE;
                 }
