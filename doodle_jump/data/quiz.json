@@ -14,12 +14,6 @@
       "subject":"literature"
     },
     {
-      "type": "input_question",
-      "question": "現存最早的編年體史書是?",
-      "answer": "春秋",
-      "subject":"literature"
-    },
-    {
       "type": "multiple_choice",
       "question": "Dan lost _____ after the car accident.",
       "answer": 2,
@@ -31,13 +25,6 @@
       "question": "When dose your credit card _____ ?",
       "answer": 4,
       "choices": ["reaspire", "inspire", "perspire", "expire"],
-      "subject":"literature"
-    },
-    {
-      "type": "multiple_choice",
-      "question": "當政府對汽油課稅時:",
-      "answer": 2,
-      "choices": ["汽油的需求量減少", "汽油的供給量減少", "汽油的供給量與需求量都減少", "以上皆非"],
       "subject":"literature"
     },
     {
