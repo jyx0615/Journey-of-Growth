@@ -51,9 +51,14 @@ class Block {
   }
 
   IconType getRandomIconType() {
+    //add quiz every 5 level
+    if (level % 5 == 0) {
+    return IconType.QUIZ;
+    }
+    
     int index = 0;
     if(random(1) > 0.8) {
-      index = int(random(5, 8));
+      index = int(random(5, 7));
     } else {
       index = int(random(0, 5));
       subject = iconTypes[index].toSubject();
