@@ -2,26 +2,22 @@ int buttonW = 112, buttonH = 80;
 PImage startBackground, startButtonImg, aboutUsButtonImg, playerImg, game1background, gameoverbackground, restartButtonImg, envelopeBackground;
 PImage[] symbols = new PImage[8];
 PImage[] resultBackgrounds = new PImage[8];
-
 String aboutUsContent;
-boolean showAboutUs = false;
-
 
 void drawStartPage() {
   background(#88379B);
   imageMode(CENTER); 
-  image(startBackground, width/2, height/2, 460, 800);
+  image(startBackground, width/2, height/2, width, height);
   image(playerImg, width/3, height/6*5-200, 288, 288);
   image(startButtonImg, width/3, height/6*5, buttonW, buttonH);
   image(aboutUsButtonImg, width/11*9, height/6*4, buttonW+10, buttonH);
-  
-  // 顯示關於我們或遊戲規則
-  if (showAboutUs) {
-    drawInfoBox("關於我們", aboutUsContent);
-  }
 }
 
-void drawInfoBox(String title, String content) {
+void drawAboutUS() {
+  drawStartPage();
+  String title = "關於我們";
+  String content = aboutUsContent;
+
   textFont(TCFont);
   rectMode(CENTER);
   fill(255, 240);

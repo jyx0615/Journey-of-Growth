@@ -10,7 +10,7 @@ int LAYER_HEIGHT = 100;
 int BLOCK_HEIGHT = 20;
 int ROLE_HEIGHT = 61;
 int ROLE_WIDTH = 33;
-int MAX_LEVEL = 50;
+int MAX_LEVEL = 10;
 int CANVA_SPEED = 10;
 int CANVA_UP_SPEED = 5;
 int SHOW_LEVEL_COUNT = 5;
@@ -35,7 +35,7 @@ int restartHeight = 40;
 int questionX = width/2;
 int questionY = 100;
 
-int answerX = 300;
+int answerX = 480;
 int answerY = 700;
 
 int submitX = width/2;
@@ -44,19 +44,19 @@ int submitWidth = 100;
 int submitHeight = 40;
 
 // multiple choice question text
-int choicesX = 50;
+int choicesX = 230;
 int choicesY = 200;
 int choicesOffsetY = 60;
 
 // multiple choice buttons
-int buttonX = 50;
+int buttonX = 230;
 int buttonY = 500;
 int buttonWidth = 70;
 int buttonHeight = 40;
 int buttonOffsetX = 90;
 
 // input question
-int inputX = 80;
+int inputX = 260;
 int inputY = 400;
 int inputWidth = 300;
 int inputHeight = 40;

@@ -1,17 +1,16 @@
-enum Status {
+enum DoodleJumpStatus {
   START,
   PLAYING,
   GAMEOVER,
   END,
   QUIZ,
-  ABOUT_US,
 }
 
 class DoodleJump {
     Role role;
     Quiz quiz;
     Block[] blocks;
-    Status status;
+    DoodleJumpStatus status;
     int base;
     boolean canvaMoving;
     int fireTimer, freezeTimer, canvaOffset;
@@ -107,8 +106,9 @@ class DoodleJump {
     void reset() {
         role.reset();
         quiz.reset();
+        blocks = randomGenBlocks();
         base = MAX_LEVEL - SHOW_LEVEL_COUNT;
-        status = Status.START;
+        status = DoodleJumpStatus.PLAYING;
         fireTimer = 0;
         freezeTimer = 0;
         canvaMoving = false;
@@ -117,49 +117,33 @@ class DoodleJump {
             scores[i] = 0;
     }
     
-    void checkStartPageButtons() {
-      if (showAboutUs) {
-        showAboutUs = false;
-        return;
-      }
-      
-      // check start button
-      int startX = width/3;
-      int startY = height/6*5;
-      if (mouseX > startX - buttonW/2 && mouseX < startX + buttonW/2 && 
-          mouseY > startY - buttonH/2 && mouseY < startY + buttonH/2) {
-        doodleJump.status = Status.PLAYING;
-        return;
-      }
-      
-      // check aboutUs button
-      int aboutX = width/11*9;
-      int aboutY = height/6*4;
-      if (mouseX > aboutX - (buttonW+10)/2 && mouseX < aboutX + (buttonW+10)/2 && 
-          mouseY > aboutY - buttonH/2 && mouseY < aboutY + buttonH/2) {
-        showAboutUs = true;
-        return;
-      }
-    }
-
     Block[] randomGenBlocks() {
-        Block[] Blocks = new Block[MAX_LEVEL * 2 + 1];
+        Block[] Blocks = new Block[MAX_LEVEL * 4 + 1];
         for (int level = 0; level < MAX_LEVEL; level ++) {
             int blockLeft = int(random(40, 120));
             int blockCount = int(random(2, 4));
-            Blocks[2 * level] = new Block(blockLeft, level, blockCount);
+            Blocks[4 * level] = new Block(blockLeft, level, blockCount);
             
-            int blockLeft2 = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(50, 120));
-            int blockCount2 = int(random(1, 4));
-            Blocks[2 * level + 1] = new Block(blockLeft2, level, blockCount2);
+            blockLeft = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(50, 120));
+            blockCount = int(random(1, 4));
+            Blocks[4 * level + 1] = new Block(blockLeft, level, blockCount);
+
+            blockLeft = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(50, 120));
+            blockCount = int(random(2, 4));
+            Blocks[4 * level + 2] = new Block(blockLeft, level, blockCount);
+
+            blockLeft = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(50, 120));
+            blockCount = int(random(1, 4));
+            Blocks[4 * level + 3] = new Block(blockLeft, level, blockCount);
+
         }
         
-        Blocks[2 * MAX_LEVEL] = new Block(0, MAX_LEVEL, int(width/BLOCK_IMG_WIDTH) + 1);
+        Blocks[4 * MAX_LEVEL] = new Block(0, MAX_LEVEL, int(width/BLOCK_IMG_WIDTH) + 1);
         return Blocks;
     }
 
     boolean hitBottomCheck() {
-        for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
+        for (int i = 4 * base; i < 4 * (base + SHOW_LEVEL_COUNT); i++) {
             int blockBottom = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT + BLOCK_HEIGHT;
             int blockLeft = blocks[i].left;
             int blockRight = blocks[i].left + blocks[i].blockCount * BLOCK_IMG_WIDTH;
@@ -172,7 +156,7 @@ class DoodleJump {
     }
 
     boolean stayTopCheck() {
-        for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT) + 1; i++) {
+        for (int i = 4 * base; i < 4 * (base + SHOW_LEVEL_COUNT) + 1; i++) {
             int blockTop = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
             int blockLeft = blocks[i].left;
             int blockRight = blocks[i].left + blocks[i].blockCount * BLOCK_IMG_WIDTH;
@@ -187,7 +171,7 @@ class DoodleJump {
     }
 
     boolean hitIconCheck() {
-        for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
+        for (int i = 4 * base; i < 4 * (base + SHOW_LEVEL_COUNT); i++) {
             IconType type = blocks[i].iconType;
             if(type == IconType.NONE || !blocks[i].showIcon)
             continue;
@@ -213,7 +197,7 @@ class DoodleJump {
                             //get random quiz
                             quiz.set(questions[int(random(questions.length))]);
                             quiz.show_quiz_content = false;
-                            status = Status.QUIZ;
+                            status = DoodleJumpStatus.QUIZ;
                             
                             int scoreToAdd = (fireTimer > 0) ? 10 : 1;
                             
@@ -248,7 +232,7 @@ class DoodleJump {
         textFont(TCFont);
         textAlign(LEFT, TOP);
         textSize(20);
-        text(intro.substring(0, infoIndex), 80, height/2 + 50);
+        text(intro.substring(0, infoIndex), 260, height/2 + 50);
         if(infoIndex < intro.length()) {
             typeTime++;
             if(typeTime > typeInteval) {
@@ -310,7 +294,7 @@ class DoodleJump {
         textSize(20);
         // scores
         for(int i = 0; i < scores.length; i ++){
-            text(subjects[i] + ": " + scores[i], 20, 620 + i * 30);
+            text(subjects[i] + ": " + scores[i], 20 + i * 100, 620);
         }
         
         // show fire mode time
@@ -329,85 +313,119 @@ class DoodleJump {
     }
  
     void draw() {
-        if (status == Status.START) {
-            drawStartPage();
+        imageMode(CENTER);
+        image(game1background,width/2,height/2,width,height);
+        textFont(TCFont);
+
+        if(status == DoodleJumpStatus.START) {
+            drawInfoPage();
+            return;
+        }
+    
+        if(status == DoodleJumpStatus.GAMEOVER) {
+            drawGameOver();
+            return;
+        }
+    
+        if(status == DoodleJumpStatus.END) {
+            drawResultPage();
+            return;
+        }
+
+        // game over
+        if (base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 600) {
+            gameOverSound.rewind();
+            gameOverSound.play();
+            status = DoodleJumpStatus.GAMEOVER;
+            return;
+        }
+
+        if(canvaOffset < 200){
+            canvaOffset += CANVA_SPEED;
+            role.curY += CANVA_SPEED;
         } else {
-            imageMode(CENTER);
-            image(game1background,width/2,height/2,600,800);
-            textFont(TCFont);
+            canvaMoving = false;
+        }
         
-            if(status == Status.GAMEOVER) {
-                drawGameOver();
-                return;
-            }
-        
-            if(status == Status.END) {
-                drawResultPage();
-                return;
-            }
-
-            // game over
-            if (base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 600) {
-                gameOverSound.rewind();
-                gameOverSound.play();
-                status = Status.GAMEOVER;
-                return;
-            }
-
-            if(canvaOffset < 200){
-                canvaOffset += CANVA_SPEED;
-                role.curY += CANVA_SPEED;
+        // roles can only move when not frozen
+        if (freezeTimer == 0) {
+            if(stayTopCheck()) {
+                role.jump = false;
+                role.curV = 0;
+                role.curJumpCount = 0;
+                // move the canva
+                if(!canvaMoving && role.curY < MOVE_CANVA_THRESHOLD && base > 0){
+                    base -= 1;
+                    canvaOffset -= LAYER_HEIGHT;
+                    canvaMoving = true;
+                }
             } else {
-                canvaMoving = false;
+                // if(hitBottomCheck())
+                //     role.curV = -role.curV;
+                role.curY += role.curV;
+                role.curV += ACCELERATE;
             }
-            
-            // roles can only move when not frozen
-            if (freezeTimer == 0) {
-                if(stayTopCheck()) {
-                    role.jump = false;
-                    role.curV = 0;
-                    role.curJumpCount = 0;
-                    // move the canva
-                    if(!canvaMoving && role.curY < MOVE_CANVA_THRESHOLD && base > 0){
-                        base -= 1;
-                        canvaOffset -= LAYER_HEIGHT;
-                        canvaMoving = true;
-                    }
-                } else {
-                    // if(hitBottomCheck())
-                    //     role.curV = -role.curV;
-                    role.curY += role.curV;
-                    role.curV += ACCELERATE;
-                }
-                hitIconCheck();
-            }
+            hitIconCheck();
+        }
+
+        // draw the blocks
+        for (int i = 4 * base; i < 4 * (base + SHOW_LEVEL_COUNT); i++) {
+            int blockY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
+            blocks[i].draw(blockY);
+        }
     
-            // draw the blocks
-            for (int i = 2 * base; i < 2 * (base + SHOW_LEVEL_COUNT); i++) {
-                int blockY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
-                blocks[i].draw(blockY);
+        // draw the door
+        if (base == 0) {
+            Block topRightBlock = blocks[1];
+            int doorX = topRightBlock.left + topRightBlock.blockCount * BLOCK_IMG_WIDTH - 50;  // 門放在右邊平台的右側
+            int doorY = canvaOffset - LAYER_HEIGHT - 60;
+            image(door, doorX, doorY, 50, 60);
+            // touch door or not
+            if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {
+                status = DoodleJumpStatus.END;
             }
+        }
+
+        // draw the role
+        role.draw();
+
+        // bottom section
+        drawBottomSection();
         
-            // draw the door
-            if (base == 0) {
-                Block topRightBlock = blocks[1];
-                int doorX = topRightBlock.left + topRightBlock.blockCount * BLOCK_IMG_WIDTH - 50;  // 門放在右邊平台的右側
-                int doorY = canvaOffset - LAYER_HEIGHT - 60;
-                image(door, doorX, doorY, 50, 60);
-                // touch door or not
-                if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {
-                    status = Status.END;
-                }
-            }
-    
-            // draw the role
-            role.draw();
-    
-            // bottom section
-            drawBottomSection();
-            
-            if(status == Status.QUIZ) {
-                quiz.draw();
+        if(status == DoodleJumpStatus.QUIZ) {
+            quiz.draw();
+        }
+    }
+
+    void keyPressedCheck() {
+        switch (status) {
+            case START:
+                if(key == ENTER || key == RETURN)
+                    status = DoodleJumpStatus.PLAYING;
+                    level1Music.loop();
+                    openningMusic.close();
+                break;
+            case GAMEOVER:
+                if(key == ENTER || key == RETURN)
+                    reset();
+                break;
+            case QUIZ:
+                if(quiz.exit_counter == 0)
+                    quiz.updateAnserByKeyPress();
+                break;
+            default:
+                role.updateByKeyPress();
+        }
+    }
+
+    void mousePressedCheck() {
+        if(status == DoodleJumpStatus.START) {
+
+        } else if(status == DoodleJumpStatus.QUIZ) {
+            quiz.updateByMousePress();
+        } else if(status == DoodleJumpStatus.GAMEOVER) {
+            if(mouseX > restartX - restartWidth/2 && mouseX < restartX + restartWidth/2 && mouseY > restartY - restartHeight/2 && mouseY < restartY + restartHeight/2) {
+                reset();
             }
         }
     }
