@@ -1,6 +1,7 @@
 int FIRE_DURATION = 1200; // 20秒 × 60幀 = 1200
 int FREEZE_DURATION = 300; // 5秒 × 60幀 = 300
 int ROLE_ACTION_COUNT = 2;
+int BLOCK_IN_ONE_LEVEL = 4;
 
 // opperating settings
 int MAX_JUMP_COUNT = 2;
@@ -19,17 +20,14 @@ int BLOCK_IMG_WIDTH = 50;
 int ICONSIZE = 60;
 
 // game properties
-//int []COLORS = {#EAD90E, #FF5733, #33FF57, #3357FF, #FFFF33, #FF3829, #000000};
 int []COLORS = {#D9D9D9, #DCBC40, #D0BAE5, #D6AAAA, #A1D1C9, #FF3829, #000000};
 String []subjects = {"文科", "理科", "音樂", "藝術", "體育"};
 String []academics = {"文學院", "理學院", "音樂學院", "藝術學院", "體育學院"};
-
 
 int restartX = 400;
 int restartY = 500;
 int restartWidth = 100;
 int restartHeight = 40;
-
 
 // quiz related constants
 int questionX = width/2;
@@ -62,7 +60,12 @@ int inputWidth = 300;
 int inputHeight = 40;
 int INPUT_MAX_LENGTH = 20;
 
+int startBtnWidth = 112;
+int startBtnHeight = 80;
+int aboutBtnWidth = 122;
+int aboutBtnHeight = 80;
+int restartBtnWidth = 112;
+int restartBtnHeight = 80;
+
 
 Minim minim = new Minim(this);
-PFont TCFont, TCFontBold;
-DoodleJump doodleJump;

@@ -121,7 +121,7 @@ class Quiz {
         exit_counter -= 0.015;
         if(exit_counter <= 0) {
           reset();
-          doodleJump.status = DoodleJumpStatus.PLAYING;
+          game.doodleJump.status = DoodleJumpStatus.PLAYING;
         }
       }
     }
@@ -229,15 +229,15 @@ class Quiz {
     else if (question.type == QuestionType.INPUT_QUESTION && inputText.equals(question.answerStr))
       correct = 2;
     if(correct == 2) {
-      doodleJump.correctSound.rewind();
-      doodleJump.correctSound.play();
+      game.doodleJump.correctSound.rewind();
+      game.doodleJump.correctSound.play();
       //add point only when correct
       if (pendingAddScore && pendingScoreIndex >= 0) {
-        doodleJump.scores[pendingScoreIndex] += pendingScoreAmount;
+        game.doodleJump.scores[pendingScoreIndex] += pendingScoreAmount;
       }
     } else {
-      doodleJump.wrongSound.rewind();
-      doodleJump.wrongSound.play();
+      game.doodleJump.wrongSound.rewind();
+      game.doodleJump.wrongSound.play();
     }
     exit_counter = 1;
     pendingAddScore = false;

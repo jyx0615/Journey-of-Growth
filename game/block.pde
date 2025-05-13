@@ -76,7 +76,7 @@ class Block {
     for (int i = 0; i < blockCount; i++) {
       int blockLeft = left + BLOCK_IMG_WIDTH * i;
       int index = iconType.ordinal();
-      image(doodleJump.blockImgs[index], blockLeft, y, BLOCK_IMG_WIDTH, BLOCK_HEIGHT);
+      image(game.doodleJump.blockImgs[index], blockLeft, y, BLOCK_IMG_WIDTH, BLOCK_HEIGHT);
     }
 
     if(iconType != IconType.NONE && showIcon)
@@ -89,10 +89,10 @@ class Block {
       return;
     } else if (index >= 5) {
       imageMode(CORNER);
-      image(doodleJump.icons[index], iconX, y, ICONSIZE, ICONSIZE);
+      image(game.doodleJump.icons[index], iconX, y, ICONSIZE, ICONSIZE);
     } else {
       imageMode(CORNER);
-      image(doodleJump.icons[index], iconX, y, ICONSIZE, ICONSIZE);
+      image(game.doodleJump.icons[index], iconX, y, ICONSIZE, ICONSIZE);
     }
   }
 }

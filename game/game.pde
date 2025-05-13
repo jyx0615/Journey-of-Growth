@@ -7,8 +7,131 @@ enum Status {
   LEVEL2,
 }
 
-Status gameStatus = Status.START;
-AudioPlayer openningMusic, level1Music, level2Music;
+PFont TCFont, TCFontBold;
+
+class Game {
+  AudioPlayer openningMusic, level1Music, level2Music;
+  Status gameStatus;
+  DoodleJump doodleJump;
+  PImage startBackground, startButtonImg, aboutUsButtonImg, playerImg;
+  String[] lines;
+
+  Game() {
+    loadMusics();
+    loadFonts();
+    loadBackgroundImages();
+    doodleJump = new DoodleJump();
+    gameStatus = Status.START;
+    openningMusic.loop();
+
+    // Load the about us content from the text file
+    lines = loadStrings("aboutUs.txt");
+  }
+
+  void loadMusics() {
+    openningMusic = minim.loadFile("musics/openning.mp3");
+    level1Music = minim.loadFile("musics/level1.mp3");
+    level2Music = minim.loadFile("musics/level2.mp3");
+  }
+
+  void loadFonts() {
+    TCFont = createFont("fonts/Iansui-Regular.ttf", 15);
+    TCFontBold = createFont("fonts/NotoSansTC-Bold.ttf", 15);
+  }
+
+  void loadBackgroundImages() {
+    startBackground = loadImage("background/startBackground.png");
+    startButtonImg = loadImage("icons/button_start.png");
+    aboutUsButtonImg = loadImage("icons/button_aboutUs.png");
+    playerImg = loadImage("icons/player.png");
+  }
+
+  void draw() {
+    switch(gameStatus){
+      case START:
+        drawStartPage();
+        break;
+      case ABOUTUS:
+        drawAboutUS();
+        break;
+      case LEVEL1:
+        doodleJump.draw();
+        break;
+      case LEVEL2:
+        break;
+    }
+  }
+
+  void drawStartPage() {
+    background(#88379B);
+    imageMode(CENTER); 
+    image(startBackground, width/2, height/2, width, height);
+    image(playerImg, width/3, height/6*5-200, 288, 288);
+    image(startButtonImg, width/3, height/6*5, startBtnWidth, startBtnHeight);
+    image(aboutUsButtonImg, width/11*9, height/6*4, aboutBtnWidth, aboutBtnHeight);
+  }
+
+  void drawAboutUS() {
+    drawStartPage();
+
+    textFont(TCFont);
+    rectMode(CENTER);
+    fill(255, 240);
+    stroke(0);
+    rect(width/2, height/2, 520, 600, 20);
+    
+    fill(0);
+    textAlign(CENTER, TOP);
+    textSize(30);
+    text("關於我們", width/2, height/2 - 250);
+    
+    textAlign(LEFT, TOP);
+    textSize(20);
+    for (int i = 0; i < lines.length; i++) {
+      text(lines[i], width/2 - 230, height/2 - 200 + (i * 30));
+    }
+    
+    textAlign(CENTER, BOTTOM);
+    textSize(12);
+    text("點擊任意位置關閉", width/2, height/2 + 280);
+  }
+
+  void keyPressedCheck() {
+    if(gameStatus == Status.LEVEL1){
+      doodleJump.keyPressedCheck();
+    }
+  }
+
+  void mousePressedCheck() {
+    switch (gameStatus) {
+      case START:
+        int aboutX = width/11*9;
+        int aboutY = height/6*4;
+        if (mouseX > aboutX - aboutBtnWidth/2 && mouseX < aboutX + aboutBtnWidth/2 && 
+            mouseY > aboutY - startBtnHeight/2 && mouseY < aboutY + startBtnHeight/2)
+          gameStatus = Status.ABOUTUS;
+
+        int startX = width/3;
+        int startY = height/6*5;
+        if (mouseX > startX - startBtnWidth/2 && mouseX < startX + startBtnWidth/2 && 
+            mouseY > startY - aboutBtnHeight/2 && mouseY < startY + aboutBtnHeight/2) {
+          gameStatus = Status.LEVEL1;
+          doodleJump.status = DoodleJumpStatus.START;
+        }
+        break;
+
+      case ABOUTUS:
+        gameStatus = Status.START;
+        break;
+
+      case LEVEL1:
+        doodleJump.mousePressedCheck();
+        break;
+    }
+  }
+}
+
+Game game;
 
 void setup() {
   size(800, 800);
@@ -19,70 +142,17 @@ void setup() {
   answerX = width/2;
   restartX = width/2;
 
-  // Load content from JSON
-  JSONObject content = loadJSONObject("content.json");
-  aboutUsContent = content.getString("aboutUsContent");
-
-  doodleJump = new DoodleJump();
-  TCFont = createFont("fonts/Iansui-Regular.ttf", 15);
-  TCFontBold = createFont("fonts/NotoSansTC-Bold.ttf", 15);
-  loadMusics();
-
-  openningMusic.loop();
-}
-
-void loadMusics() {
-  openningMusic = minim.loadFile("musics/openning.mp3");
-  level1Music = minim.loadFile("musics/level1.mp3");
-  level2Music = minim.loadFile("musics/level2.mp3");
+  game = new Game();
 }
 
 void draw() {
-  switch(gameStatus){
-    case START:
-      drawStartPage();
-      break;
-    case ABOUTUS:
-      drawAboutUS();
-      break;
-    case LEVEL1:
-      doodleJump.draw();
-      break;
-    case LEVEL2:
-      break;
-  }
+  game.draw();
 }
 
 void keyPressed() {
-  if(gameStatus == Status.LEVEL1){
-    doodleJump.keyPressedCheck();
-  }
+  game.keyPressedCheck();
 }
 
 void mousePressed() {
-  switch (gameStatus) {
-    case START:
-      int aboutX = width/11*9;
-      int aboutY = height/6*4;
-      if (mouseX > aboutX - (buttonW+10)/2 && mouseX < aboutX + (buttonW+10)/2 && 
-          mouseY > aboutY - buttonH/2 && mouseY < aboutY + buttonH/2)
-        gameStatus = Status.ABOUTUS;
-
-      int startX = width/3;
-      int startY = height/6*5;
-      if (mouseX > startX - buttonW/2 && mouseX < startX + buttonW/2 && 
-          mouseY > startY - buttonH/2 && mouseY < startY + buttonH/2) {
-        gameStatus = Status.LEVEL1;
-      }
-      break;
-
-    case ABOUTUS:
-      gameStatus = Status.START;
-      break;
-
-    case LEVEL1:
-      doodleJump.mousePressedCheck();
-      break;
-  }
-  
+  game.mousePressedCheck();
 }

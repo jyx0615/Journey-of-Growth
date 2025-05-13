@@ -46,13 +46,13 @@ class Role {
 
   void updateByKeyPress() {
     // move when not frozen
-    if(doodleJump.freezeTimer == 0) {
+    if(game.doodleJump.freezeTimer == 0) {
       if(key == ' ' && curJumpCount < MAX_JUMP_COUNT) {
         jump = true;
         curV = JUMP_V0;
         curJumpCount += 1;
-        doodleJump.jumpSound.rewind();
-        doodleJump.jumpSound.play();
+        game.doodleJump.jumpSound.rewind();
+        game.doodleJump.jumpSound.play();
       }
       if(key == CODED) {
         if(keyCode == LEFT){
@@ -72,7 +72,7 @@ class Role {
 
   void draw() {
     // if frozen use rock.png
-    if(doodleJump.freezeTimer > 0){
+    if(game.doodleJump.freezeTimer > 0){
       image(rockImg, curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
       return;
     }
@@ -83,12 +83,12 @@ class Role {
     }
 
     if(faceRight){
-      if (doodleJump.fireTimer > 0)
+      if (game.doodleJump.fireTimer > 0)
         image(roleFireImgs[indexToShow], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
       else
         image(roleImgs[indexToShow], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
     } else {
-      if (doodleJump.fireTimer > 0)
+      if (game.doodleJump.fireTimer > 0)
         image(roleFireImgsLeft[indexToShow], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);
       else
         image(roleImgsLeft[indexToShow], curX, curY, ROLE_WIDTH, ROLE_HEIGHT);

@@ -16,10 +16,13 @@ class DoodleJump {
     int fireTimer, freezeTimer, canvaOffset;
     AudioPlayer correctSound, wrongSound, jumpSound, pickSound, gameOverSound;
     int []scores = new int[5];
+    Question[] questions;
     PImage[] blockImgs = new PImage[8];
     PImage[] icons = new PImage[8];
+    PImage[] symbols = new PImage[8];
+    PImage[] resultBackgrounds = new PImage[8];
+    PImage background, gameoverbackground, restartButtonImg, envelopeBackground;
     PImage door;
-    Question[] questions;
 
     String intro = "恭喜你錄取星盤學園！\n剛入校的你一定對未來感到迷惘\n吧，讓我們藉由小遊戲來找到\n屬於你的方向吧！想要在本\n學園畢業，會有兩個階段需\n要完成。首先你要通過\n第一階段的測驗，我們會\n按照分數將你分配到不同學院。\n接著你需要使用第一階段所獲得的\n能力去闖學院的畢業關卡。\n期待你能獲得不凡的成就！";
     int infoIndex = 0;
@@ -34,7 +37,7 @@ class DoodleJump {
         loadSounds();
         loadBlocks();
         loadSubjectImages();
-        loadStartPageImages();
+        loadBackgroundImages();
         loadQuestions();
         loadResultPage();
         reset();
@@ -59,13 +62,9 @@ class DoodleJump {
         icons[7] = loadImage("subjects/quiz.png");
     }
     
-    void loadStartPageImages() {
+    void loadBackgroundImages() {
       envelopeBackground = loadImage("background/envelope.png");
-      startBackground = loadImage("background/startBackground.png");
-      startButtonImg = loadImage("icons/button_start.png");
-      aboutUsButtonImg = loadImage("icons/button_aboutUs.png");
-      playerImg = loadImage("icons/player.png");
-      game1background = loadImage("background/game1background.png");
+      background = loadImage("background/game1background.png");
       gameoverbackground = loadImage("background/gameOver.png");
       restartButtonImg = loadImage("icons/button_restart.png");
     }
@@ -118,32 +117,31 @@ class DoodleJump {
     }
     
     Block[] randomGenBlocks() {
-        Block[] Blocks = new Block[MAX_LEVEL * 4 + 1];
+        Block[] Blocks = new Block[MAX_LEVEL * BLOCK_IN_ONE_LEVEL + 1];
         for (int level = 0; level < MAX_LEVEL; level ++) {
             int blockLeft = int(random(40, 120));
             int blockCount = int(random(2, 4));
-            Blocks[4 * level] = new Block(blockLeft, level, blockCount);
+            Blocks[BLOCK_IN_ONE_LEVEL * level] = new Block(blockLeft, level, blockCount);
             
             blockLeft = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(50, 120));
             blockCount = int(random(1, 4));
-            Blocks[4 * level + 1] = new Block(blockLeft, level, blockCount);
+            Blocks[BLOCK_IN_ONE_LEVEL * level + 1] = new Block(blockLeft, level, blockCount);
 
-            blockLeft = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(50, 120));
+            blockLeft = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(40, 100));
             blockCount = int(random(2, 4));
-            Blocks[4 * level + 2] = new Block(blockLeft, level, blockCount);
+            Blocks[BLOCK_IN_ONE_LEVEL * level + 2] = new Block(blockLeft, level, blockCount);
 
             blockLeft = blockLeft + blockCount * BLOCK_IMG_WIDTH + int(random(50, 120));
             blockCount = int(random(1, 4));
-            Blocks[4 * level + 3] = new Block(blockLeft, level, blockCount);
-
+            Blocks[BLOCK_IN_ONE_LEVEL * level + 3] = new Block(blockLeft, level, blockCount);
         }
         
-        Blocks[4 * MAX_LEVEL] = new Block(0, MAX_LEVEL, int(width/BLOCK_IMG_WIDTH) + 1);
+        Blocks[BLOCK_IN_ONE_LEVEL * MAX_LEVEL] = new Block(0, MAX_LEVEL, int(width/BLOCK_IMG_WIDTH) + 1);
         return Blocks;
     }
 
     boolean hitBottomCheck() {
-        for (int i = 4 * base; i < 4 * (base + SHOW_LEVEL_COUNT); i++) {
+        for (int i = BLOCK_IN_ONE_LEVEL * base; i < BLOCK_IN_ONE_LEVEL * (base + SHOW_LEVEL_COUNT); i++) {
             int blockBottom = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT + BLOCK_HEIGHT;
             int blockLeft = blocks[i].left;
             int blockRight = blocks[i].left + blocks[i].blockCount * BLOCK_IMG_WIDTH;
@@ -156,7 +154,7 @@ class DoodleJump {
     }
 
     boolean stayTopCheck() {
-        for (int i = 4 * base; i < 4 * (base + SHOW_LEVEL_COUNT) + 1; i++) {
+        for (int i = BLOCK_IN_ONE_LEVEL * base; i < BLOCK_IN_ONE_LEVEL * (base + SHOW_LEVEL_COUNT) + 1; i++) {
             int blockTop = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
             int blockLeft = blocks[i].left;
             int blockRight = blocks[i].left + blocks[i].blockCount * BLOCK_IMG_WIDTH;
@@ -171,7 +169,7 @@ class DoodleJump {
     }
 
     boolean hitIconCheck() {
-        for (int i = 4 * base; i < 4 * (base + SHOW_LEVEL_COUNT); i++) {
+        for (int i = BLOCK_IN_ONE_LEVEL * base; i < BLOCK_IN_ONE_LEVEL * (base + SHOW_LEVEL_COUNT); i++) {
             IconType type = blocks[i].iconType;
             if(type == IconType.NONE || !blocks[i].showIcon)
             continue;
@@ -246,7 +244,7 @@ class DoodleJump {
         background(#071527);
         imageMode(CENTER);
         image(gameoverbackground,width/2, height/2,600,600);
-        image(restartButtonImg, restartX, restartY ,buttonW, buttonH);
+        image(restartButtonImg, restartX, restartY ,restartBtnWidth, restartBtnHeight);
     }
 
     void drawResultPage() {
@@ -314,7 +312,7 @@ class DoodleJump {
  
     void draw() {
         imageMode(CENTER);
-        image(game1background,width/2,height/2,width,height);
+        image(background, width/2, height/2, width, height);
         textFont(TCFont);
 
         if(status == DoodleJumpStatus.START) {
@@ -369,7 +367,7 @@ class DoodleJump {
         }
 
         // draw the blocks
-        for (int i = 4 * base; i < 4 * (base + SHOW_LEVEL_COUNT); i++) {
+        for (int i = BLOCK_IN_ONE_LEVEL * base; i < BLOCK_IN_ONE_LEVEL * (base + SHOW_LEVEL_COUNT); i++) {
             int blockY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
             blocks[i].draw(blockY);
         }
@@ -402,8 +400,8 @@ class DoodleJump {
             case START:
                 if(key == ENTER || key == RETURN)
                     status = DoodleJumpStatus.PLAYING;
-                    level1Music.loop();
-                    openningMusic.close();
+                    game.level1Music.loop();
+                    game.openningMusic.close();
                 break;
             case GAMEOVER:
                 if(key == ENTER || key == RETURN)
