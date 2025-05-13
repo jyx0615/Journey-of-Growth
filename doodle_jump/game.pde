@@ -2,9 +2,9 @@ enum Status {
   START,
   PLAYING,
   GAMEOVER,
+  END,
   QUIZ,
   ABOUT_US,
-  HELP
 }
 
 class DoodleJump {
@@ -13,7 +13,7 @@ class DoodleJump {
     Block[] blocks;
     Status status;
     int base;
-    boolean gameOver, end, canvaMoving;
+    boolean canvaMoving;
     int fireTimer, freezeTimer, canvaOffset;
     AudioPlayer correctSound, wrongSound, jumpSound, pickSound, gameOverSound;
     int []scores = new int[5];
@@ -21,6 +21,11 @@ class DoodleJump {
     PImage[] icons = new PImage[8];
     PImage door;
     Question[] questions;
+
+    String intro = "恭喜你錄取星盤學園！\n剛入校的你一定對未來感到迷惘\n吧，讓我們藉由小遊戲來找到\n屬於你的方向吧！想要在本\n學園畢業，會有兩個階段需\n要完成。首先你要通過\n第一階段的測驗，我們會\n按照分數將你分配到不同學院。\n接著你需要使用第一階段所獲得的\n能力去闖學院的畢業關卡。\n期待你能獲得不凡的成就！";
+    int infoIndex = 0;
+    int typeInteval = 3;
+    int typeTime = 0;
 
     DoodleJump() {
         role = new Role();
@@ -56,16 +61,16 @@ class DoodleJump {
     }
     
     void loadStartPageImages() {
+      envelopeBackground = loadImage("background/envelope.png");
       startBackground = loadImage("background/startBackground.png");
       startButtonImg = loadImage("icons/button_start.png");
       aboutUsButtonImg = loadImage("icons/button_aboutUs.png");
-      helpButtonImg = loadImage("icons/button_help.png");
       playerImg = loadImage("icons/player.png");
       game1background = loadImage("background/game1background.png");
       gameoverbackground = loadImage("background/gameOver.png");
       restartButtonImg = loadImage("icons/button_restart.png");
-      
     }
+    
     void loadResultPage(){
       symbols[0] = loadImage("icons/literactureSymbol.png");
       symbols[1] = loadImage("icons/mathSymbol.png");
@@ -103,9 +108,7 @@ class DoodleJump {
         role.reset();
         quiz.reset();
         base = MAX_LEVEL - SHOW_LEVEL_COUNT;
-        gameOver = false;
         status = Status.START;
-        end = false;
         fireTimer = 0;
         freezeTimer = 0;
         canvaMoving = false;
@@ -115,9 +118,8 @@ class DoodleJump {
     }
     
     void checkStartPageButtons() {
-      if (showAboutUs || showHelp) {
+      if (showAboutUs) {
         showAboutUs = false;
-        showHelp = false;
         return;
       }
       
@@ -127,15 +129,6 @@ class DoodleJump {
       if (mouseX > startX - buttonW/2 && mouseX < startX + buttonW/2 && 
           mouseY > startY - buttonH/2 && mouseY < startY + buttonH/2) {
         doodleJump.status = Status.PLAYING;
-        return;
-      }
-      
-      // check help button
-      int helpX = width/11*7;
-      int helpY = height/2;
-      if (mouseX > helpX - buttonW/2 && mouseX < helpX + buttonW/2 && 
-          mouseY > helpY - buttonH/2 && mouseY < helpY + buttonH/2) {
-        showHelp = true;
         return;
       }
       
@@ -241,20 +234,6 @@ class DoodleJump {
                                 scores[index] += 1;
                             pickSound.rewind();
                             pickSound.play();
-                            /*
-                            // get quiz by subject type
-                            ArrayList<Integer> matchingQuizzes = new ArrayList<Integer>();
-                            for (int q = 0; q < questions.length; q++)
-                                if (questions[q].subject == blocks[i].subject)
-                                    matchingQuizzes.add(q);
-                            
-                            // get random quiz
-                            if (matchingQuizzes.size() > 0) {
-                                int questionIndex = matchingQuizzes.get(int(random(matchingQuizzes.size())));
-                                quiz.set(questions[questionIndex]);
-                                quiz.show_quiz_content = false;
-                                status = Status.QUIZ;
-                            }*/
                             break;
                     }
                 }
@@ -263,26 +242,27 @@ class DoodleJump {
         return false;
     }
 
+    void drawInfoPage() {
+        image(envelopeBackground, width/2, height/2, 400, 600);
+
+        textFont(TCFont);
+        textAlign(LEFT, TOP);
+        textSize(20);
+        text(intro.substring(0, infoIndex), 80, height/2 + 50);
+        if(infoIndex < intro.length()) {
+            typeTime++;
+            if(typeTime > typeInteval) {
+                infoIndex++;
+                typeTime = 0;
+            }
+        }
+    }
+
     void drawGameOver() {
         background(#071527);
         imageMode(CENTER);
         image(gameoverbackground,width/2, height/2,600,600);
-        /*
-        fill(255, 0, 0);
-        textAlign(CENTER, CENTER);
-        textSize(50);
-        text("Game Over", width/2, height/2);
-        */
-        // restart button
         image(restartButtonImg, restartX, restartY ,buttonW, buttonH);
-        /*
-        rectMode(CENTER);
-        fill(0, 255, 0);
-        rect(restartX, restartY, restartWidth, restartHeight, 20);
-        fill(0);
-        textSize(20);
-        text("Restart", restartX, restartY);
-        */
     }
 
     void drawResultPage() {
@@ -351,27 +331,26 @@ class DoodleJump {
     void draw() {
         if (status == Status.START) {
             drawStartPage();
-        }else{
+        } else {
             imageMode(CENTER);
             image(game1background,width/2,height/2,600,800);
-            //background(#6CE378);
             textFont(TCFont);
         
-            if(gameOver) {
+            if(status == Status.GAMEOVER) {
                 drawGameOver();
                 return;
             }
         
-            if(end) {
+            if(status == Status.END) {
                 drawResultPage();
                 return;
             }
 
             // game over
-            if (!gameOver && base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 600) {
+            if (base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 600) {
                 gameOverSound.rewind();
                 gameOverSound.play();
-                gameOver = true;
+                status = Status.GAMEOVER;
                 return;
             }
 
@@ -417,7 +396,7 @@ class DoodleJump {
                 image(door, doorX, doorY, 50, 60);
                 // touch door or not
                 if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {
-                    end = true;
+                    status = Status.END;
                 }
             }
     
@@ -429,7 +408,7 @@ class DoodleJump {
             
             if(status == Status.QUIZ) {
                 quiz.draw();
-                }
+            }
         }
     }
 }

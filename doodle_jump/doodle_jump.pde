@@ -12,7 +12,6 @@ void setup() {
   // Load content from JSON
   JSONObject content = loadJSONObject("content.json");
   aboutUsContent = content.getString("aboutUsContent");
-  helpContent = content.getString("helpContent");
 
   doodleJump = new DoodleJump();
   TCFont = createFont("fonts/Iansui-Regular.ttf", 15);
@@ -24,7 +23,7 @@ void draw() {
 }
 
 void keyPressed() {
-  if(doodleJump.gameOver) {
+  if(doodleJump.status == Status.GAMEOVER) {
     if(key == ENTER || key == RETURN) {
       doodleJump.reset();
     }
@@ -40,7 +39,7 @@ void mousePressed() {
     doodleJump.checkStartPageButtons();
   } else if(doodleJump.status == Status.QUIZ) {
     doodleJump.quiz.updateByMousePress();
-  } else if(doodleJump.gameOver) {
+  } else if(doodleJump.status == Status.GAMEOVER) {
     if(mouseX > restartX - restartWidth/2 && mouseX < restartX + restartWidth/2 && mouseY > restartY - restartHeight/2 && mouseY < restartY + restartHeight/2) {
       doodleJump.reset();
     }
