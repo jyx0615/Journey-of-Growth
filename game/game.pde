@@ -10,7 +10,7 @@ enum Status {
 PFont TCFont, TCFontBold;
 
 class Game {
-  AudioPlayer openningMusic, level1Music, level2Music;
+  AudioPlayer openningMusic, level1Music, level2Music, click, resultMusic;
   Status gameStatus;
   DoodleJump doodleJump;
   PImage startBackground, startButtonImg, aboutUsButtonImg, playerImg;
@@ -32,6 +32,8 @@ class Game {
     openningMusic = minim.loadFile("musics/openning.mp3");
     level1Music = minim.loadFile("musics/level1.mp3");
     level2Music = minim.loadFile("musics/level2.mp3");
+    click = minim.loadFile("sounds/click.mp3");
+    resultMusic = minim.loadFile("musics/result.mp3");
   }
 
   void loadFonts() {
@@ -65,15 +67,15 @@ class Game {
   void drawStartPage() {
     background(#88379B);
     imageMode(CENTER); 
-    image(startBackground, width/2, height/2, width, height);
-    image(playerImg, width/3, height/6*5-200, 288, 288);
-    image(startButtonImg, width/3, height/6*5, startBtnWidth, startBtnHeight);
-    image(aboutUsButtonImg, width/11*9, height/6*4, aboutBtnWidth, aboutBtnHeight);
+    image(startBackground, 400, 400, 800, 800);
+    image(playerImg,266, 466, 288, 288);
+    image(startButtonImg, 266, 666, startBtnWidth, startBtnHeight);
+    image(aboutUsButtonImg, 550, 533, aboutBtnWidth, aboutBtnHeight);
   }
 
   void drawAboutUS() {
     drawStartPage();
-
+    
     textFont(TCFont);
     rectMode(CENTER);
     fill(255, 240);
@@ -83,17 +85,17 @@ class Game {
     fill(0);
     textAlign(CENTER, TOP);
     textSize(30);
-    text("關於我們", width/2, height/2 - 250);
+    text("關於我們", 400, 150);
     
     textAlign(LEFT, TOP);
     textSize(20);
     for (int i = 0; i < lines.length; i++) {
-      text(lines[i], width/2 - 230, height/2 - 200 + (i * 30));
+      text(lines[i], width/2 -235, height/2 - 200 + (i * 30));
     }
     
     textAlign(CENTER, BOTTOM);
-    textSize(12);
-    text("點擊任意位置關閉", width/2, height/2 + 280);
+    textSize(20);
+    text("點擊任意位置關閉", 400, 680);
   }
 
   void keyPressedCheck() {
@@ -105,16 +107,21 @@ class Game {
   void mousePressedCheck() {
     switch (gameStatus) {
       case START:
-        int aboutX = width/11*9;
-        int aboutY = height/6*4;
+        int aboutX = 550;
+        int aboutY = 533;
         if (mouseX > aboutX - aboutBtnWidth/2 && mouseX < aboutX + aboutBtnWidth/2 && 
             mouseY > aboutY - startBtnHeight/2 && mouseY < aboutY + startBtnHeight/2)
+          click.rewind();
+          click.play();
           gameStatus = Status.ABOUTUS;
+          
 
-        int startX = width/3;
-        int startY = height/6*5;
+        int startX = 266;
+        int startY = 666;
         if (mouseX > startX - startBtnWidth/2 && mouseX < startX + startBtnWidth/2 && 
             mouseY > startY - aboutBtnHeight/2 && mouseY < startY + aboutBtnHeight/2) {
+          click.rewind();
+          click.play();
           gameStatus = Status.LEVEL1;
           doodleJump.status = DoodleJumpStatus.START;
         }

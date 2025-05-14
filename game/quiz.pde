@@ -84,7 +84,7 @@ class Quiz {
     if (!show_quiz_content) {
       // Draw the quiz start background
       if (transitionProgress < 1) {
-        transitionProgress += 0.02; // Adjust speed of transition
+        transitionProgress += 0.05; // Adjust speed of transition
         float scale = min(map(transitionProgress, 0, 1, 0, 1), 1);
         float centerX = width / 2;
         float centerY = 360;

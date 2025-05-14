@@ -14,17 +14,18 @@ class DoodleJump {
     int base;
     boolean canvaMoving;
     int fireTimer, freezeTimer, canvaOffset;
-    AudioPlayer correctSound, wrongSound, jumpSound, pickSound, gameOverSound;
+    AudioPlayer correctSound, wrongSound, jumpSound, pickSound, gameOverSound, ClockTicking;
     int []scores = new int[5];
     Question[] questions;
     PImage[] blockImgs = new PImage[8];
     PImage[] icons = new PImage[8];
     PImage[] symbols = new PImage[8];
     PImage[] resultBackgrounds = new PImage[8];
+    PImage[] weapons = new PImage[8];
     PImage background, gameoverbackground, restartButtonImg, envelopeBackground;
     PImage door;
 
-    String intro = "恭喜你錄取星盤學園！\n剛入校的你一定對未來感到迷惘\n吧，讓我們藉由小遊戲來找到\n屬於你的方向吧！想要在本\n學園畢業，會有兩個階段需\n要完成。首先你要通過\n第一階段的測驗，我們會\n按照分數將你分配到不同學院。\n接著你需要使用第一階段所獲得的\n能力去闖學院的畢業關卡。\n期待你能獲得不凡的成就！";
+    String intro = "恭喜你錄取星盤學園！\n剛入校的你一定對未來感到迷惘吧\n讓我們藉由小遊戲來找到\n屬於你的方向吧！\n想要在本學園畢業，會有兩個階段\n需要完成。\n\n首先你要通過第一階段的測驗，\n我們會按照分數將你分配到不同\n學院。接著你需要使用第一階段所\n獲得的能力去闖學院的畢業關卡。\n期待你能獲得不凡的成就！";
     int infoIndex = 0;
     int typeInteval = 3;
     int typeTime = 0;
@@ -49,6 +50,7 @@ class DoodleJump {
         jumpSound = minim.loadFile("sounds/jump.mp3");
         pickSound = minim.loadFile("sounds/pick.mp3");
         gameOverSound = minim.loadFile("sounds/gameover.mp3");
+        ClockTicking = minim.loadFile("sounds/ClockTicking.mp3");
     }
 
     void loadSubjectImages(){
@@ -80,6 +82,11 @@ class DoodleJump {
       resultBackgrounds[2] = loadImage("icons/music_recordingStudio.png");
       resultBackgrounds[3] = loadImage("icons/art_studio.png");
       resultBackgrounds[4] = loadImage("icons/sports_sportfield.png");
+      weapons[0] = loadImage("icons/literacture.png");
+      weapons[1] = loadImage("icons/math.png");
+      weapons[2] = loadImage("icons/music.png");
+      weapons[3] = loadImage("icons/art.png");
+      weapons[4] = loadImage("icons/sports.png");
     }
 
     void loadQuestions() {
@@ -111,7 +118,7 @@ class DoodleJump {
         fireTimer = 0;
         freezeTimer = 0;
         canvaMoving = false;
-        canvaOffset = 200;
+        canvaOffset = 220;
         for(int i = 0; i < scores.length; i ++)
             scores[i] = 0;
     }
@@ -155,7 +162,7 @@ class DoodleJump {
 
     boolean stayTopCheck() {
         for (int i = BLOCK_IN_ONE_LEVEL * base; i < BLOCK_IN_ONE_LEVEL * (base + SHOW_LEVEL_COUNT) + 1; i++) {
-            int blockTop = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
+            int blockTop = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT/5*6;
             int blockLeft = blocks[i].left;
             int blockRight = blocks[i].left + blocks[i].blockCount * BLOCK_IMG_WIDTH;
             if(role.curX < blockRight && role.curX + ROLE_WIDTH > blockLeft) {
@@ -173,7 +180,7 @@ class DoodleJump {
             IconType type = blocks[i].iconType;
             if(type == IconType.NONE || !blocks[i].showIcon)
             continue;
-            int iconY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT - ICONSIZE;
+            int iconY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT/5*6 - ICONSIZE;
             if(role.curX + ROLE_WIDTH/2 > blocks[i].iconX && role.curX + ROLE_WIDTH/2 < blocks[i].iconX + ICONSIZE) {
                 if(role.curY + ROLE_HEIGHT >= iconY && role.curY + ROLE_HEIGHT <= iconY + ICONSIZE){
                     blocks[i].showIcon = false;
@@ -188,6 +195,8 @@ class DoodleJump {
                         case CLOCK:
                             println("撿到了 clock，角色凍結");
                             freezeTimer = FREEZE_DURATION;
+                            ClockTicking.rewind();
+                            ClockTicking.play();
                             break;
 
                         case QUIZ:
@@ -197,7 +206,8 @@ class DoodleJump {
                             quiz.show_quiz_content = false;
                             status = DoodleJumpStatus.QUIZ;
                             
-                            int scoreToAdd = (fireTimer > 0) ? 10 : 1;
+                            //int scoreToAdd = (fireTimer > 0) ? 10 : 1;
+                            int scoreToAdd = 10;
                             
                             Subject qSubject = quiz.question.subject;
                             int qIndex = qSubject.ordinal();
@@ -226,11 +236,13 @@ class DoodleJump {
 
     void drawInfoPage() {
         image(envelopeBackground, width/2, height/2, 400, 600);
-
+        
         textFont(TCFont);
+        fill(0);
         textAlign(LEFT, TOP);
-        textSize(20);
-        text(intro.substring(0, infoIndex), 260, height/2 + 50);
+        textSize(20);        
+        textLeading(32);
+        text(intro.substring(0, infoIndex), 260, 250);
         if(infoIndex < intro.length()) {
             typeTime++;
             if(typeTime > typeInteval) {
@@ -238,6 +250,8 @@ class DoodleJump {
                 typeTime = 0;
             }
         }
+        textAlign(CENTER, CENTER);
+        text("按下ENTER開始遊戲", 400, 760);
     }
 
     void drawGameOver() {
@@ -265,48 +279,60 @@ class DoodleJump {
         imageMode(CENTER);
         textAlign(CENTER, CENTER);
         textFont(TCFontBold);
-        image(resultBackgrounds[maxIndex], width/2, height/2, width, height);
-        image(symbols[maxIndex], width*0.3, height*0.24, 228*0.8, 228*0.8);
+        image(resultBackgrounds[maxIndex], 400, 400, 800, 800);
+        image(symbols[maxIndex], 240, 124, 183, 183);
         
-        float textX = width * 0.7;
+        rectMode(CENTER);
+        fill(255, 50);
+        stroke(0);
+        rect(240, 500, 200, 200, 10);
+        image(weapons[maxIndex], 240, 500, 200, 200);
+        
+        float textX = 560;
         fill(255);
         textSize(30);
         text("恭喜你被分配到", textX, height * 0.15);
         text("你的最高分科目", textX, height * 0.45);
         text("得分", textX, height * 0.75);
+        text("你的技能", 240, height * 0.45);
       
         textSize(50);
         fill(COLORS[maxIndex]);
         text(academics[maxIndex], textX, height * 0.25);
         text(subjects[maxIndex], textX, height * 0.53);
         text(str(maxScore), textX, height * 0.83);
+        
     }
 
     void drawBottomSection() {
         rectMode(CORNER);
         fill(0);
-        rect(0, 600, width, height - 600);
+        rect(0, 700, width, height - 600);
 
         fill(255);
         textAlign(CORNER, CORNER);
         textSize(20);
         // scores
         for(int i = 0; i < scores.length; i ++){
-            text(subjects[i] + ": " + scores[i], 20 + i * 100, 620);
+            text(subjects[i] + ": " + scores[i], 20 + i * 90, 770);
         }
         
         // show fire mode time
         if(fireTimer > 0) {
             fireTimer --;
             fill(#FF5733);
-            text("火焰模式: " + fireTimer / 60 + "秒", 250, 620);
+            text("專注模式: " + fireTimer / 60 + "秒", 490, 770);
+            fill(255);
+            text("獲得獎狀，讓你信心爆棚！心情好，做事更有效率！趁這段黃金時間瘋狂加分吧", 20, 730);
         }
         
         // show frozen mode time
         if(freezeTimer > 0) {
             freezeTimer --;
             fill(#3357FF);
-            text("凍結: " + freezeTimer / 60 + "秒", 250, 650);
+            text("遲到效應: " + freezeTimer / 60 + "秒", 650, 770);
+            fill(255);
+            text("遲到了！時間的壓力讓你瞬間凍住，心情有點低落...暫時無法行動", 20, 730);
         }
     }
  
@@ -331,7 +357,7 @@ class DoodleJump {
         }
 
         // game over
-        if (base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 600) {
+        if (base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 700) {
             gameOverSound.rewind();
             gameOverSound.play();
             status = DoodleJumpStatus.GAMEOVER;
@@ -368,7 +394,7 @@ class DoodleJump {
 
         // draw the blocks
         for (int i = BLOCK_IN_ONE_LEVEL * base; i < BLOCK_IN_ONE_LEVEL * (base + SHOW_LEVEL_COUNT); i++) {
-            int blockY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT;
+            int blockY = canvaOffset + (blocks[i].level - base - 1) * LAYER_HEIGHT/5*6;
             blocks[i].draw(blockY);
         }
     
@@ -376,7 +402,7 @@ class DoodleJump {
         if (base == 0) {
             Block topRightBlock = blocks[1];
             int doorX = topRightBlock.left + topRightBlock.blockCount * BLOCK_IMG_WIDTH - 50;  // 門放在右邊平台的右側
-            int doorY = canvaOffset - LAYER_HEIGHT - 60;
+            int doorY = canvaOffset - LAYER_HEIGHT/5*6 - 60;
             image(door, doorX, doorY, 50, 60);
             // touch door or not
             if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {

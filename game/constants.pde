@@ -1,12 +1,12 @@
-int FIRE_DURATION = 1200; // 20秒 × 60幀 = 1200
+int FIRE_DURATION = 600; // 10秒 × 60幀 = 600
 int FREEZE_DURATION = 300; // 5秒 × 60幀 = 300
 int ROLE_ACTION_COUNT = 2;
 int BLOCK_IN_ONE_LEVEL = 4;
 
 // opperating settings
 int MAX_JUMP_COUNT = 2;
-float JUMP_V0 = -8;
-float ACCELERATE = 0.3;
+float JUMP_V0 = -12;
+float ACCELERATE = 0.6;
 int LAYER_HEIGHT = 100;
 int BLOCK_HEIGHT = 20;
 int ROLE_HEIGHT = 61;
@@ -34,7 +34,7 @@ int questionX = width/2;
 int questionY = 100;
 
 int answerX = 480;
-int answerY = 700;
+int answerY = 680;
 
 int submitX = width/2;
 int submitY = 600;
@@ -60,12 +60,12 @@ int inputWidth = 300;
 int inputHeight = 40;
 int INPUT_MAX_LENGTH = 20;
 
-int startBtnWidth = 112;
-int startBtnHeight = 80;
-int aboutBtnWidth = 122;
-int aboutBtnHeight = 80;
-int restartBtnWidth = 112;
-int restartBtnHeight = 80;
+int startBtnWidth = 140;
+int startBtnHeight = 100;
+int aboutBtnWidth = 140;
+int aboutBtnHeight = 100;
+int restartBtnWidth = 140;
+int restartBtnHeight = 100;
 
 
 Minim minim = new Minim(this);
