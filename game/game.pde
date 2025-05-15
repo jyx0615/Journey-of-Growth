@@ -110,11 +110,11 @@ class Game {
         int aboutX = 550;
         int aboutY = 533;
         if (mouseX > aboutX - aboutBtnWidth/2 && mouseX < aboutX + aboutBtnWidth/2 && 
-            mouseY > aboutY - startBtnHeight/2 && mouseY < aboutY + startBtnHeight/2)
+            mouseY > aboutY - startBtnHeight/2 && mouseY < aboutY + startBtnHeight/2){
           click.rewind();
           click.play();
           gameStatus = Status.ABOUTUS;
-          
+          }
 
         int startX = 266;
         int startY = 666;

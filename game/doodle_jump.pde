@@ -1,5 +1,6 @@
 enum DoodleJumpStatus {
   START,
+  RULE,
   PLAYING,
   GAMEOVER,
   END,
@@ -25,7 +26,8 @@ class DoodleJump {
     PImage background, gameoverbackground, restartButtonImg, envelopeBackground;
     PImage door;
 
-    String intro = "恭喜你錄取星盤學園！\n剛入校的你一定對未來感到迷惘吧\n讓我們藉由小遊戲來找到\n屬於你的方向吧！\n想要在本學園畢業，會有兩個階段\n需要完成。\n\n首先你要通過第一階段的測驗，\n我們會按照分數將你分配到不同\n學院。接著你需要使用第一階段所\n獲得的能力去闖學院的畢業關卡。\n期待你能獲得不凡的成就！";
+    String intro = "恭喜你錄取星盤學園！\n剛入校的你一定對未來感到迷惘吧\n讓我們藉由小遊戲來找到\n屬於你的方向吧！\n想要在本學園畢業，會有兩個階段\n需要完成。\n\n首先你要通過第一階段的測驗，\n我們會按照分數將你分配到不同\n學院。\n接著你需要使用第一階段所\n獲得的能力去闖學院的畢業關卡。\n期待你能獲得不凡的成就！";
+    String rule1 = "每一步都將影響你未來的方向──\n把握每一次跳躍與選擇，努力朝著你的學院邁進吧！\n\n請先確認你的鍵盤為英文模式！\n左右方向鍵：移動角色\n空白鍵：跳躍（最多可連跳兩次！）\n\n碰到：\n科目 Icon：+1 分，將依照你最高分的科目來分配學院\n鬧鐘：角色定格 5 秒，象徵遲到造成行動受限\n獎狀：進入衝刺模式！10 秒內每次加分 +10 分\n考試卷：直接獲得 10 分，知識就是力量！\n碰到最頂層的門即結束這一階段";
     int infoIndex = 0;
     int typeInteval = 3;
     int typeTime = 0;
@@ -251,9 +253,30 @@ class DoodleJump {
             }
         }
         textAlign(CENTER, CENTER);
-        text("按下ENTER開始遊戲", 400, 760);
+        text("按下ENTER下一步", 400, 760);
     }
-
+    void drawRule1Page(){
+      textFont(TCFont);
+      rectMode(CENTER);
+      fill(255, 240);
+      stroke(0);
+      rect(width/2, height/2, 520, 600, 20);
+      
+      fill(0);
+      textAlign(CENTER, CENTER);
+      textSize(30);
+      text("操作說明", 400, 150);
+      textSize(20);
+      text("按下ENTER開始遊戲", 400, 760);
+      textAlign(LEFT, CENTER);
+      textLeading(40);
+      text(rule1, 160, 430);
+      imageMode(CENTER);
+      image(icons[6], 620, 550, 40, 40);
+      image(icons[5], 620, 590, 40, 40);
+      image(icons[7], 620, 630, 40, 40);
+      
+    }
     void drawGameOver() {
         background(#071527);
         imageMode(CENTER);
@@ -345,6 +368,11 @@ class DoodleJump {
             drawInfoPage();
             return;
         }
+        
+        if(status == DoodleJumpStatus.RULE) {
+            drawRule1Page();
+            return;
+        }
     
         if(status == DoodleJumpStatus.GAMEOVER) {
             drawGameOver();
@@ -425,10 +453,13 @@ class DoodleJump {
         switch (status) {
             case START:
                 if(key == ENTER || key == RETURN)
-                    status = DoodleJumpStatus.PLAYING;
+                    status = DoodleJumpStatus.RULE;
                     game.level1Music.loop();
                     game.openningMusic.close();
                 break;
+            case RULE:
+                if(key == ENTER || key == RETURN)
+                    status = DoodleJumpStatus.PLAYING;
             case GAMEOVER:
                 if(key == ENTER || key == RETURN)
                     reset();
