@@ -20,12 +20,18 @@ enum IconType {
 
   Subject toSubject() {
     switch (this) {
-      case LITERATURE: return Subject.LITERATURE;
-      case SCIENCE: return Subject.SCIENCE;
-      case MUSIC: return Subject.MUSIC;
-      case ART: return Subject.ART;
-      case SPORTS: return Subject.SPORTS;
-      default: return Subject.NONE;
+      case LITERATURE:
+        return Subject.LITERATURE;
+      case SCIENCE:
+        return Subject.SCIENCE;
+      case MUSIC:
+        return Subject.MUSIC;
+      case ART:
+        return Subject.ART;
+      case SPORTS:
+        return Subject.SPORTS;
+      default:
+        return Subject.NONE;
     }
   }
 }
@@ -53,11 +59,11 @@ class Block {
   IconType getRandomIconType() {
     //add quiz every 5 level
     if (level % 5 == 0) {
-    return IconType.QUIZ;
+      return IconType.QUIZ;
     }
-    
+
     int index = 0;
-    if(random(1) > 0.8) {
+    if (random(1) > 0.8) {
       index = int(random(5, 7));
     } else {
       index = int(random(0, 5));
@@ -79,7 +85,7 @@ class Block {
       image(game.doodleJump.blockImgs[index], blockLeft, y, BLOCK_IMG_WIDTH, BLOCK_HEIGHT);
     }
 
-    if(iconType != IconType.NONE && showIcon)
+    if (iconType != IconType.NONE && showIcon)
       drawIcon(y - ICONSIZE);
   }
 

@@ -4,7 +4,7 @@ enum QuestionType {
 }
 
 class Question {
-  QuestionType type;  // 1 => multiple choice, 2 => input question 
+  QuestionType type;  // 1 => multiple choice, 2 => input question
   String questionStr;
   String answerStr;
   int answerNum;
@@ -26,7 +26,7 @@ class Question {
     } else if (type == QuestionType.INPUT_QUESTION) {
       answerStr = obj.getString("answer");
     }
-    
+
     // get subject
     if (obj.hasKey("subject")) {
       String subjectStr = obj.getString("subject");
@@ -97,8 +97,8 @@ class Quiz {
         imageMode(CENTER);
         image(quizStartBackground, width/2, 360, 400, 600);
         show_quiz_content = true; // Show quiz content after transition
-      } 
-    } 
+      }
+    }
     // draw the quiz background with content
     else {
       imageMode(CENTER);
@@ -117,9 +117,9 @@ class Quiz {
       drawResult();
 
       // Leave the quiz section
-      if(exit_counter > 0) {
+      if (exit_counter > 0) {
         exit_counter -= 0.015;
-        if(exit_counter <= 0) {
+        if (exit_counter <= 0) {
           reset();
           game.doodleJump.state = DoodleJumpState.PLAYING;
         }
@@ -136,13 +136,13 @@ class Quiz {
           handleSubmit();
         } else if (key != CODED && inputText.length() < INPUT_MAX_LENGTH) {
           inputText += key;
-        } 
+        }
         break;
 
       case MULTIPLE_CHOICE:
-        if(key == '1' || key == '2' || key == '3' || key == '4') {
+        if (key == '1' || key == '2' || key == '3' || key == '4') {
           int choice = int(key) - 49;
-          if(choice == activateBtn) {
+          if (choice == activateBtn) {
             activateBtn = -1;
           } else {
             activateBtn = choice;
@@ -156,21 +156,21 @@ class Quiz {
 
   void updateByMousePress() {
     // check if a choice button is clicked
-     if (question.type == QuestionType.MULTIPLE_CHOICE) {
-       for (int i = 0; i < question.choices.length; i ++) {
-         int startX = buttonX + buttonOffsetX * i;
-         if(mouseX > startX && mouseX < startX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight){
-           if(activateBtn == i)
-             activateBtn = -1;
-           else
-             activateBtn = i;
-         }
-       }
-     } 
+    if (question.type == QuestionType.MULTIPLE_CHOICE) {
+      for (int i = 0; i < question.choices.length; i ++) {
+        int startX = buttonX + buttonOffsetX * i;
+        if (mouseX > startX && mouseX < startX + buttonWidth && mouseY > buttonY && mouseY < buttonY + buttonHeight) {
+          if (activateBtn == i)
+            activateBtn = -1;
+          else
+            activateBtn = i;
+        }
+      }
+    }
 
-     // check if the submit button is clicked
-     if(mouseX > submitX - submitWidth/2 && mouseX < submitX + submitWidth/2 && mouseY > submitY - submitHeight/2 && mouseY < submitY + submitHeight/2)
-       handleSubmit();
+    // check if the submit button is clicked
+    if (mouseX > submitX - submitWidth/2 && mouseX < submitX + submitWidth/2 && mouseY > submitY - submitHeight/2 && mouseY < submitY + submitHeight/2)
+      handleSubmit();
   }
 
   void drawSubmitButton() {
@@ -211,10 +211,10 @@ class Quiz {
 
   void drawResult() {
     textAlign(CENTER, CENTER);
-    if(correct == 1){
+    if (correct == 1) {
       fill(#E80911);
       text("wrong", answerX, answerY);
-    } else if (correct == 2){
+    } else if (correct == 2) {
       fill(#3DB709);
       text("correct", answerX, answerY);
     }
@@ -228,7 +228,7 @@ class Quiz {
     // input question
     else if (question.type == QuestionType.INPUT_QUESTION && inputText.equals(question.answerStr))
       correct = 2;
-    if(correct == 2) {
+    if (correct == 2) {
       game.doodleJump.correctSound.rewind();
       game.doodleJump.correctSound.play();
       //add point only when correct
@@ -267,7 +267,7 @@ class Quiz {
       fill(0);
 
       text("(" + str(i+1) + ")", startX + 20, buttonY + buttonHeight/2);
-      if(activateBtn == i) {
+      if (activateBtn == i) {
         fill(23, 92, 192);
         circle(startX + 50, buttonY + buttonHeight/2, 10);
       }

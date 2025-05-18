@@ -4,13 +4,16 @@ class Weapon1Base {
   float angle;
   int num;
   Weapon1Base(PVector XY, PVector targetXY, float angle, int num) {
-    this.XY = XY; this.targetXY = targetXY; this.angle = angle; this.num = num;
+    this.XY = XY;
+    this.targetXY = targetXY;
+    this.angle = angle;
+    this.num = num;
   }
 
   void draw(boolean[] skill) {
     XY.x += cos(angle) * 50;
     XY.y += sin(angle) * 50;
-    
+
     noStroke();
     fill(0);
     circle(XY.x, XY.y, 50);
@@ -49,7 +52,7 @@ class Weapon1 extends WeaponBase {
   Weapon1(Mihoyo game) {
     super(1, game);
   }
-  
+
   void add(Weapon1Base w) {
     weapons.add(w);
   }
@@ -65,25 +68,26 @@ class Weapon1 extends WeaponBase {
     }
     fill(255);
     if (skill[3] && keyPressed && key == ' ' && space_CD <= 0) { // 空白鍵將所有數字改為 9 (CD:1) mode 3
-        for (int i = weapons.size() - 1; i >= 0; i--) {
-            Weapon1Base w = weapons.get(i);
-            w.num = 9;
-        }
-        space_CD = 60;
+      for (int i = weapons.size() - 1; i >= 0; i--) {
+        Weapon1Base w = weapons.get(i);
+        w.num = 9;
+      }
+      space_CD = 60;
     }
   }
 
   void mousePressed() {
     float randomangle = random(0, 2 * PI);
     weapons.add(new Weapon1Base(
-      new PVector(mouseX + game.player.XY.x - 800 * cos(randomangle) , mouseY + game.player.XY.y - 800 * sin(randomangle)),
+      new PVector(mouseX + game.player.XY.x - 800 * cos(randomangle), mouseY + game.player.XY.y - 800 * sin(randomangle)),
       new PVector(mouseX + game.player.XY.x, mouseY + game.player.XY.y),
       randomangle, int(random(0, 10))));
-    if (game.currentWeapon.skill[4]){ // 隨機攻擊 mode 4
+    if (game.currentWeapon.skill[4]) { // 隨機攻擊 mode 4
       randomangle = random(0, 2 * PI);
-      float randomX = random(-width, width); float randomY = random(-height, height);
+      float randomX = random(-width, width);
+      float randomY = random(-height, height);
       weapons.add(new Weapon1Base(
-        new PVector(randomX + game.player.XY.x - 800 * cos(randomangle) , randomY + game.player.XY.y - 800 * sin(randomangle)),
+        new PVector(randomX + game.player.XY.x - 800 * cos(randomangle), randomY + game.player.XY.y - 800 * sin(randomangle)),
         new PVector(randomX + game.player.XY.x, randomY + game.player.XY.y),
         randomangle, int(random(0, 10))));
     }

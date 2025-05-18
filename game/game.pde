@@ -50,7 +50,7 @@ class Game {
   }
 
   void draw() {
-    switch(state){
+    switch(state) {
       case START:
         drawStartPage();
         break;
@@ -68,42 +68,42 @@ class Game {
 
   void drawStartPage() {
     background(#88379B);
-    imageMode(CENTER); 
+    imageMode(CENTER);
     image(startBackground, 400, 400, 800, 800);
-    image(playerImg,266, 466, 288, 288);
+    image(playerImg, 266, 466, 288, 288);
     image(startButtonImg, 266, 666, startBtnWidth, startBtnHeight);
     image(aboutUsButtonImg, 550, 533, aboutBtnWidth, aboutBtnHeight);
   }
 
   void drawAboutUS() {
     drawStartPage();
-    
+
     textFont(TCFont);
     rectMode(CENTER);
     fill(255, 240);
     stroke(0);
     rect(width/2, height/2, 520, 600, 20);
-    
+
     fill(0);
     textAlign(CENTER, TOP);
     textSize(30);
     text("關於我們", 400, 150);
-    
+
     textAlign(LEFT, TOP);
     textSize(20);
     for (int i = 0; i < aboutUsLines.length; i++) {
       text(aboutUsLines[i], width/2 -235, height/2 - 200 + (i * 30));
     }
-    
+
     textAlign(CENTER, BOTTOM);
     textSize(20);
     text("點擊任意位置關閉", 400, 680);
   }
 
   void keyPressed() {
-    if(state == State.LEVEL1){
+    if (state == State.LEVEL1) {
       doodleJump.keyPressed();
-    } else if (state == State.LEVEL2){
+    } else if (state == State.LEVEL2) {
       mihoyo.keyPressed();
     }
   }
@@ -113,17 +113,17 @@ class Game {
       case START:
         int aboutX = 550;
         int aboutY = 533;
-        if (mouseX > aboutX - aboutBtnWidth/2 && mouseX < aboutX + aboutBtnWidth/2 && 
-            mouseY > aboutY - startBtnHeight/2 && mouseY < aboutY + startBtnHeight/2){
+        if (mouseX > aboutX - aboutBtnWidth/2 && mouseX < aboutX + aboutBtnWidth/2 &&
+          mouseY > aboutY - startBtnHeight/2 && mouseY < aboutY + startBtnHeight/2) {
           click.rewind();
           click.play();
           state = State.ABOUTUS;
-          }
+        }
 
         int startX = 266;
         int startY = 666;
-        if (mouseX > startX - startBtnWidth/2 && mouseX < startX + startBtnWidth/2 && 
-            mouseY > startY - aboutBtnHeight/2 && mouseY < startY + aboutBtnHeight/2) {
+        if (mouseX > startX - startBtnWidth/2 && mouseX < startX + startBtnWidth/2 &&
+          mouseY > startY - aboutBtnHeight/2 && mouseY < startY + aboutBtnHeight/2) {
           click.rewind();
           click.play();
           state = State.LEVEL1;
@@ -146,7 +146,7 @@ class Game {
   }
 
   void keyReleased() {
-    if (state == State.LEVEL2){
+    if (state == State.LEVEL2) {
       mihoyo.keyReleased();
     }
   }
