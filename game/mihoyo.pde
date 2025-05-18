@@ -94,10 +94,10 @@ class Mihoyo {
   void header() {
     textAlign(LEFT);
     textSize(35);
-    text("學分 " + credit, 50, 50);
     text(academics[career], width - 150, 50);
     if (state == MihoyoState.MORNING) {
       RunTimer();
+      text("學分 " + credit, 50, 50);
     }
   }
 
@@ -120,7 +120,7 @@ class Mihoyo {
     background(200);
 
     // enter shop condition check
-    if (credit >= 50) {
+    if (credit >= WEAPON_COST) {
       boolean allSkillsUnlocked = true;
       for (int i = 0; i < currentWeapon.skill.length; i++) {
         if (!currentWeapon.skill[i]) {
