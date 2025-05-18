@@ -15,7 +15,7 @@ class Mihoyo {
   int career;                  // 職業        文理音藝體 0 1 2 3 4
   int temp = 0;                // 商店防誤觸計時
 
-  PImage worker, jobScene, timer, backgroundImg;
+  PImage worker, jobScene, timer, backgroundImg, notGraduate;
   Player player;
   int workerX, workerY, workerWidth, workerHeight, textX;
   color textColor, textBgColor;
@@ -28,6 +28,7 @@ class Mihoyo {
   Mihoyo(int careerIn) {
     timer = loadImage("subjects/clock.png");
     backgroundImg = loadImage("pic/background.jpg");
+    notGraduate = loadImage("backgrounds/notGraduate.png");
     player = new Player(new PVector(0, 0), new PVector(0, 0), 100, 10, careerIn);
     career = careerIn;
     worker = loadImage("job_data/worker_" + filenames[career] + ".png");
@@ -102,15 +103,23 @@ class Mihoyo {
   }
 
   void open() {
-    background(0);
-    fill(255);
+    image(backgroundImg,400, 400, 800, 800);
+    textFont(TCFontBold);
+    rectMode(CENTER);
+    fill(255, 100);
+    stroke(0);
+    rect(width/2, height/2, 540, 600, 20);
+    
+    fill(0);
     textAlign(CENTER);
-    textSize(50);
-    text("遊戲介紹", width/2, height/2 - 200);
-
     textSize(30);
+    text("操作說明", 400, 150);
+
+    textSize(20);
+    textAlign(LEFT, CENTER);
     for (int i = 0; i < introLines.length; i++) {
-      text(introLines[i], width/2, height/2 - 100 + i*50);
+      text(introLines[i], width/2 -245, height/2 - 200 + i*40);
+      
     }
 
     header();
@@ -218,11 +227,12 @@ class Mihoyo {
   void lose() {
     background(0);
     fill(255, 0, 0);
+    image(notGraduate, 400, 400, 800, 800);
     textAlign(CENTER);
     textSize(50);
-    text("你沒畢業", width/2, height/2 - 100);
+    text("你沒畢業", width/2, height/2 - 300);
     textSize(30);
-    text("獲得學分: " + credit, width/2, height/2);
+    text("獲得學分: " + credit, width/2, height/2+300);
   }
 
   void RunTimer() {

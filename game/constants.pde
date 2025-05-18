@@ -1,5 +1,7 @@
 int FIRE_DURATION = 600; // 10秒 × 60幀 = 600
 int FREEZE_DURATION = 300; // 5秒 × 60幀 = 300
+int textTimer = 60;
+String currentHint = "";
 int ROLE_ACTION_COUNT = 2;
 int BLOCK_IN_ONE_LEVEL = 4;
 
@@ -11,7 +13,7 @@ int LAYER_HEIGHT = 100;
 int BLOCK_HEIGHT = 20;
 int ROLE_HEIGHT = 61;
 int ROLE_WIDTH = 33;
-int MAX_LEVEL = 10;
+int MAX_LEVEL = 20;
 int CANVA_SPEED = 10;
 int CANVA_UP_SPEED = 5;
 int SHOW_LEVEL_COUNT = 5;

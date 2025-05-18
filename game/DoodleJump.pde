@@ -14,7 +14,7 @@ class DoodleJump {
   DoodleJumpState state;
   int base;
   boolean canvaMoving;
-  int fireTimer, freezeTimer, canvaOffset;
+  int fireTimer, freezeTimer, textTimer, canvaOffset;
   AudioPlayer correctSound, wrongSound, jumpSound, pickSound, gameOverSound, clockTicking;
   int []scores = new int[5];
   Question[] questions;
@@ -64,7 +64,7 @@ class DoodleJump {
   void loadBackgroundImages() {
     envelopeBackground = loadImage("backgrounds/envelope.png");
     background = loadImage("backgrounds/game1background.png");
-    gameoverbackground = loadImage("backgrounds/gameOver.png");
+    gameoverbackground = loadImage("backgrounds/gameOver.jpg");
     restartButtonImg = loadImage("icons/button_restart.png");
   }
 
@@ -102,6 +102,7 @@ class DoodleJump {
     state = DoodleJumpState.PLAYING;
     fireTimer = 0;
     freezeTimer = 0;
+    textTimer = 0;
     canvaMoving = false;
     canvaOffset = 220;
     for (int i = 0; i < scores.length; i ++)
@@ -173,13 +174,17 @@ class DoodleJump {
             case CERTIFICATE:
               println("撿到了 certificate，啟動火焰模式");
               fireTimer = FIRE_DURATION;
+              textTimer = 120;
               pickSound.rewind();
               pickSound.play();
+              currentHint = "獲得獎狀，讓你信心爆棚！心情好，做事更有效率！趁這段黃金時間瘋狂加分吧";
               break;
 
             case CLOCK:
               println("撿到了 clock，角色凍結");
               freezeTimer = FREEZE_DURATION;
+              textTimer = 120;
+              currentHint = "遲到了！時間的壓力讓你瞬間凍住，心情有點低落...暫時無法行動";
               clockTicking.rewind();
               clockTicking.play();
               break;
@@ -280,7 +285,7 @@ class DoodleJump {
     textAlign(CENTER, CENTER);
     textFont(TCFontBold);
     image(resultBackground, 400, 400, 800, 800);
-    image(symbol, 240, 124, 183, 183);
+    image(symbol, 240, 150, 183, 183);
 
     rectMode(CENTER);
     fill(255, 50);
@@ -295,6 +300,18 @@ class DoodleJump {
     text("你的最高分科目", textX, height * 0.45);
     text("得分", textX, height * 0.75);
     text("你的技能", 240, height * 0.45);
+    textSize(20);
+    if (maxIndex == 0) {
+      text("丟出書本造成傷害", 240, 640);
+    } else if (maxIndex == 1) {
+      text("丟出計算機造成傷害", 240, 640);
+    } else if (maxIndex == 2) {
+      text("畫面隨機一個位置出現音符\n在指定的拍數內點擊音符即對範圍造成傷害", 240, 640);
+    } else if (maxIndex == 3) {
+      text("滑鼠拖曳範圍噴灑顏料造成範圍傷害", 240, 640);
+    } else if (maxIndex == 4) {
+      text("丟出啞鈴造成範圍傷害", 240, 640);
+    }
 
     textSize(50);
     fill(COLORS[maxIndex]);
@@ -324,7 +341,6 @@ class DoodleJump {
       fill(#FF5733);
       text("專注模式: " + fireTimer / 60 + "秒", 490, 770);
       fill(255);
-      text("獲得獎狀，讓你信心爆棚！心情好，做事更有效率！趁這段黃金時間瘋狂加分吧", 20, 730);
     }
 
     // show frozen mode time
@@ -333,7 +349,13 @@ class DoodleJump {
       fill(#3357FF);
       text("遲到效應: " + freezeTimer / 60 + "秒", 650, 770);
       fill(255);
-      text("遲到了！時間的壓力讓你瞬間凍住，心情有點低落...暫時無法行動", 20, 730);
+    }
+    
+    if (textTimer > 0) {
+      fill(255);
+      textSize(20);
+      text(currentHint, 20, 730);
+      textTimer--;
     }
   }
 
