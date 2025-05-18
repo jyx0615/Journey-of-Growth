@@ -459,7 +459,7 @@ class DoodleJump {
                     game.level1Music.close();
                     game.level2Music.loop();
                     game.state = State.LEVEL2;
-                    game.mihoyo.state = MihoyoState.MORNING;
+                    game.mihoyo.state = MihoyoState.OPENING;
                 }
                 break;
             default:

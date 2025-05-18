@@ -104,10 +104,10 @@ class Mihoyo {
         text("你可以使用滑鼠來攻擊", width/2, height/2 + 100);
         text("獲得足夠的分數(50分)時，會進入到商店畫面。", width/2, height/2 + 150);
         text("死亡或是學分夠了，即結束遊戲。", width/2, height/2 + 200);
-        text("按下 Enter 開始遊戲", width/2, height/2 + 300);
+        text("按下 空白鍵 開始遊戲", width/2, height/2 + 300);
 
         header();
-        if (key == ENTER) 
+        if (key == ' ') 
             state = MihoyoState.MORNING;
     }
 
