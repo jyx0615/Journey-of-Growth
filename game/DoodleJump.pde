@@ -52,7 +52,7 @@ class DoodleJump {
         jumpSound = minim.loadFile("sounds/jump.mp3");
         pickSound = minim.loadFile("sounds/pick.mp3");
         gameOverSound = minim.loadFile("sounds/gameover.mp3");
-        clockTicking = minim.loadFile("sounds/clockTicking.mp3");
+        clockTicking = minim.loadFile("sounds/ClockTicking.mp3");
     }
 
     void loadSubjectImages(){

@@ -24,7 +24,7 @@ class Mihoyo {
     WeaponBase currentWeapon;
 
     Mihoyo(int careerIn) {
-        timer = loadImage("pic/timer.png");
+        timer = loadImage("subjects/clock.png");
         backgroundImg = loadImage("pic/background.jpg");
         player = new Player(new PVector(0, 0), new PVector(0, 0), 100, 10, careerIn);
         career = careerIn;

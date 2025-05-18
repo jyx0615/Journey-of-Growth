@@ -90,5 +90,5 @@ AudioPlayer bgm, touch;
 int v = 10;                  // 速度上限
 int space_CD;
 int WEAPON_COST = 50;        // 武器購買價格
-int WIN_CREDIT = 55;        // 贏得遊戲所需學分
+int WIN_CREDIT = 128;        // 贏得遊戲所需學分
 float weapon_4_mode0_time = 0;   // 啞鈴攻擊冷卻
