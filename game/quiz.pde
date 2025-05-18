@@ -57,14 +57,14 @@ class Quiz {
   }
 
   void loadBackgroundImage() {
-    quizStartBackground = loadImage("background/quiz_start.png");
-    quizBackground = loadImage("background/quiz.png");
+    quizStartBackground = loadImage("backgrounds/quiz_start.png");
+    quizBackground = loadImage("backgrounds/quiz.png");
   }
 
   void reset() {
     transitionProgress = 0;    // Reset transition progress
     show_quiz_content = false; // Reset quiz content visibility
-    correct = 0;               // Reset answer status
+    correct = 0;               // Reset answer state
     inputText = "";
     activateBtn = -1;
     exit_counter = 0;
@@ -121,7 +121,7 @@ class Quiz {
         exit_counter -= 0.015;
         if(exit_counter <= 0) {
           reset();
-          game.doodleJump.status = DoodleJumpStatus.PLAYING;
+          game.doodleJump.state = DoodleJumpState.PLAYING;
         }
       }
     }

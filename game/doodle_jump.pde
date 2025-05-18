@@ -1,4 +1,4 @@
-enum DoodleJumpStatus {
+enum DoodleJumpState {
   START,
   RULE,
   PLAYING,
@@ -11,26 +11,27 @@ class DoodleJump {
     Role role;
     Quiz quiz;
     Block[] blocks;
-    DoodleJumpStatus status;
+    DoodleJumpState state;
     int base;
     boolean canvaMoving;
     int fireTimer, freezeTimer, canvaOffset;
-    AudioPlayer correctSound, wrongSound, jumpSound, pickSound, gameOverSound, ClockTicking;
+    AudioPlayer correctSound, wrongSound, jumpSound, pickSound, gameOverSound, clockTicking;
     int []scores = new int[5];
     Question[] questions;
     PImage[] blockImgs = new PImage[8];
     PImage[] icons = new PImage[8];
-    PImage[] symbols = new PImage[8];
-    PImage[] resultBackgrounds = new PImage[8];
-    PImage[] weapons = new PImage[8];
+    PImage symbol, resultBackground, weapon;
     PImage background, gameoverbackground, restartButtonImg, envelopeBackground;
     PImage door;
 
-    String intro = "恭喜你錄取星盤學園！\n剛入校的你一定對未來感到迷惘吧\n讓我們藉由小遊戲來找到\n屬於你的方向吧！\n想要在本學園畢業，會有兩個階段\n需要完成。\n\n首先你要通過第一階段的測驗，\n我們會按照分數將你分配到不同\n學院。\n接著你需要使用第一階段所\n獲得的能力去闖學院的畢業關卡。\n期待你能獲得不凡的成就！";
-    String rule1 = "每一步都將影響你未來的方向──\n把握每一次跳躍與選擇，努力朝著你的學院邁進吧！\n\n請先確認你的鍵盤為英文模式！\n左右方向鍵：移動角色\n空白鍵：跳躍（最多可連跳兩次！）\n\n碰到：\n科目 Icon：+1 分，將依照你最高分的科目來分配學院\n鬧鐘：角色定格 5 秒，象徵遲到造成行動受限\n獎狀：進入衝刺模式！10 秒內每次加分 +10 分\n考試卷：直接獲得 10 分，知識就是力量！\n碰到最頂層的門即結束這一階段";
+    String[] introLines = loadStrings("texts/doodle_jump_intro.txt");
+    String intro = join(introLines, "\n");
+    String[] ruleLines = loadStrings("texts/doodle_jump_rule.txt");
     int infoIndex = 0;
     int typeInteval = 3;
     int typeTime = 0;
+    int maxIndex = 0;
+    int maxScore = -1;
 
     DoodleJump() {
         role = new Role();
@@ -42,7 +43,6 @@ class DoodleJump {
         loadSubjectImages();
         loadBackgroundImages();
         loadQuestions();
-        loadResultPage();
         reset();
     }
 
@@ -52,43 +52,26 @@ class DoodleJump {
         jumpSound = minim.loadFile("sounds/jump.mp3");
         pickSound = minim.loadFile("sounds/pick.mp3");
         gameOverSound = minim.loadFile("sounds/gameover.mp3");
-        ClockTicking = minim.loadFile("sounds/ClockTicking.mp3");
+        clockTicking = minim.loadFile("sounds/clockTicking.mp3");
     }
 
     void loadSubjectImages(){
-        icons[0] = loadImage("subjects/literacture.png");
-        icons[1] = loadImage("subjects/math.png");
-        icons[2] = loadImage("subjects/music.png");
-        icons[3] = loadImage("subjects/art.png");
-        icons[4] = loadImage("subjects/sports.png");
-        icons[5] = loadImage("subjects/certificate.png");
-        icons[6] = loadImage("subjects/clock.png");
-        icons[7] = loadImage("subjects/quiz.png");
+        for (int i = 0; i < filenames.length; i++) {
+            icons[i] = loadImage("subjects/" + filenames[i] + ".png");
+        }
     }
     
     void loadBackgroundImages() {
-      envelopeBackground = loadImage("background/envelope.png");
-      background = loadImage("background/game1background.png");
-      gameoverbackground = loadImage("background/gameOver.png");
-      restartButtonImg = loadImage("icons/button_restart.png");
+        envelopeBackground = loadImage("backgrounds/envelope.png");
+        background = loadImage("backgrounds/game1background.png");
+        gameoverbackground = loadImage("backgrounds/gameOver.png");
+        restartButtonImg = loadImage("icons/button_restart.png");
     }
-    
-    void loadResultPage(){
-      symbols[0] = loadImage("icons/literactureSymbol.png");
-      symbols[1] = loadImage("icons/mathSymbol.png");
-      symbols[2] = loadImage("icons/musicSymbol.png");
-      symbols[3] = loadImage("icons/artSymbol.png");
-      symbols[4] = loadImage("icons/sportsSymbol.png");
-      resultBackgrounds[0] = loadImage("icons/literacture_studyroom.png");
-      resultBackgrounds[1] = loadImage("icons/math_lab.png");
-      resultBackgrounds[2] = loadImage("icons/music_recordingStudio.png");
-      resultBackgrounds[3] = loadImage("icons/art_studio.png");
-      resultBackgrounds[4] = loadImage("icons/sports_sportfield.png");
-      weapons[0] = loadImage("icons/literacture.png");
-      weapons[1] = loadImage("icons/math.png");
-      weapons[2] = loadImage("icons/music.png");
-      weapons[3] = loadImage("icons/art.png");
-      weapons[4] = loadImage("icons/sports.png");
+
+    void loadResultImages(int index){
+        symbol = loadImage("icons/" + filenames[index] + "Symbol.png");
+        resultBackground = loadImage("backgrounds/" + filenames[index]+ ".png");
+        weapon = loadImage("weapons/" + filenames[index] + ".png");
     }
 
     void loadQuestions() {
@@ -116,7 +99,7 @@ class DoodleJump {
         quiz.reset();
         blocks = randomGenBlocks();
         base = MAX_LEVEL - SHOW_LEVEL_COUNT;
-        status = DoodleJumpStatus.PLAYING;
+        state = DoodleJumpState.PLAYING;
         fireTimer = 0;
         freezeTimer = 0;
         canvaMoving = false;
@@ -197,8 +180,8 @@ class DoodleJump {
                         case CLOCK:
                             println("撿到了 clock，角色凍結");
                             freezeTimer = FREEZE_DURATION;
-                            ClockTicking.rewind();
-                            ClockTicking.play();
+                            clockTicking.rewind();
+                            clockTicking.play();
                             break;
 
                         case QUIZ:
@@ -206,7 +189,7 @@ class DoodleJump {
                             //get random quiz
                             quiz.set(questions[int(random(questions.length))]);
                             quiz.show_quiz_content = false;
-                            status = DoodleJumpStatus.QUIZ;
+                            state = DoodleJumpState.QUIZ;
                             
                             //int scoreToAdd = (fireTimer > 0) ? 10 : 1;
                             int scoreToAdd = 10;
@@ -255,12 +238,13 @@ class DoodleJump {
         textAlign(CENTER, CENTER);
         text("按下ENTER下一步", 400, 760);
     }
+
     void drawRule1Page(){
       textFont(TCFont);
       rectMode(CENTER);
       fill(255, 240);
       stroke(0);
-      rect(width/2, height/2, 520, 600, 20);
+      rect(width/2, height/2, 540, 600, 20);
       
       fill(0);
       textAlign(CENTER, CENTER);
@@ -270,13 +254,16 @@ class DoodleJump {
       text("按下ENTER開始遊戲", 400, 760);
       textAlign(LEFT, CENTER);
       textLeading(40);
-      text(rule1, 160, 430);
+      for (int i = 0; i < ruleLines.length; i++) {
+        text(ruleLines[i], width/2 -245, height/2 - 200 + (i * 40));
+      }
       imageMode(CENTER);
-      image(icons[6], 620, 550, 40, 40);
-      image(icons[5], 620, 590, 40, 40);
-      image(icons[7], 620, 630, 40, 40);
-      
+      image(icons[6], 160, 560, 40, 40);
+      image(icons[5], 160, 600, 40, 40);
+      image(icons[7], 160, 640, 40, 40);
+      image(door, 160, 680, 40, 40);
     }
+
     void drawGameOver() {
         background(#071527);
         imageMode(CENTER);
@@ -286,30 +273,20 @@ class DoodleJump {
 
     void drawResultPage() {
         background(#AACCFF);
-        textFont(TCFontBold);
-        
-        // 計算最高分的科目
-        int maxScore = -1;
-        int maxIndex = -1;
-        for (int i = 0; i < scores.length; i++) {
-            if (scores[i] > maxScore) {
-                maxScore = scores[i];
-                maxIndex = i;
-            }
-        }
+        textFont(TCFontBold);   
   
         // 繪製結果頁面
         imageMode(CENTER);
         textAlign(CENTER, CENTER);
         textFont(TCFontBold);
-        image(resultBackgrounds[maxIndex], 400, 400, 800, 800);
-        image(symbols[maxIndex], 240, 124, 183, 183);
+        image(resultBackground, 400, 400, 800, 800);
+        image(symbol, 240, 124, 183, 183);
         
         rectMode(CENTER);
         fill(255, 50);
         stroke(0);
         rect(240, 500, 200, 200, 10);
-        image(weapons[maxIndex], 240, 500, 200, 200);
+        image(weapon, 240, 500, 200, 200);
         
         float textX = 560;
         fill(255);
@@ -324,7 +301,8 @@ class DoodleJump {
         text(academics[maxIndex], textX, height * 0.25);
         text(subjects[maxIndex], textX, height * 0.53);
         text(str(maxScore), textX, height * 0.83);
-        
+        textSize(20);
+        text("按下ENTER進入下一關", 400, 760);
     }
 
     void drawBottomSection() {
@@ -364,34 +342,36 @@ class DoodleJump {
         image(background, width/2, height/2, width, height);
         textFont(TCFont);
 
-        if(status == DoodleJumpStatus.START) {
-            drawInfoPage();
-            return;
-        }
-        
-        if(status == DoodleJumpStatus.RULE) {
-            drawRule1Page();
-            return;
-        }
-    
-        if(status == DoodleJumpStatus.GAMEOVER) {
-            drawGameOver();
-            return;
-        }
-    
-        if(status == DoodleJumpStatus.END) {
-            drawResultPage();
-            return;
-        }
-
         // game over
         if (base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 700) {
             gameOverSound.rewind();
             gameOverSound.play();
-            status = DoodleJumpStatus.GAMEOVER;
-            return;
+            state = DoodleJumpState.GAMEOVER;
         }
 
+        switch (state) {
+            case START:
+                drawInfoPage();
+                break;
+            case RULE:
+                drawRule1Page();
+                break;
+            case PLAYING:
+                drawPlayingPage();
+                break;
+            case GAMEOVER:
+                drawGameOver();
+                break;
+            case END:
+                drawResultPage();
+                break;
+            case QUIZ:
+                quiz.draw();
+                break;
+        }  
+    }
+
+    void drawPlayingPage() {
         if(canvaOffset < 200){
             canvaOffset += CANVA_SPEED;
             role.curY += CANVA_SPEED;
@@ -434,7 +414,17 @@ class DoodleJump {
             image(door, doorX, doorY, 50, 60);
             // touch door or not
             if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {
-                status = DoodleJumpStatus.END;
+                // 計算最高分的科目
+                maxScore = -1;
+                for (int i = 0; i < scores.length; i++) {
+                    if (scores[i] > maxScore) {
+                        maxScore = scores[i];
+                        maxIndex = i;
+                    }
+                }
+                loadResultImages(maxIndex);
+                game.mihoyo = new Mihoyo(maxIndex);
+                state = DoodleJumpState.END;
             }
         }
 
@@ -443,23 +433,19 @@ class DoodleJump {
 
         // bottom section
         drawBottomSection();
-        
-        if(status == DoodleJumpStatus.QUIZ) {
-            quiz.draw();
-        }
     }
 
-    void keyPressedCheck() {
-        switch (status) {
+    void keyPressed() {
+        switch (state) {
             case START:
                 if(key == ENTER || key == RETURN)
-                    status = DoodleJumpStatus.RULE;
+                    state = DoodleJumpState.RULE;
                     game.level1Music.loop();
                     game.openningMusic.close();
                 break;
             case RULE:
                 if(key == ENTER || key == RETURN)
-                    status = DoodleJumpStatus.PLAYING;
+                    state = DoodleJumpState.PLAYING;
             case GAMEOVER:
                 if(key == ENTER || key == RETURN)
                     reset();
@@ -468,17 +454,25 @@ class DoodleJump {
                 if(quiz.exit_counter == 0)
                     quiz.updateAnserByKeyPress();
                 break;
+            case END:
+                if(key == ENTER || key == RETURN) {
+                    game.level1Music.close();
+                    game.level2Music.loop();
+                    game.state = State.LEVEL2;
+                    game.mihoyo.state = MihoyoState.MORNING;
+                }
+                break;
             default:
                 role.updateByKeyPress();
         }
     }
 
-    void mousePressedCheck() {
-        if(status == DoodleJumpStatus.START) {
+    void mousePressed() {
+        if(state == DoodleJumpState.START) {
 
-        } else if(status == DoodleJumpStatus.QUIZ) {
+        } else if(state == DoodleJumpState.QUIZ) {
             quiz.updateByMousePress();
-        } else if(status == DoodleJumpStatus.GAMEOVER) {
+        } else if(state == DoodleJumpState.GAMEOVER) {
             if(mouseX > restartX - restartWidth/2 && mouseX < restartX + restartWidth/2 && mouseY > restartY - restartHeight/2 && mouseY < restartY + restartHeight/2) {
                 reset();
             }

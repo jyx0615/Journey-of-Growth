@@ -1,6 +1,6 @@
 import ddf.minim.*;
 
-enum Status {
+enum State {
   START,
   ABOUTUS,
   LEVEL1,
@@ -11,21 +11,22 @@ PFont TCFont, TCFontBold;
 
 class Game {
   AudioPlayer openningMusic, level1Music, level2Music, click, resultMusic;
-  Status gameStatus;
+  State state;
   DoodleJump doodleJump;
+  Mihoyo mihoyo;
   PImage startBackground, startButtonImg, aboutUsButtonImg, playerImg;
-  String[] lines;
+  String[] aboutUsLines;
 
   Game() {
     loadMusics();
     loadFonts();
     loadBackgroundImages();
     doodleJump = new DoodleJump();
-    gameStatus = Status.START;
+    state = State.START;
     openningMusic.loop();
 
     // Load the about us content from the text file
-    lines = loadStrings("aboutUs.txt");
+    aboutUsLines = loadStrings("texts/aboutUs.txt");
   }
 
   void loadMusics() {
@@ -42,14 +43,14 @@ class Game {
   }
 
   void loadBackgroundImages() {
-    startBackground = loadImage("background/startBackground.png");
+    startBackground = loadImage("backgrounds/startBackground.png");
     startButtonImg = loadImage("icons/button_start.png");
     aboutUsButtonImg = loadImage("icons/button_aboutUs.png");
     playerImg = loadImage("icons/player.png");
   }
 
   void draw() {
-    switch(gameStatus){
+    switch(state){
       case START:
         drawStartPage();
         break;
@@ -60,6 +61,7 @@ class Game {
         doodleJump.draw();
         break;
       case LEVEL2:
+        mihoyo.draw();
         break;
     }
   }
@@ -89,8 +91,8 @@ class Game {
     
     textAlign(LEFT, TOP);
     textSize(20);
-    for (int i = 0; i < lines.length; i++) {
-      text(lines[i], width/2 -235, height/2 - 200 + (i * 30));
+    for (int i = 0; i < aboutUsLines.length; i++) {
+      text(aboutUsLines[i], width/2 -235, height/2 - 200 + (i * 30));
     }
     
     textAlign(CENTER, BOTTOM);
@@ -98,14 +100,16 @@ class Game {
     text("點擊任意位置關閉", 400, 680);
   }
 
-  void keyPressedCheck() {
-    if(gameStatus == Status.LEVEL1){
-      doodleJump.keyPressedCheck();
+  void keyPressed() {
+    if(state == State.LEVEL1){
+      doodleJump.keyPressed();
+    } else if (state == State.LEVEL2){
+      mihoyo.keyPressed();
     }
   }
 
-  void mousePressedCheck() {
-    switch (gameStatus) {
+  void mousePressed() {
+    switch (state) {
       case START:
         int aboutX = 550;
         int aboutY = 533;
@@ -113,7 +117,7 @@ class Game {
             mouseY > aboutY - startBtnHeight/2 && mouseY < aboutY + startBtnHeight/2){
           click.rewind();
           click.play();
-          gameStatus = Status.ABOUTUS;
+          state = State.ABOUTUS;
           }
 
         int startX = 266;
@@ -122,18 +126,28 @@ class Game {
             mouseY > startY - aboutBtnHeight/2 && mouseY < startY + aboutBtnHeight/2) {
           click.rewind();
           click.play();
-          gameStatus = Status.LEVEL1;
-          doodleJump.status = DoodleJumpStatus.START;
+          state = State.LEVEL1;
+          doodleJump.state = DoodleJumpState.START;
         }
         break;
 
       case ABOUTUS:
-        gameStatus = Status.START;
+        state = State.START;
         break;
 
       case LEVEL1:
-        doodleJump.mousePressedCheck();
+        doodleJump.mousePressed();
         break;
+
+      case LEVEL2:
+        mihoyo.mousePressed();
+        break;
+    }
+  }
+
+  void keyReleased() {
+    if (state == State.LEVEL2){
+      mihoyo.keyReleased();
     }
   }
 }
@@ -157,9 +171,13 @@ void draw() {
 }
 
 void keyPressed() {
-  game.keyPressedCheck();
+  game.keyPressed();
 }
 
 void mousePressed() {
-  game.mousePressedCheck();
+  game.mousePressed();
+}
+
+void keyReleased() {
+  game.keyReleased();
 }
