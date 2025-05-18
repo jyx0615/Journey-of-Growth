@@ -8,7 +8,7 @@ enum MihoyoState {
 
 class Mihoyo {
     MihoyoState state = MihoyoState.OPENING;
-    int credit = 49;             // 學分
+    int credit = 0;             // 學分
     int space_CD = 0;            // space冷卻
     int level = 1;               // 商店購買次數
     int t = 0, seconds;          // 計時
