@@ -301,17 +301,7 @@ class DoodleJump {
     text("得分", textX, height * 0.75);
     text("你的技能", 240, height * 0.45);
     textSize(20);
-    if (maxIndex == 0) {
-      text("丟出書本造成傷害", 240, 640);
-    } else if (maxIndex == 1) {
-      text("用計算機丟出數字造成傷害", 240, 640);
-    } else if (maxIndex == 2) {
-      text("畫面隨機一個位置出現音符\n在指定的拍數內點擊音符即對範圍造成傷害", 240, 640);
-    } else if (maxIndex == 3) {
-      text("滑鼠拖曳範圍噴灑顏料造成範圍傷害", 240, 640);
-    } else if (maxIndex == 4) {
-      text("丟出啞鈴造成範圍傷害", 240, 640);
-    }
+    text(skillDescriptions[maxIndex], 240, 640);
 
     textSize(50);
     fill(COLORS[maxIndex]);
