@@ -304,7 +304,7 @@ class DoodleJump {
     if (maxIndex == 0) {
       text("丟出書本造成傷害", 240, 640);
     } else if (maxIndex == 1) {
-      text("丟出計算機造成傷害", 240, 640);
+      text("用計算機丟出數字造成傷害", 240, 640);
     } else if (maxIndex == 2) {
       text("畫面隨機一個位置出現音符\n在指定的拍數內點擊音符即對範圍造成傷害", 240, 640);
     } else if (maxIndex == 3) {
