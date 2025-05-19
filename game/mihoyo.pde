@@ -24,7 +24,6 @@ class Mihoyo {
   WeaponBase currentWeapon;
   String[] introLines = loadStrings("texts/mihoyo_intro.txt");
 
-
   Mihoyo(int careerIn) {
     timer = loadImage("subjects/clock.png");
     backgroundImg = loadImage("pic/background.jpg");
@@ -222,6 +221,9 @@ class Mihoyo {
     textSize(64);
     fill(textColor);
     text(jobTitle, textX, titleY);
+
+    textSize(20);
+    text("按下ENTER重新遊玩", 400, 760);
   }
 
   void lose() {
@@ -233,6 +235,10 @@ class Mihoyo {
     text("你沒畢業", width/2, height/2 - 300);
     textSize(30);
     text("獲得學分: " + credit, width/2, height/2+300);
+
+    fill(220);
+    textSize(20);
+    text("按下ENTER再次挑戰", width/2, height/2 + 350);
   }
 
   void RunTimer() {
@@ -255,13 +261,38 @@ class Mihoyo {
     temp = 0;
   }
 
+  void reset() {
+    state = MihoyoState.OPENING;
+    credit = 0;
+    space_CD = 0;
+    level = 1;
+    t = 0;
+    seconds = 0;
+    player.HP = 100;
+    player.XY.set(0, 0);
+    monsters.clear();
+    currentWeapon.skill = new boolean[5];
+    for(int i = 0; i < currentWeapon.skill.length; i++)
+      currentWeapon.skill[i] = false;
+  }
+
   void keyPressed() {
-    if (state == MihoyoState.OPENING) {
-      if (key == ENTER || key == RETURN)
-        state = MihoyoState.MORNING;
-    }
-    if (state == MihoyoState.MORNING) {
-      player.keyPressed();
+    switch (state) {
+      case OPENING:
+        if (key == ENTER || key == RETURN)
+          state = MihoyoState.MORNING;
+        break;
+      case MORNING:
+        player.keyPressed();
+        break;
+      case LOSE:
+        if (key == ENTER || key == RETURN)
+          reset();
+        break;
+      case WIN:
+        if (key == ENTER || key == RETURN)
+          game.reset();
+        break;
     }
   }
 

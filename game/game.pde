@@ -49,6 +49,18 @@ class Game {
     playerImg = loadImage("icons/player.png");
   }
 
+  void reset() {
+    openningMusic.rewind();
+    openningMusic.loop();
+    level1Music.rewind();
+    level2Music.rewind();
+    click.rewind();
+    resultMusic.rewind();
+
+    doodleJump.reset();
+    state = State.START;
+  }
+
   void draw() {
     switch(state) {
       case START:
