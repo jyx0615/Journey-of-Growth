@@ -39,7 +39,7 @@ class DoodleJump {
     blocks = randomGenBlocks();
     door = loadImage("icons/door.png");
     loadSounds();
-    loadBlocks();
+    loadBlockImages();
     loadSubjectImages();
     loadBackgroundImages();
     loadQuestions();
@@ -83,7 +83,7 @@ class DoodleJump {
     }
   }
 
-  void loadBlocks() {
+  void loadBlockImages() {
     blockImgs[0] = loadImage("blocks/white.png");
     blockImgs[1] = loadImage("blocks/yellow.png");
     blockImgs[2] = loadImage("blocks/purple.png");
@@ -192,7 +192,7 @@ class DoodleJump {
             case QUIZ:
               println("撿到了 icon，type 為：" + blocks[i].iconType);
               //get random quiz
-              quiz.set(questions[int(random(questions.length))]);
+              quiz.setQuestion(questions[int(random(questions.length))]);
               quiz.show_quiz_content = false;
               state = DoodleJumpState.QUIZ;
 
@@ -244,7 +244,7 @@ class DoodleJump {
     text("按下ENTER下一步", 400, 760);
   }
 
-  void drawRule1Page() {
+  void drawRulePage() {
     textFont(TCFont);
     rectMode(CENTER);
     fill(255, 240);
@@ -376,7 +376,7 @@ class DoodleJump {
         drawInfoPage();
         break;
       case RULE:
-        drawRule1Page();
+        drawRulePage();
         break;
       case PLAYING:
         drawPlayingPage();

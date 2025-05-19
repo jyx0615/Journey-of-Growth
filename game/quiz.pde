@@ -70,7 +70,7 @@ class Quiz {
     exit_counter = 0;
   }
 
-  void set(Question q) {
+  void setQuestion(Question q) {
     question = q;
   }
 
