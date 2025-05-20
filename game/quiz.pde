@@ -75,6 +75,7 @@ class Quiz {
   }
 
   void draw() {
+    textFont(TCFontBold);s
     rectMode(CORNER);
     noStroke();
     fill(232, 220);
