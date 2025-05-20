@@ -7,7 +7,7 @@ enum State {
   LEVEL2,
 }
 
-PFont TCFont, TCFontBold;
+PFont TCFont, TCFontBold, ChocolateFont;
 
 class Game {
   AudioPlayer openningMusic, level1Music, level2Music, click, resultMusic;
@@ -40,6 +40,7 @@ class Game {
   void loadFonts() {
     TCFont = createFont("fonts/Iansui-Regular.ttf", 15);
     TCFontBold = createFont("fonts/NotoSansTC-Bold.ttf", 15);
+    ChocolateFont = createFont("fonts/ChocolateClassicalSans-Regular.ttf", 15);
   }
 
   void loadBackgroundImages() {

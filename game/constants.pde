@@ -34,7 +34,7 @@ int restartHeight = 40;
 
 // quiz related constants
 int questionX = width/2;
-int questionY = 100;
+int questionY = 100+20;
 
 int answerX = 480;
 int answerY = 680;
@@ -46,7 +46,7 @@ int submitHeight = 40;
 
 // multiple choice question text
 int choicesX = 230;
-int choicesY = 200;
+int choicesY = 200+20;
 int choicesOffsetY = 60;
 
 // multiple choice buttons

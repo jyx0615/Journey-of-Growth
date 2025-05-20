@@ -43,13 +43,13 @@
     },
     {
       "type": "input_question",
-      "question": "打點計時器於4秒內在紙帶上打了240個點，\n此頻率為____Hz",
+      "question": "打點計時器於4秒內在紙帶上打\n了240個點，此頻率為____Hz",
       "answer": "60",
       "subject":"science"
     },
     {
       "type": "multiple_choice",
-      "question": "小明走路，踢石頭，感覺腳很痛，屬於____",
+      "question": "小明走路，踢石頭，\n感覺腳很痛，屬於____",
       "answer": 3,
       "choices": ["慣性定律", "運動定律", "反作用定律", "以上皆非"],
       "subject":"science"
@@ -77,7 +77,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "為了減少運送過程之電力耗損，通常會採取?",
+      "question": "為了減少運送過程之電力耗損，\n通常會採取?",
       "answer": 3,
       "choices": ["高電壓、高電流", "低電壓、低電流", "高電壓、低電流", "低電壓、高電流"],
       "subject":"science"
@@ -91,14 +91,14 @@
     },
     {
       "type": "multiple_choice",
-      "question": "葛利果聖歌屬於哪種主要的音樂風格？",
+      "question": "葛利果聖歌屬於哪種主要的\n音樂風格？",
       "answer": 1,
       "choices": ["宗教聖歌", "世俗歌曲", "宮廷音樂", "戲劇音樂"],
       "subject":"music"
     },
     {
       "type": "multiple_choice",
-      "question": "浪漫時期的作曲家常以何種方式\n強化音樂的情感表達？",
+      "question": "浪漫時期的作曲家常以何種\n方式強化音樂的情感表達？",
       "answer": 2,
       "choices": [
         "嚴格遵守古典音樂結構",
@@ -110,14 +110,14 @@
     },
     {
       "type": "multiple_choice",
-      "question": "在傳統歌仔戲中，哪一種行當多半\n演繹悲劇性的女性角色？",
+      "question": "在傳統歌仔戲中，哪一種行當多\n半演繹悲劇性的女性角色？",
       "answer": 4,
       "choices": ["花旦", "武旦", "青衣", "苦旦"],
       "subject":"music"
     },
     {
       "type": "multiple_choice",
-      "question": "下列哪位音樂家是以鋼琴詩人之名著稱\n，並屬於浪漫時期？",
+      "question": "下列哪位音樂家是以鋼琴詩人\n之名著稱，並屬於浪漫時期？",
       "answer": 3,
       "choices": [
         "巴哈（J. S. Bach）",
@@ -129,14 +129,14 @@
     },
     {
       "type": "multiple_choice",
-      "question": "芙烈達‧卡蘿是哪一個領域最知名的藝術家?",
+      "question": "芙烈達‧卡蘿是哪一個\n領域最知名的藝術家?",
       "answer": 3,
       "choices": ["建築設計", "抽象雕塑", "超現實主義繪畫", "攝影藝術"],
       "subject":"art"
     },
     {
       "type": "multiple_choice",
-      "question": "下列台灣史前文化與其主要出土物搭配\n，何者正確？",
+      "question": "下列台灣史前文化與其主要\n出土物搭配，何者正確？",
       "answer": 2,
       "choices": [
         "卑南文化－船舶殘骸",
@@ -148,7 +148,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "有『書聖』之稱的王羲之，最為人熟知\n的書法風格為何？",
+      "question": "有『書聖』之稱的王羲之，最為\n人熟知的書法風格為何？",
       "answer": 1,
       "choices": [
         "行書",
@@ -160,7 +160,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "下列關於《米羅的維納斯》的描述，哪一項是正確的？",
+      "question": "下列關於《米羅的維納斯》的\n描述，哪一項是正確的？",
       "answer": 3,
       "choices": [
         "作品完整保留了雙臂",
@@ -172,7 +172,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "泰姬瑪哈陵被視為哪一種建築類型的代表？",
+      "question": "泰姬瑪哈陵被視為哪一種建築\n類型的代表？",
       "answer": 2,
       "choices": [
         "拜占庭式建築",
@@ -184,7 +184,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "運動員在比賽前常會出現緊張、焦慮等情緒，\n下列哪種放鬆技巧最適合在賽前短時間內使用？",
+      "question": "運動員在比賽前常會出現緊張\n、焦慮等情緒，下列哪種放鬆技巧\n最適合在賽前短時間內使用？",
       "answer": 2,
       "choices": [
         "腹式呼吸訓練法",
@@ -196,7 +196,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "一個人生理活動與心理活動的綜合狀態，它與\n個人在某特定時刻下動機的「強度」有關\n。請問這個定義是指下列哪一個名詞？",
+      "question": "一個人生理活動與心理活動的\n綜合狀態，它與個人在某特定\n時刻下動機的「強度」有關。\n請問這個定義是指下列哪一個名詞？",
       "answer": 2,
       "choices": [
         "認知焦慮",
@@ -208,7 +208,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "當選手失去訓練動機時，哪一種運動心理技巧\n無法協助選手改善訓練動機？",
+      "question": "當選手失去訓練動機時，哪一種\n運動心理技巧無法協助選手\n改善訓練動機？",
       "answer": 4,
       "choices": [
         "目標設定",
@@ -220,7 +220,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "下列哪一塊肌肉在收縮時最無法協助肩胛骨\n向下壓動作？",
+      "question": "下列哪一塊肌肉在收縮時最\n無法協助肩胛骨向下壓動作？",
       "answer": 3,
       "choices": [
         "前鋸肌 (Serratus Anterior)",
@@ -232,7 +232,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "臨床判別高足弓、正常足弓或扁平足時，通常\n以哪一塊骨頭作為觀察指標？",
+      "question": "臨床判別高足弓、正常足弓或\n扁平足時，通常以哪一\n塊骨頭作為觀察指標？",
       "answer": 2,
       "choices": [
         "距骨 (Talus)",
@@ -244,7 +244,7 @@
     },
     {
       "type": "multiple_choice",
-      "question": "根據支架模型理論，站立時主要維持足部結構\n穩定的組織為何？",
+      "question": "根據支架模型理論，站立時主要\n維持足部結構穩定的組織為何？",
       "answer": 1,
       "choices": [
         "足底腱膜 (Plantar Aponeurosis)",

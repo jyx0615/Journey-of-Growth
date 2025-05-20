@@ -75,7 +75,7 @@ class Quiz {
   }
 
   void draw() {
-    textFont(TCFontBold);s
+    textFont(ChocolateFont);
     rectMode(CORNER);
     noStroke();
     fill(232, 220);
@@ -186,7 +186,7 @@ class Quiz {
 
   void drawQuestion() {
     textAlign(CENTER, CENTER);
-    textSize(18);
+    textSize(23);
     fill(20);
     text(question.questionStr, questionX, questionY);
   }
