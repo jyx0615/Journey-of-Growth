@@ -23,6 +23,7 @@ class Mihoyo {
   String[] m_name, ability;
   WeaponBase currentWeapon;
   String[] introLines = loadStrings("texts/mihoyo_intro.txt");
+  AudioPlayer music_literacture, music_math, music_music, music_art, music_sports;
 
   Mihoyo(int careerIn) {
     timer = loadImage("subjects/clock.png");
@@ -42,6 +43,11 @@ class Mihoyo {
     textX = textXs[career];
     jobTitle = jobTitles[career];
     m_name = m_names[career];
+    music_literacture = minim.loadFile("musics/literacture.mp3");
+    music_math = minim.loadFile("musics/math.mp3");
+    music_music = minim.loadFile("musics/level2.mp3");
+    music_art = minim.loadFile("musics/art.mp3");
+    music_sports = minim.loadFile("musics/sports.mp3");
 
     switch (career) {
       case 0:
@@ -204,6 +210,22 @@ class Mihoyo {
   }
 
   void win() {
+    game.level2Music.close();
+    if (career == 0){
+      music_literacture.loop();
+    }
+    else if (career == 1){
+      music_math.loop();
+    }
+    else if (career == 3){
+      music_art.loop();
+    }
+    else if (career == 4){
+      music_sports.loop();
+    }
+    else{
+      music_music.loop();
+    }
     // 繪製背景場景
     imageMode(CENTER);
     image(jobScene, 400, 400, 800, 800);
