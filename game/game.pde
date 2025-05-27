@@ -1,4 +1,5 @@
 import ddf.minim.*;
+// this is the main game file for the Doodle Jump game
 
 enum State {
   START,
