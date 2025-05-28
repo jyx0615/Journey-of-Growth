@@ -81,6 +81,7 @@ class Mihoyo {
 
   void draw() {
     if (state!= MihoyoState.LOSE && player.HP <= 0) {
+      game.level2Music.pause();
       game.gameOverSound.rewind();
       game.gameOverSound.play();
       state = MihoyoState.LOSE;
@@ -125,6 +126,7 @@ class Mihoyo {
     textFont(TCFontBold);
     rectMode(CENTER);
     fill(255, 100);
+    strokeWeight(2);
     stroke(0);
     rect(width/2, height/2, 540, 600, 20);
     
@@ -282,6 +284,7 @@ class Mihoyo {
 
   void unlock(int index) {
     currentWeapon.skill[index] = true;
+    print("Unlocking skill: " + index);
     state = MihoyoState.MORNING;
     level += 1;
     temp = 0;
