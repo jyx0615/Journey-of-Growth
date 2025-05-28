@@ -5,6 +5,8 @@ class Monster {
   String  name;
   boolean hit;
   int hitCD; // 被擊中冷卻時間
+  int hurtTimer = 0;
+  int HURT_EFFECT_DURATION = 5;
   // ── weapon4_DOT ──
 
   int   dotTimer ;   // 剩餘 DOT 時間（frame）
@@ -24,8 +26,23 @@ class Monster {
     this.hitCD = 0;
   }
 
+  void getHurt(float damage) {
+    if (damage > 0) {
+      HP -= damage;
+      hurtTimer = HURT_EFFECT_DURATION;
+    }
+  }
+
   void draw(PVector m, String name) {
-    stroke(153);
+    if (hurtTimer > 0) {
+      strokeWeight(3);
+      stroke(250, 0, 0);
+      fill(255, 0, 0, 150); 
+      hurtTimer--;
+    } else {
+      stroke(153);
+      fill(255);
+    }
     rect(m.x, m.y, 80, 80);
     textAlign(CENTER);
     textSize(40);
@@ -48,7 +65,7 @@ void DrawMonsters(Mihoyo game) {
     Monster m = monsters.get(i);
     // ── weapon4_DOT  ──
     if (m.dotTimer > 0) {
-      m.HP -= m.dotDps;
+      m.getHurt(m.dotDps);
       m.dotTimer--;
     }
     m.time -= 1;
@@ -56,7 +73,7 @@ void DrawMonsters(Mihoyo game) {
     m.XY.y -= sin(vector_angle(PXY, m.XY)) * m.speed;
     m.draw(m.XY, m.name);
     if (vector_length(PXY, m.XY) < 50) {
-      game.player.HP -= 1;
+      game.player.getHurt(1);
       m.HP -= 100;
       game.credit -= 1;
     }

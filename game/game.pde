@@ -11,11 +11,11 @@ enum State {
 PFont TCFont, TCFontBold, ChocolateFont;
 
 class Game {
-  AudioPlayer openningMusic, level1Music, level2Music, click, resultMusic;
+  PImage startBackground, startButtonImg, aboutUsButtonImg, playerImg;
+  AudioPlayer openningMusic, level1Music, level2Music, click, resultMusic, gameOverSound;
   State state;
   DoodleJump doodleJump;
   Mihoyo mihoyo;
-  PImage startBackground, startButtonImg, aboutUsButtonImg, playerImg;
   String[] aboutUsLines;
 
   Game() {
@@ -23,6 +23,7 @@ class Game {
     loadFonts();
     loadBackgroundImages();
     doodleJump = new DoodleJump();
+    mihoyo = new Mihoyo();
     state = State.START;
     openningMusic.loop();
 
@@ -33,9 +34,9 @@ class Game {
   void loadMusics() {
     openningMusic = minim.loadFile("musics/openning.mp3");
     level1Music = minim.loadFile("musics/level1.mp3");
-    level2Music = minim.loadFile("musics/level2.mp3");
     click = minim.loadFile("sounds/click.mp3");
     resultMusic = minim.loadFile("musics/result.mp3");
+    gameOverSound = minim.loadFile("sounds/gameover.mp3");
   }
 
   void loadFonts() {
@@ -52,14 +53,17 @@ class Game {
   }
 
   void reset() {
+    doodleJump.reset();
+    mihoyo.reset();
+
+    level1Music.pause();
+    level2Music.pause();
+    println("stop level2 music");
+    click.pause();
+    resultMusic.pause();
     openningMusic.rewind();
     openningMusic.loop();
-    level1Music.rewind();
-    level2Music.rewind();
-    click.rewind();
-    resultMusic.rewind();
-
-    doodleJump.reset();
+    
     state = State.START;
   }
 
@@ -170,7 +174,7 @@ Game game;
 
 void setup() {
   size(800, 800);
-  surface.setLocation(500, 100);
+  surface.setLocation(500, 10);
   // set some constants
   submitX = width/2;
   questionX = width/2;

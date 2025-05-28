@@ -1,10 +1,10 @@
 /////////////--------------音------------------------//////////////////
-//mode0 每６０幀畫面隨機一個位置出現音符 在指定的拍數內點擊音符即對範圍造成傷害 done
-//mode1 獲得連擊模式 如果連續攻擊的話會有額外的傷害
-//mode2 節奏變快    not done
-//mode3 空白鍵按下後，怪物會往音符拉近  done
-//mode4 操作者無需按到指定位置即可造成傷害  done
-//mode5 造成的傷害不再根據完美時間而減少
+// 普通 每６０幀畫面隨機一個位置出現音符 在指定的拍數內點擊音符即對範圍造成傷害 done
+// mode 1 獲得連擊模式 如果連續攻擊的話會有額外的傷害
+// mode 2 節奏變快    not done
+// mode 3 空白鍵按下後，怪物會往音符拉近  done
+// mode 4 操作者無需按到指定位置即可造成傷害  done
+// mode 5 造成的傷害不再根據完美時間而減少
 PVector weaponXY = new PVector(0, 0);
 
 class Weapon2Base {
@@ -34,8 +34,8 @@ class Weapon2Base {
     }
     time ++;
     PVector PXY = new PVector(player.XY.x + width/2, player.XY.y + height/2);
-    // mode 0
-    if (skill[1]) {       //mode 1
+    // mode 2
+    if (skill[1]) {
       tick = 40;
     }
     if (time % tick == 0) {
@@ -63,15 +63,15 @@ class Weapon2Base {
     }
     if (mousePressed  && attack == false) {
       if (vector_length(new PVector(PXY.x + mouseX - width/2, PXY.y + mouseY - height/2), XY) < 50
-        || skill[3]) {      //mode 3
+        || skill[3]) {      //mode 4
         weaponXY = new PVector(XY.x, XY.y);
         attack = true;
         float d = 0;
-        // mode 4
+        // mode 5
         if (skill[4]) {
           d = damage;
         } else if (skill[1]) {
-          d = damage - abs(30 - (time));   //mode 1
+          d = damage - abs(30 - (time));   //mode 2
         } else {
           d = damage - abs(40 - (time));
         }
@@ -80,14 +80,14 @@ class Weapon2Base {
           combo = 0;
         }
         if (skill[0]) {
-          d += combo;   //mode 0
+          d += combo;   //mode 1
           combo += 1;
         }
 
         for (int i = monsters.size() - 1; i >= 0; i--) {
           Monster m = monsters.get(i);
           if (vector_length(XY, m.XY) < 1000) {
-            m.HP -= d;
+            m.getHurt(d);
             if (m.HP <= 0) {
               monsters.remove(i);
               game.credit += 1;
@@ -98,7 +98,7 @@ class Weapon2Base {
       }
     }
 
-    if (skill[2]) {    // mode 2
+    if (skill[2]) {    // mode 3
       // 如果空白鍵被按下且冷卻結束，啟動拉近效果並設定冷卻時間
       if (key == ' ' && keyPressed && space_CD == 0) {
         space_CD = 120;

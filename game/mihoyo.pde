@@ -25,15 +25,26 @@ class Mihoyo {
   String[] introLines = loadStrings("texts/mihoyo_intro.txt");
   AudioPlayer music_literacture, music_math, music_music, music_art, music_sports;
 
-  Mihoyo(int careerIn) {
+  Mihoyo() {
+  }
+
+  void setCareer(int careerIn) {
+    loadImages(careerIn);
+    player = new Player(new PVector(0, 0), new PVector(0, 0), 100, 10, careerIn);
+    setCareerVariables(careerIn);
+  }
+
+  void loadImages(int career) {
     timer = loadImage("subjects/clock.png");
     backgroundImg = loadImage("pic/background.jpg");
     notGraduate = loadImage("backgrounds/notGraduate.png");
-    player = new Player(new PVector(0, 0), new PVector(0, 0), 100, 10, careerIn);
-    career = careerIn;
     worker = loadImage("job_data/worker_" + filenames[career] + ".png");
     jobScene = loadImage("job_data/scene_" + filenames[career] + ".png");
     ability = loadStrings("texts/weapon_descriptions/" + filenames[career] + ".txt");
+  }
+
+  void setCareerVariables(int careerIn) {
+    career = careerIn;
     workerX = workerXs[career];
     workerY = workerYs[career];
     workerWidth = workerWidths[career];
@@ -69,10 +80,12 @@ class Mihoyo {
   }
 
   void draw() {
-    if (player.HP <= 0) {
+    if (state!= MihoyoState.LOSE && player.HP <= 0) {
+      game.gameOverSound.rewind();
+      game.gameOverSound.play();
       state = MihoyoState.LOSE;
     }
-    if (credit >= WIN_CREDIT) {
+    if (state!= MihoyoState.WIN && credit >= WIN_CREDIT) {
       state = MihoyoState.WIN;
     }
 
@@ -134,16 +147,8 @@ class Mihoyo {
     background(200);
 
     // enter shop condition check
-    if (credit >= WEAPON_COST) {
-      boolean allSkillsUnlocked = true;
-      for (int i = 0; i < currentWeapon.skill.length; i++) {
-        if (!currentWeapon.skill[i]) {
-          allSkillsUnlocked = false;
-          break;
-        }
-      }
-      if (!allSkillsUnlocked)
-        state = MihoyoState.SHOP;
+    if (level <= 5 && credit >= level * WEAPON_COST - 10) {
+      state = MihoyoState.SHOP;
     }
 
     imageMode(CENTER);
@@ -199,11 +204,11 @@ class Mihoyo {
     }
 
     if (mousePressed && temp >= 60) {
-      if (!currentWeapon.skill[0] && mouseY > height/2 + 150 && mouseY < height/2 + 250) unlock(0);
-      if (!currentWeapon.skill[1] && mouseY > height/2 +  50 && mouseY < height/2 + 150) unlock(1);
-      if (!currentWeapon.skill[2] && mouseY > height/2 -  50 && mouseY < height/2 +  50) unlock(2);
-      if (!currentWeapon.skill[3] && mouseY > height/2 - 150 && mouseY < height/2 -  50) unlock(3);
-      if (!currentWeapon.skill[4] && mouseY > height/2 - 250 && mouseY < height/2 - 150) unlock(4);
+      for (int i = 0; i < 5; i++) {
+        if (!currentWeapon.skill[i] && mouseY > height/2 + 150 - i*100 && mouseY < height/2 + 250 - i*100) {
+          unlock(i);
+        }
+      }
     }
 
     header();
@@ -278,12 +283,14 @@ class Mihoyo {
   void unlock(int index) {
     currentWeapon.skill[index] = true;
     state = MihoyoState.MORNING;
-    credit -= WEAPON_COST;
     level += 1;
     temp = 0;
   }
 
   void reset() {
+    game.gameOverSound.pause();
+    game.level2Music.rewind();
+    game.level2Music.loop();
     state = MihoyoState.OPENING;
     credit = 0;
     space_CD = 0;
@@ -312,8 +319,9 @@ class Mihoyo {
           reset();
         break;
       case WIN:
-        if (key == ENTER || key == RETURN)
+        if (key == ENTER || key == RETURN){
           game.reset();
+        }
         break;
     }
   }

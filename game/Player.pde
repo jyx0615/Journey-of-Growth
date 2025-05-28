@@ -3,6 +3,8 @@ class Player {
   PImage weaponImg, playerL, playerR;
   int     HP, ATK, MAX_HP;
   boolean faceRight = true; // 預設面向右側
+  int hurtTimer = 0;
+  int HURT_EFFECT_DURATION = 20;
 
   Player(PVector XY, PVector speed, int HP, int ATK, int career) {
     this.XY = XY;
@@ -15,13 +17,26 @@ class Player {
     playerR = loadImage("pic/playerR.png");
   }
 
+  void getHurt(int damage) {
+    HP -= damage;
+    hurtTimer = HURT_EFFECT_DURATION;
+  }
+
   void draw() {
+    if (hurtTimer > 0) {
+      tint(255, 80, 80); // red tint
+      hurtTimer--;
+    } else {
+      noTint();
+    }
+
     if (faceRight) {
       image(playerR, width/2, height/2, 100, 100);
     } else {
       image(playerL, width/2, height/2, 100, 100);
     }
 
+    noTint();
     image(weaponImg, width/2 + 40, height/2 + 25, 50, 50);
 
     textSize(20);

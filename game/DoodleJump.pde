@@ -1,10 +1,10 @@
 enum DoodleJumpState {
   START,
-  RULE,
-  PLAYING,
-  GAMEOVER,
-  END,
-  QUIZ,
+    RULE,
+    PLAYING,
+    GAMEOVER,
+    END,
+    QUIZ,
 }
 
 class DoodleJump {
@@ -15,7 +15,7 @@ class DoodleJump {
   int base;
   boolean canvaMoving;
   int fireTimer, freezeTimer, textTimer, canvaOffset;
-  AudioPlayer correctSound, wrongSound, jumpSound, pickSound, gameOverSound, clockTicking;
+  AudioPlayer correctSound, wrongSound, jumpSound, pickSound, clockTicking;
   int []scores = new int[5];
   Question[] questions;
   PImage[] blockImgs = new PImage[8];
@@ -32,11 +32,11 @@ class DoodleJump {
   int typeTime = 0;
   int maxIndex = 0;
   int maxScore = -1;
+  int doorX;
 
   DoodleJump() {
     role = new Role();
     quiz = new Quiz();
-    blocks = randomGenBlocks();
     door = loadImage("icons/door.png");
     loadSounds();
     loadBlockImages();
@@ -51,7 +51,6 @@ class DoodleJump {
     wrongSound = minim.loadFile("sounds/wrong.mp3");
     jumpSound = minim.loadFile("sounds/jump.mp3");
     pickSound = minim.loadFile("sounds/pick.mp3");
-    gameOverSound = minim.loadFile("sounds/gameover.mp3");
     clockTicking = minim.loadFile("sounds/ClockTicking.mp3");
   }
 
@@ -98,6 +97,8 @@ class DoodleJump {
     role.reset();
     quiz.reset();
     blocks = randomGenBlocks();
+    int index = int(random(0, BLOCK_IN_ONE_LEVEL));
+    doorX = int(random(blocks[index].left, blocks[index].left + blocks[index].blockCount * BLOCK_IMG_WIDTH - 50));
     base = MAX_LEVEL - SHOW_LEVEL_COUNT;
     state = DoodleJumpState.PLAYING;
     fireTimer = 0;
@@ -171,52 +172,52 @@ class DoodleJump {
         if (role.curY + ROLE_HEIGHT >= iconY && role.curY + ROLE_HEIGHT <= iconY + ICONSIZE) {
           blocks[i].showIcon = false;
           switch (type) {
-            case CERTIFICATE:
-              println("撿到了 certificate，啟動火焰模式");
-              fireTimer = FIRE_DURATION;
-              textTimer = 120;
-              pickSound.rewind();
-              pickSound.play();
-              currentHint = "獲得獎狀，讓你信心爆棚！心情好，做事更有效率！趁這段黃金時間瘋狂加分吧";
-              break;
+          case CERTIFICATE:
+            println("撿到了 certificate，啟動火焰模式");
+            fireTimer = FIRE_DURATION;
+            textTimer = 120;
+            pickSound.rewind();
+            pickSound.play();
+            currentHint = "獲得獎狀，讓你信心爆棚！心情好，做事更有效率！趁這段黃金時間瘋狂加分吧";
+            break;
 
-            case CLOCK:
-              println("撿到了 clock，角色凍結");
-              freezeTimer = FREEZE_DURATION;
-              textTimer = 120;
-              currentHint = "遲到了！時間的壓力讓你瞬間凍住，心情有點低落...暫時無法行動";
-              clockTicking.rewind();
-              clockTicking.play();
-              break;
+          case CLOCK:
+            println("撿到了 clock，角色凍結");
+            freezeTimer = FREEZE_DURATION;
+            textTimer = 120;
+            currentHint = "遲到了！時間的壓力讓你瞬間凍住，心情有點低落...暫時無法行動";
+            clockTicking.rewind();
+            clockTicking.play();
+            break;
 
-            case QUIZ:
-              println("撿到了 icon，type 為：" + blocks[i].iconType);
-              //get random quiz
-              quiz.setQuestion(questions[int(random(questions.length))]);
-              quiz.show_quiz_content = false;
-              state = DoodleJumpState.QUIZ;
+          case QUIZ:
+            println("撿到了 icon，type 為：" + blocks[i].iconType);
+            //get random quiz
+            quiz.setQuestion(questions[int(random(questions.length))]);
+            quiz.show_quiz_content = false;
+            state = DoodleJumpState.QUIZ;
 
-              //int scoreToAdd = (fireTimer > 0) ? 10 : 1;
-              int scoreToAdd = 10;
+            //int scoreToAdd = (fireTimer > 0) ? 10 : 1;
+            int scoreToAdd = 10;
 
-              Subject qSubject = quiz.question.subject;
-              int qIndex = qSubject.ordinal();
+            Subject qSubject = quiz.question.subject;
+            int qIndex = qSubject.ordinal();
 
-              quiz.pendingAddScore = true;
-              quiz.pendingScoreIndex = qIndex;
-              quiz.pendingScoreAmount = scoreToAdd;
-              break;
+            quiz.pendingAddScore = true;
+            quiz.pendingScoreIndex = qIndex;
+            quiz.pendingScoreAmount = scoreToAdd;
+            break;
 
-            default:
-              int index = type.ordinal();
-              //when onfire, score add 10, else add 1
-              if (fireTimer > 0)
-                scores[index] += 10;
-              else
-                scores[index] += 1;
-              pickSound.rewind();
-              pickSound.play();
-              break;
+          default:
+            int index = type.ordinal();
+            //when onfire, score add 10, else add 1
+            if (fireTimer > 0)
+              scores[index] += 10;
+            else
+              scores[index] += 1;
+            pickSound.rewind();
+            pickSound.play();
+            break;
           }
         }
       }
@@ -340,7 +341,7 @@ class DoodleJump {
       text("遲到效應: " + freezeTimer / 60 + "秒", 650, 770);
       fill(255);
     }
-    
+
     if (textTimer > 0) {
       fill(255);
       textSize(20);
@@ -355,31 +356,31 @@ class DoodleJump {
     textFont(TCFont);
 
     // game over
-    if (base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 700) {
-      gameOverSound.rewind();
-      gameOverSound.play();
+    if (state != DoodleJumpState.GAMEOVER && base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 700) {
+      game.gameOverSound.rewind();
+      game.gameOverSound.play();
       state = DoodleJumpState.GAMEOVER;
     }
 
     switch (state) {
-      case START:
-        drawInfoPage();
-        break;
-      case RULE:
-        drawRulePage();
-        break;
-      case PLAYING:
-        drawPlayingPage();
-        break;
-      case GAMEOVER:
-        drawGameOver();
-        break;
-      case END:
-        drawResultPage();
-        break;
-      case QUIZ:
-        quiz.draw();
-        break;
+    case START:
+      drawInfoPage();
+      break;
+    case RULE:
+      drawRulePage();
+      break;
+    case PLAYING:
+      drawPlayingPage();
+      break;
+    case GAMEOVER:
+      drawGameOver();
+      break;
+    case END:
+      drawResultPage();
+      break;
+    case QUIZ:
+      quiz.draw();
+      break;
     }
   }
 
@@ -418,26 +419,12 @@ class DoodleJump {
       blocks[i].draw(blockY);
     }
 
-    // draw the door
+    // draw the door and check if the player can win
     if (base == 0) {
-      Block topRightBlock = blocks[1];
-      int doorX = topRightBlock.left + topRightBlock.blockCount * BLOCK_IMG_WIDTH - 50;  // 門放在右邊平台的右側
-      int doorY = canvaOffset - LAYER_HEIGHT/5*6 - 60;
+      int doorY = canvaOffset - LAYER_HEIGHT/5*6 - 70;
       image(door, doorX, doorY, 50, 60);
-      // touch door or not
-      if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {
-        // 計算最高分的科目
-        maxScore = -1;
-        for (int i = 0; i < scores.length; i++) {
-          if (scores[i] > maxScore) {
-            maxScore = scores[i];
-            maxIndex = i;
-          }
-        }
-        loadResultImages(maxIndex);
-        game.mihoyo = new Mihoyo(maxIndex);
-        state = DoodleJumpState.END;
-      }
+      fill(255, 0, 0);
+      winCheck(doorY);
     }
 
     // draw the role
@@ -447,35 +434,54 @@ class DoodleJump {
     drawBottomSection();
   }
 
+  void winCheck(int doorY) {
+    if (role.curX + ROLE_WIDTH > doorX && role.curX < doorX + 50 && role.curY + ROLE_HEIGHT > doorY && role.curY < doorY + 60) {
+      // 計算最高分的科目
+      maxScore = -1;
+      for (int i = 0; i < scores.length; i++) {
+        if (scores[i] > maxScore) {
+          maxScore = scores[i];
+          maxIndex = i;
+        }
+      }
+      loadResultImages(maxIndex);
+      game.mihoyo.setCareer(maxIndex);
+      println("最高分科目: " + filenames[maxIndex] + ", 分數: " + maxScore);
+      game.level2Music = minim.loadFile("musics/" + filenames[maxIndex] + ".mp3");
+      state = DoodleJumpState.END;
+    }
+  }
+
   void keyPressed() {
     switch (state) {
-      case START:
-        if (key == ENTER || key == RETURN)
-          state = DoodleJumpState.RULE;
+    case START:
+      if (key == ENTER || key == RETURN){
+        state = DoodleJumpState.RULE;
         game.level1Music.loop();
-        game.openningMusic.close();
-        break;
-      case RULE:
-        if (key == ENTER || key == RETURN)
-          state = DoodleJumpState.PLAYING;
-      case GAMEOVER:
-        if (key == ENTER || key == RETURN)
-          reset();
-        break;
-      case QUIZ:
-        if (quiz.exit_counter == 0)
-          quiz.updateAnserByKeyPress();
-        break;
-      case END:
-        if (key == ENTER || key == RETURN) {
-          game.level1Music.close();
-          game.level2Music.loop();
-          game.state = State.LEVEL2;
-          game.mihoyo.state = MihoyoState.OPENING;
-        }
-        break;
-      default:
-        role.updateByKeyPress();
+        game.openningMusic.pause();
+      }
+      break;
+    case RULE:
+      if (key == ENTER || key == RETURN)
+        state = DoodleJumpState.PLAYING;
+    case GAMEOVER:
+      if (key == ENTER || key == RETURN)
+        reset();
+      break;
+    case QUIZ:
+      if (quiz.exit_counter == 0)
+        quiz.updateAnserByKeyPress();
+      break;
+    case END:
+      if (key == ENTER || key == RETURN) {
+        game.level1Music.pause();
+        game.level2Music.loop();
+        game.state = State.LEVEL2;
+        game.mihoyo.state = MihoyoState.OPENING;
+      }
+      break;
+    default:
+      role.updateByKeyPress();
     }
   }
 
