@@ -45,7 +45,7 @@ class Block {
   Subject subject;
 
   Block(int blockLeft, int blockLevel, int blockCountIn) {
-    while(blockLeft + blockCount * BLOCK_IMG_WIDTH > width) {
+    while(blockLeft + blockCount * BLOCK_IMG_WIDTH > width && blockCount > 1) {
       blockCount --;
     }
     left = blockLeft;

@@ -28,7 +28,7 @@ class Weapon4Base {
       time++;
       XY.x = PXY.x + size*(cos(angle + time/10));
       XY.y = PXY.y + size*sin(angle + time/10);
-      //mode3 加大啞鈴
+      // mode3 加大啞鈴
       if (skill[2]) {
         size = 200;
       } else {
