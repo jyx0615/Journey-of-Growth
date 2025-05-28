@@ -28,7 +28,7 @@ class Weapon4Base {
       time++;
       XY.x = PXY.x + size*(cos(angle + time/10));
       XY.y = PXY.y + size*sin(angle + time/10);
-      //mode2 加大啞鈴
+      // mode3 加大啞鈴
       if (skill[2]) {
         size = 200;
       } else {
@@ -40,7 +40,7 @@ class Weapon4Base {
         Monster m = monsters.get(i);
         if (vector_length(XY, m.XY) < size && m.hit == false) {
           m.hit = true;
-          m.HP -= player.ATK;
+          m.getHurt(player.ATK);
           m.hitCD = 30;
           // mode 1 擊中後怪物擊退
           if (skill[0] ) {
@@ -63,17 +63,14 @@ class Weapon4Base {
         cd = 6;
       }
     }
-    // mode 0
-    if (skill[0] && keyPressed && t % 30 == 0);
 
-    // mode 1 空白鍵向前衝刺 造成傷害
+    // mode 2 空白鍵向前衝刺 造成傷害
     if (skill[1] && key == ' ' && keyPressed && space_CD <= 0) {
       // 鼠標方向
       PVector dash = new PVector(mouseX - width/2, mouseY - height/2);
       dash.normalize();
       dash.mult(200); // 衝刺距離
 
-      int tempHP = player.HP;
       player.XY.add(dash);
 
       for (int i = monsters.size() - 1; i >= 0; i--) {
@@ -83,23 +80,12 @@ class Weapon4Base {
         float angleToMonster = PVector.angleBetween(dash, toMonster);
 
         if (distanceToMonster < 250 && angleToMonster < PI/6) {
-          m.HP -= 100; // 衝刺攻擊
+          m.getHurt(100); // 衝刺攻擊
         }
       }
-      player.HP = tempHP; // 恢復血量
 
       space_CD = 120; // 衝刺CD
     }
-    if (skill[1] && key == ' ' && keyPressed ) {
-    }
-
-    // mode 3
-    // if (weapon_mode % 8 > 3 && key == ' ' && keyPressed && space_CD <= 0) {
-    //   for (int i = 0; i < 10; i++)
-    //     Weapon_id.add(new Weapon_id(new PVector(PXY.x, PXY.y),
-    //     random(0, 2 * PI), 15, 300));
-    //   space_CD = 300;
-    // }
 
     // 更新怪物的被擊中冷卻，倒數至 0 後恢復可被擊中狀態
     for (int i = monsters.size() - 1; i >= 0; i--) {
@@ -113,7 +99,7 @@ class Weapon4Base {
     cd -= 1;
     mode4_cd --;
 
-    // mode 4 站著時每秒回一滴血
+    // mode 5 站著時每秒回一滴血
     if (skill[4] && t % 60 == 0) {
       player.HP = min(player.HP + 1, player.MAX_HP);
     }

@@ -1,4 +1,10 @@
 //  理
+// 路徑上造成數字一半的傷害
+// 0 變為一擊必殺
+// 增加怪物當前血量的50%作為傷害
+// 空白鍵將所有數字改為 9 (CD:1)
+// 每次點擊多一次隨機
+
 class Weapon1Base {
   PVector XY, targetXY;
   float angle;
@@ -29,16 +35,16 @@ class Weapon1Base {
       Monster m = monsters.get(j);
       if (vector_length(targetXY, m.XY) < 100 && vector_length(targetXY, XY) < 100) {
         if (skill[1] && num == 0) { // 0 變成必殺 mode 1
-          m.HP -= m.HP;
+          m.getHurt(m.HP);
         }
         if (skill[2]) { // 增加怪物當前血量的一半 mode 2
-          m.HP -= int(m.HP/2);
+          m.getHurt(int(m.HP/2));
         }
-        m.HP -= num;
+        m.getHurt(num);
       }
       if (skill[0]) { // 路徑傷害 mode 0
         if (vector_length(XY, m.XY) < 100) {
-          m.HP -= num/2 ;
+          m.getHurt(num/2);
           break;
         }
       }

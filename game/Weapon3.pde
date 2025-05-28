@@ -26,7 +26,7 @@ class Weapon3Base {
           v = v.div(l*2);
           m.XY.add(v);
         }// 聚怪 mode 5
-        m.HP -= int(random(0, 1.1));
+        m.getHurt(int(random(0, 2)));
       }
     }
 

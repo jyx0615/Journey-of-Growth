@@ -13,7 +13,7 @@ int LAYER_HEIGHT = 100;
 int BLOCK_HEIGHT = 20;
 int ROLE_HEIGHT = 61;
 int ROLE_WIDTH = 33;
-int MAX_LEVEL = 20;
+int MAX_LEVEL = 21;
 int CANVA_SPEED = 10;
 int CANVA_UP_SPEED = 5;
 int SHOW_LEVEL_COUNT = 5;
@@ -85,11 +85,11 @@ int[] workerWidths = {515, 520, 373, 504, 381};
 int[] workerHeights = {515, 520, 373, 504, 381};
 String[][] m_names = {{"文", "英", "國"}, {"微", "積", "分"}, {"Do", "Re", "Me"}, {"術", "美", "藝"}, {"體", "球", "動"}};
 String[] skillDescriptions = {
-    "丟出書本造成傷害",
-    "用計算機丟出數字造成傷害",
-    "畫面隨機一個位置出現音符\n在指定的拍數內點擊音符即對範圍造成傷害",
-    "滑鼠拖曳範圍噴灑顏料造成範圍傷害",
-    "丟出啞鈴造成範圍傷害"
+  "丟出書本造成傷害",
+  "用計算機丟出數字造成傷害",
+  "畫面隨機一個位置出現音符\n在指定的拍數內點擊音符即對範圍造成傷害",
+  "滑鼠拖曳範圍噴灑顏料造成範圍傷害",
+  "丟出啞鈴造成範圍傷害"
 };
 
 String congratsText = "恭喜你成功畢業\n成為";
@@ -98,6 +98,6 @@ AudioPlayer bgm, touch;
 // ─── 全域狀態 ───
 int v = 10;                  // 速度上限
 int space_CD;
-int WEAPON_COST = 10;        // 武器購買價格
-int WIN_CREDIT = 20;        // 贏得遊戲所需學分
+int WEAPON_COST = 20;        // 武器購買價格
+int WIN_CREDIT = 128;        // 贏得遊戲所需學分
 float weapon_4_mode0_time = 0;   // 啞鈴攻擊冷卻

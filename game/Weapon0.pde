@@ -61,7 +61,7 @@ class Weapon0 extends WeaponBase {
       for (int j = monsters.size() - 1; j >= 0; j--) {
         Monster m = monsters.get(j);
         if (vector_length(w.XY, m.XY) < 140 && m.time <= 0) {
-          m.HP -= player.ATK;
+          m.getHurt(player.ATK);
           if (skill[4])
             m.time = 17;         // 貫穿
           else {

@@ -45,10 +45,18 @@ class Block {
   Subject subject;
 
   Block(int blockLeft, int blockLevel, int blockCountIn) {
+    while(blockLeft + blockCount * BLOCK_IMG_WIDTH > width && blockCount > 1) {
+      blockCount --;
+    }
     left = blockLeft;
     level = blockLevel;
     blockCount = blockCountIn;
-    if (blockLevel == MAX_LEVEL)
+    if (blockLevel == 0) {
+      iconType = IconType.QUIZ;
+      showIcon = false;
+      return;
+    }
+    if (blockLevel == MAX_LEVEL) // no icon in level 0 and MAX_LEVEL
       iconType = IconType.NONE;
     else
       iconType = getRandomIconType();
@@ -58,7 +66,7 @@ class Block {
 
   IconType getRandomIconType() {
     //add quiz every 5 level
-    if (level % 5 == 0) {
+    if (level % 5 == 1) {
       return IconType.QUIZ;
     }
 
@@ -73,8 +81,7 @@ class Block {
   }
 
   int getRandomIconX() {
-    int iconX = left + (blockCount * BLOCK_IMG_WIDTH % 10 * 10);
-    iconX = min(iconX, left + blockCount * BLOCK_IMG_WIDTH - ICONSIZE);
+    int iconX = left + int(random(0, blockCount * BLOCK_IMG_WIDTH - ICONSIZE));
     return iconX;
   }
 

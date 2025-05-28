@@ -259,6 +259,7 @@ class Quiz {
     textSize(24);
     for (int i = 0; i < question.choices.length; i ++) {
       int startX = buttonX + buttonOffsetX * i;
+      strokeWeight(1);
       stroke(23, 92, 192);
       noFill();
       rect(startX, buttonY, buttonWidth, buttonHeight, 5);
@@ -270,6 +271,7 @@ class Quiz {
       text("(" + str(i+1) + ")", startX + 20, buttonY + buttonHeight/2);
       if (activateBtn == i) {
         fill(23, 92, 192);
+        noStroke();
         circle(startX + 50, buttonY + buttonHeight/2, 10);
       }
     }
