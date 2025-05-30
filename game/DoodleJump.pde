@@ -46,6 +46,40 @@ class DoodleJump {
     reset();
   }
 
+  void draw() {
+    imageMode(CENTER);
+    image(background, width/2, height/2, width, height);
+    textFont(TCFont);
+
+    // update the state
+    if (state != DoodleJumpState.GAMEOVER && base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 700) {
+      game.gameOverSound.rewind();
+      game.gameOverSound.play();
+      state = DoodleJumpState.GAMEOVER;
+    }
+
+    switch (state) {
+      case START:
+        drawInfoScreen();
+        break;
+      case RULE:
+        drawRuleScreen();
+        break;
+      case PLAYING:
+        drawPlayingScreen();
+        break;
+      case GAMEOVER:
+        drawGameOverScreen();
+        break;
+      case END:
+        drawResultScreen();
+        break;
+      case QUIZ:
+        quiz.draw();
+        break;
+    }
+  }
+
   void loadSounds() {
     correctSound = minim.loadFile("sounds/correct.mp3");
     wrongSound = minim.loadFile("sounds/wrong.mp3");
@@ -173,7 +207,6 @@ class DoodleJump {
           blocks[i].showIcon = false;
           switch (type) {
           case CERTIFICATE:
-            println("撿到了 certificate，啟動火焰模式");
             fireTimer = FIRE_DURATION;
             textTimer = 120;
             pickSound.rewind();
@@ -182,7 +215,6 @@ class DoodleJump {
             break;
 
           case CLOCK:
-            println("撿到了 clock，角色凍結");
             freezeTimer = FREEZE_DURATION;
             textTimer = 120;
             currentHint = "遲到了！時間的壓力讓你瞬間凍住，心情有點低落...暫時無法行動";
@@ -191,7 +223,6 @@ class DoodleJump {
             break;
 
           case QUIZ:
-            println("撿到了 icon，type 為：" + blocks[i].iconType);
             //get random quiz
             quiz.setQuestion(questions[int(random(questions.length))]);
             quiz.show_quiz_content = false;
@@ -225,7 +256,7 @@ class DoodleJump {
     return false;
   }
 
-  void drawInfoPage() {
+  void drawInfoScreen() {
     image(envelopeBackground, width/2, height/2, 450, 600);
 
     textFont(TCFont);
@@ -245,7 +276,7 @@ class DoodleJump {
     text("按下ENTER下一步", 400, 760);
   }
 
-  void drawRulePage() {
+  void drawRuleScreen() {
     textFont(TCFont);
     rectMode(CENTER);
     fill(255, 240);
@@ -270,14 +301,14 @@ class DoodleJump {
     image(door, 160, 680, 40, 40);
   }
 
-  void drawGameOver() {
+  void drawGameOverScreen() {
     background(#071527);
     imageMode(CENTER);
     image(gameoverbackground, width/2, height/2, 600, 600);
     image(restartButtonImg, restartX, restartY, restartBtnWidth, restartBtnHeight);
   }
 
-  void drawResultPage() {
+  void drawResultScreen() {
     background(#AACCFF);
     textFont(TCFontBold);
 
@@ -350,41 +381,7 @@ class DoodleJump {
     }
   }
 
-  void draw() {
-    imageMode(CENTER);
-    image(background, width/2, height/2, width, height);
-    textFont(TCFont);
-
-    // game over
-    if (state != DoodleJumpState.GAMEOVER && base < MAX_LEVEL - SHOW_LEVEL_COUNT && role.curY > 700) {
-      game.gameOverSound.rewind();
-      game.gameOverSound.play();
-      state = DoodleJumpState.GAMEOVER;
-    }
-
-    switch (state) {
-    case START:
-      drawInfoPage();
-      break;
-    case RULE:
-      drawRulePage();
-      break;
-    case PLAYING:
-      drawPlayingPage();
-      break;
-    case GAMEOVER:
-      drawGameOver();
-      break;
-    case END:
-      drawResultPage();
-      break;
-    case QUIZ:
-      quiz.draw();
-      break;
-    }
-  }
-
-  void drawPlayingPage() {
+  void drawPlayingScreen() {
     if (canvaOffset < 200) {
       canvaOffset += CANVA_SPEED;
       role.curY += CANVA_SPEED;
@@ -446,7 +443,6 @@ class DoodleJump {
       }
       loadResultImages(maxIndex);
       game.mihoyo.setCareer(maxIndex);
-      println("最高分科目: " + filenames[maxIndex] + ", 分數: " + maxScore);
       game.level2Music = minim.loadFile("musics/" + filenames[maxIndex] + ".mp3");
       state = DoodleJumpState.END;
     }
@@ -477,7 +473,7 @@ class DoodleJump {
         game.level1Music.pause();
         game.level2Music.loop();
         game.state = State.LEVEL2;
-        game.mihoyo.state = MihoyoState.OPENING;
+        game.mihoyo.state = MihoyoState.RULE;
       }
       break;
     default:

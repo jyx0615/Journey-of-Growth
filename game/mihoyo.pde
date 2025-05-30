@@ -1,13 +1,13 @@
 enum MihoyoState {
-  OPENING,
-  MORNING,
+  RULE,
+  PLAYING,
   SHOP,
   WIN,
   LOSE
 }
 
 class Mihoyo {
-  MihoyoState state = MihoyoState.OPENING;
+  MihoyoState state = MihoyoState.RULE;
   int credit = 0;             // 學分
   int space_CD = 0;            // space冷卻
   int level = 1;               // 商店購買次數
@@ -15,15 +15,15 @@ class Mihoyo {
   int career;                  // 職業        文理音藝體 0 1 2 3 4
   int temp = 0;                // 商店防誤觸計時
 
-  PImage worker, jobScene, timer, backgroundImg, notGraduate;
+  PImage workerImg, backgroundImg, notGraduateImg, jobScene, timer;
   Player player;
   int workerX, workerY, workerWidth, workerHeight, textX;
   color textColor, textBgColor;
   String jobTitle;
-  String[] m_name, ability;
+  String[] monsterName, ability;
   WeaponBase currentWeapon;
   String[] introLines = loadStrings("texts/mihoyo_intro.txt");
-  AudioPlayer music_literacture, music_math, music_music, music_art, music_sports;
+  AudioPlayer resultMusic = minim.loadFile("musics/result.mp3");
 
   Mihoyo() {
   }
@@ -37,8 +37,8 @@ class Mihoyo {
   void loadImages(int career) {
     timer = loadImage("subjects/clock.png");
     backgroundImg = loadImage("pic/background.jpg");
-    notGraduate = loadImage("backgrounds/notGraduate.png");
-    worker = loadImage("job_data/worker_" + filenames[career] + ".png");
+    notGraduateImg = loadImage("backgrounds/notGraduate.png");
+    workerImg = loadImage("job_data/worker_" + filenames[career] + ".png");
     jobScene = loadImage("job_data/scene_" + filenames[career] + ".png");
     ability = loadStrings("texts/weapon_descriptions/" + filenames[career] + ".txt");
   }
@@ -53,12 +53,7 @@ class Mihoyo {
     textBgColor = textBgColors[career];
     textX = textXs[career];
     jobTitle = jobTitles[career];
-    m_name = m_names[career];
-    music_literacture = minim.loadFile("musics/literacture.mp3");
-    music_math = minim.loadFile("musics/math.mp3");
-    music_music = minim.loadFile("musics/level2.mp3");
-    music_art = minim.loadFile("musics/art.mp3");
-    music_sports = minim.loadFile("musics/sports.mp3");
+    monsterName = monsterNames[career];
 
     switch (career) {
       case 0:
@@ -80,6 +75,7 @@ class Mihoyo {
   }
 
   void draw() {
+    // update the state
     if (state!= MihoyoState.LOSE && player.HP <= 0) {
       game.level2Music.pause();
       game.gameOverSound.rewind();
@@ -87,41 +83,44 @@ class Mihoyo {
       state = MihoyoState.LOSE;
     }
     if (state!= MihoyoState.WIN && credit >= WIN_CREDIT) {
+      game.level2Music.pause();
+      resultMusic.rewind();
+      resultMusic.loop();
       state = MihoyoState.WIN;
     }
 
     switch (state) {
-      case OPENING:
-        open();
+      case RULE:
+        drawRuleScreen();
         break;
-      case MORNING:
-        morning();
+      case PLAYING:
+        drawPlayingScreen();
         break;
       case SHOP:
         temp += 1;
-        shop();
+        drawShopScreen();
         break;
       case WIN:
-        win();
+        drawWinScreen();
         break;
       case LOSE:
-        lose();
+        drawLoseScreen();
         break;
     }
   }
 
   //  timer and credit header
-  void header() {
+  void drawHeader() {
     textAlign(LEFT);
     textSize(35);
     text(academics[career], width - 150, 50);
-    if (state == MihoyoState.MORNING) {
-      RunTimer();
+    if (state == MihoyoState.PLAYING) {
+      runTimer();
       text("學分 " + credit, 50, 50);
     }
   }
 
-  void open() {
+  void drawRuleScreen() {
     image(backgroundImg,400, 400, 800, 800);
     textFont(TCFontBold);
     rectMode(CENTER);
@@ -142,10 +141,10 @@ class Mihoyo {
       
     }
 
-    header();
+    drawHeader();
   }
 
-  void morning() {
+  void drawPlayingScreen() {
     background(200);
 
     // enter shop condition check
@@ -174,17 +173,17 @@ class Mihoyo {
       monsters.add(new Monster(
         new PVector(player.XY.x + cos(randomangle) * random(width, width*2),
         player.XY.y + sin(randomangle) * random(height, height*2)),
-        int(random(10, 100)), 10, random(1, 7.5), 0, m_name[randomname]));
+        int(random(10, 100)), 10, random(1, 7.5), 0, monsterName[randomname]));
     }
     popMatrix();
 
     player.draw();
     text(level, 400, 300);
 
-    header();
+    drawHeader();
   }
 
-  void shop() {
+  void drawShopScreen() {
     background(100);
     rectMode(CENTER);
     fill(255);
@@ -208,37 +207,21 @@ class Mihoyo {
     if (mousePressed && temp >= 60) {
       for (int i = 0; i < 5; i++) {
         if (!currentWeapon.skill[i] && mouseY > height/2 + 150 - i*100 && mouseY < height/2 + 250 - i*100) {
-          unlock(i);
+          unlockSkill(i);
         }
       }
     }
 
-    header();
+    drawHeader();
   }
 
-  void win() {
-    game.level2Music.close();
-    if (career == 0){
-      music_literacture.loop();
-    }
-    else if (career == 1){
-      music_math.loop();
-    }
-    else if (career == 3){
-      music_art.loop();
-    }
-    else if (career == 4){
-      music_sports.loop();
-    }
-    else{
-      music_music.loop();
-    }
+  void drawWinScreen() {
     // 繪製背景場景
     imageMode(CENTER);
     image(jobScene, 400, 400, 800, 800);
 
     // 繪製人物
-    image(worker, workerX, workerY, workerWidth, workerHeight);
+    image(workerImg, workerX, workerY, workerWidth, workerHeight);
 
     // 繪製文字
     textFont(TCFontBold);
@@ -255,10 +238,10 @@ class Mihoyo {
     text("按下ENTER重新遊玩", 400, 760);
   }
 
-  void lose() {
+  void drawLoseScreen() {
     background(0);
     fill(255, 0, 0);
-    image(notGraduate, 400, 400, 800, 800);
+    image(notGraduateImg, 400, 400, 800, 800);
     textAlign(CENTER);
     textSize(50);
     text("你沒畢業", width/2, height/2 - 300);
@@ -270,7 +253,7 @@ class Mihoyo {
     text("按下ENTER再次挑戰", width/2, height/2 + 350);
   }
 
-  void RunTimer() {
+  void runTimer() {
     t += 1;
     if (t >= int(frameRate)) {
       seconds += 1;
@@ -282,19 +265,19 @@ class Mihoyo {
     text(seconds, width/2, 50);
   }
 
-  void unlock(int index) {
+  void unlockSkill(int index) {
     currentWeapon.skill[index] = true;
-    print("Unlocking skill: " + index);
-    state = MihoyoState.MORNING;
+    state = MihoyoState.PLAYING;
     level += 1;
     temp = 0;
   }
 
   void reset() {
+    resultMusic.pause();
     game.gameOverSound.pause();
     game.level2Music.rewind();
     game.level2Music.loop();
-    state = MihoyoState.OPENING;
+    state = MihoyoState.RULE;
     credit = 0;
     space_CD = 0;
     level = 1;
@@ -310,11 +293,11 @@ class Mihoyo {
 
   void keyPressed() {
     switch (state) {
-      case OPENING:
+      case RULE:
         if (key == ENTER || key == RETURN)
-          state = MihoyoState.MORNING;
+          state = MihoyoState.PLAYING;
         break;
-      case MORNING:
+      case PLAYING:
         player.keyPressed();
         break;
       case LOSE:
@@ -334,7 +317,7 @@ class Mihoyo {
   }
 
   void mousePressed() {
-    if (state == MihoyoState.MORNING)
+    if (state == MihoyoState.PLAYING)
       currentWeapon.mousePressed();
   }
 }

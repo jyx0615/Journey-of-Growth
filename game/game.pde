@@ -12,7 +12,7 @@ PFont TCFont, TCFontBold, ChocolateFont;
 
 class Game {
   PImage startBackground, startButtonImg, aboutUsButtonImg, playerImg;
-  AudioPlayer openningMusic, level1Music, level2Music, click, resultMusic, gameOverSound;
+  AudioPlayer openningMusic, level1Music, level2Music, click, gameOverSound;
   State state;
   DoodleJump doodleJump;
   Mihoyo mihoyo;
@@ -35,7 +35,6 @@ class Game {
     openningMusic = minim.loadFile("musics/openning.mp3");
     level1Music = minim.loadFile("musics/level1.mp3");
     click = minim.loadFile("sounds/click.mp3");
-    resultMusic = minim.loadFile("musics/result.mp3");
     gameOverSound = minim.loadFile("sounds/gameover.mp3");
   }
 
@@ -58,9 +57,7 @@ class Game {
 
     level1Music.pause();
     level2Music.pause();
-    println("stop level2 music");
     click.pause();
-    resultMusic.pause();
     openningMusic.rewind();
     openningMusic.loop();
     
@@ -70,10 +67,10 @@ class Game {
   void draw() {
     switch(state) {
       case START:
-        drawStartPage();
+        drawStartScreen();
         break;
       case ABOUTUS:
-        drawAboutUS();
+        drawAboutUsScreen();
         break;
       case LEVEL1:
         doodleJump.draw();
@@ -84,7 +81,7 @@ class Game {
     }
   }
 
-  void drawStartPage() {
+  void drawStartScreen() {
     background(#88379B);
     imageMode(CENTER);
     image(startBackground, 400, 400, 800, 800);
@@ -93,8 +90,8 @@ class Game {
     image(aboutUsButtonImg, 550, 533, aboutBtnWidth, aboutBtnHeight);
   }
 
-  void drawAboutUS() {
-    drawStartPage();
+  void drawAboutUsScreen() {
+    drawStartScreen();
 
     textFont(TCFont);
     rectMode(CENTER);
