@@ -86,7 +86,11 @@ class Mihoyo {
       game.gameOverSound.play();
       state = MihoyoState.LOSE;
     }
-    if (state!= MihoyoState.WIN && credit >= WIN_CREDIT) {
+    if (state != MihoyoState.WIN && credit >= WIN_CREDIT) {
+      if (game.level2Music != null && game.level2Music.isPlaying()) {
+          game.level2Music.pause();
+      }
+      playWinMusic();
       state = MihoyoState.WIN;
     }
 
@@ -95,6 +99,9 @@ class Mihoyo {
         open();
         break;
       case MORNING:
+        if (game.level2Music != null && !game.level2Music.isPlaying()) {
+            game.level2Music.loop();
+        }
         morning();
         break;
       case SHOP:
@@ -215,24 +222,62 @@ class Mihoyo {
 
     header();
   }
+  
+  void playWinMusic() {
+    stopAllCareerMusic();
+    switch(career) {
+        case 0:
+            if (music_literacture != null) {
+                music_literacture.rewind();
+                music_literacture.loop();
+            }
+            break;
+        case 1:
+            if (music_math != null) {
+                music_math.rewind();
+                music_math.loop();
+            }
+            break;
+        case 2:
+            if (music_music != null) {
+                music_music.rewind();
+                music_music.loop();
+            }
+            break;
+        case 3:
+            if (music_art != null) {
+                music_art.rewind();
+                music_art.loop();
+            }
+            break;
+        case 4:
+            if (music_sports != null) {
+                music_sports.rewind();
+                music_sports.loop();
+            }
+            break;
+    }
+  }
+  
+  void stopAllCareerMusic() {
+    if (music_literacture != null && music_literacture.isPlaying()) {
+        music_literacture.pause();
+    }
+    if (music_math != null && music_math.isPlaying()) {
+        music_math.pause();
+    }
+    if (music_music != null && music_music.isPlaying()) {
+        music_music.pause();
+    }
+    if (music_art != null && music_art.isPlaying()) {
+        music_art.pause();
+    }
+    if (music_sports != null && music_sports.isPlaying()) {
+        music_sports.pause();
+    }
+  }
 
   void win() {
-    game.level2Music.close();
-    if (career == 0){
-      music_literacture.loop();
-    }
-    else if (career == 1){
-      music_math.loop();
-    }
-    else if (career == 3){
-      music_art.loop();
-    }
-    else if (career == 4){
-      music_sports.loop();
-    }
-    else{
-      music_music.loop();
-    }
     // 繪製背景場景
     imageMode(CENTER);
     image(jobScene, 400, 400, 800, 800);
@@ -292,6 +337,7 @@ class Mihoyo {
 
   void reset() {
     game.gameOverSound.pause();
+    stopAllCareerMusic();
     game.level2Music.rewind();
     game.level2Music.loop();
     state = MihoyoState.OPENING;
