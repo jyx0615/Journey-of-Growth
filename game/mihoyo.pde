@@ -85,7 +85,7 @@ class Mihoyo {
     if (state!= MihoyoState.WIN && credit >= WIN_CREDIT) {
       game.level2Music.pause();
       resultMusic.rewind();
-      resultMusic.loop();
+      resultMusic.play();
       state = MihoyoState.WIN;
     }
 
