@@ -1,7 +1,12 @@
 # Journey-of-Growth
 
-A Processing game let players explore and grow through two stage mini games. 
+A game that lets players explore and grow through two stage mini games.
 By jumping to collect points and battling to accumulate credits, players are guided to discover their academic inclinations and simulate the process of career development.
+
+> **🎮 [Play Online Demo](https://jyx0615.github.io/Journey-of-Growth/web/)** _(Deployed on GitHub Pages)_
+
+> **Update**: This project has been converted from Processing to **p5.js** for better web compatibility, improved performance, and cross-platform support. The game now runs directly in modern browsers without requiring Processing IDE.
+
 <p align="center">
   <img src="images/start.png" alt="Opening" width="300"/>
   <img src="images/intro.png" alt="Game Intro" width="300"/>
@@ -28,13 +33,13 @@ You can move your character left and right and jump. Along the way, you’ll enc
 - Certificate: Enter a 10-second sprint mode, each score +10, representing a boost in motivation.
 - Exam Paper: Enter a random quiz, gain 10 points, symbolizing "knowledge is power."
 - Top-level Door: Touching it ends this stage and moves you to the college challenge.
-- 
-<p align="center">
-  <img src="images/rule.png" alt="Stage 1 game rule" width="300"/>
-  <img src="images/doodle_jump.png" alt="Stage 1 screenshot" width="300"/>
-</p>
+- <p align="center">
+    <img src="images/rule.png" alt="Stage 1 game rule" width="300"/>
+    <img src="images/doodle_jump.png" alt="Stage 1 screenshot" width="300"/>
+  </p>
 
 ### Stage 2: Defeat Subject Monsters
+
 After entering your college, you’ll face career challenges by defeating monsters representing different subjects to accumulate credits.
 Your character stays in the center of the screen. Use the WASD keys to move the view and the mouse to attack. Each college has different weapons and skills, offering unique gameplay.
 
@@ -50,4 +55,5 @@ Your character stays in the center of the screen. Use the WASD keys to move the 
 </p>
 
 ## Demo videos
+
 [Youtube demo video](https://youtu.be/yVHSTGoemms?si=893hXAyIcP9cTwun)
