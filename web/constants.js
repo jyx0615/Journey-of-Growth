@@ -21,8 +21,7 @@ const BLOCK_HEIGHT = 20;
 const ROLE_HEIGHT = 61;
 const ROLE_WIDTH = 33;
 
-// const MAX_LEVEL = 21;
-const MAX_LEVEL = 6;
+const MAX_LEVEL = 21;
 
 const CANVA_SPEED = 10;
 const CANVA_UP_SPEED = 5;
