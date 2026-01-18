@@ -36,7 +36,6 @@ class Mihoyo {
     this.monsterName = [];
     this.ability = [];
     this.currentWeapon = null;
-    this.resultMusic = null; // p5.SoundFile
 
     // preload will load assets before setup
   }
@@ -87,7 +86,7 @@ class Mihoyo {
     // check win
     if (this.state !== MihoyoState.WIN && this.credit >= WIN_CREDIT) {
       level2Music.pause();
-      if (this.resultMusic) this.resultMusic.play();
+      resultMusic.play();
       this.state = MihoyoState.WIN;
     }
 
@@ -275,7 +274,7 @@ class Mihoyo {
   }
 
   reset() {
-    if (this.resultMusic) this.resultMusic.stop();
+    resultMusic.stop();
     gameOverSound.stop();
     level2Music.loop();
     this.state = MihoyoState.RULE;

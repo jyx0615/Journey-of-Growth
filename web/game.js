@@ -13,7 +13,7 @@ const State = {
 // =====================
 let TCFont, TCFontBold, ChocolateFont;
 let startBackground, startButtonImg, aboutUsButtonImg, playerImg;
-let openningMusic, level1Music, level2Music, clickSound, gameOverSound;
+let openningMusic, level1Music, level2Music, clickSound, gameOverSound, resultMusic;
 let aboutUsLines;
 let doodleJumpIntroLines, doodleJumpRuleLines;
 let mihoyoIntroLines;
@@ -193,6 +193,7 @@ function preload() {
   level2Music = loadSound("assets/musics/art.mp3");
   clickSound = loadSound("assets/sounds/click.mp3");
   gameOverSound = loadSound("assets/sounds/gameover.mp3");
+  resultMusic = loadSound("assets/musics/result.mp3");
 
   // Text
   aboutUsLines = loadStrings("assets/texts/aboutUs.txt");

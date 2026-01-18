@@ -66,7 +66,7 @@ class Weapon0 extends WeaponBase {
 
       for (let j = monsters.length - 1; j >= 0; j--) {
         const m = monsters[j];
-        if (p5.Vector.dist(w.XY, m.XY) < 140 && m.time <= 0) {
+        if (p5.Vector.dist(w.XY, m.XY) < 200 && m.time <= 0) {
           m.getHurt(player.ATK);
           if (this.skill[4]) {
             m.time = 17; // piercing
@@ -91,7 +91,7 @@ class Weapon0 extends WeaponBase {
   }
 
   mousePressed() {
-    const PXY = createVector(game.player.XY.x + width / 2, game.player.XY.y + height / 2);
+    const PXY = createVector(this.game.player.XY.x + width / 2, this.game.player.XY.y + height / 2);
     this.add(
       new Weapon0Base(
         PXY,

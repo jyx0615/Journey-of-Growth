@@ -28,9 +28,9 @@ class Monster {
   draw() {
     // Calculate opacity based on despawn timer
     let opacity = 255;
-    if (this.time <= 0 && this.time > -60) {
-      // Fade out effect in last 1 second
-      opacity = map(this.time, 0, -60, 255, 0);
+    if (this.time <= 0 && this.time > -600) {
+      // Fade out effect over 10 seconds
+      opacity = map(this.time, 0, -600, 255, 0);
     }
 
     // Hurt effect (takes priority)
@@ -104,7 +104,7 @@ function DrawMonsters(game) {
       game.credit += 1;
       continue;
     }
-    if (m.time <= -60) {
+    if (m.time <= -180) {
       // Despawned without being killed: no credit reward
       monsters.splice(i, 1);
       continue;
